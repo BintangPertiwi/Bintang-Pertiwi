@@ -41,7 +41,7 @@ export function UserNav() {
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col items-start text-left">
-          <span className="text-sm font-semibold leading-none">Admin Dusun</span>
+          <span className="text-sm font-semibold leading-none">Admin</span>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 p-2 rounded-md" align="end">
