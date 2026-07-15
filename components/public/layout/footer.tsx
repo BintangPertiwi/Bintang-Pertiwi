@@ -30,14 +30,14 @@ export async function Footer() {
           
           {/* Brand/Typography */}
           <div className="lg:col-span-5 lg:pr-12">
-            <div className="flex items-center gap-1.5 mb-4">
+            <Link href="/" className="flex items-center gap-1.5 mb-4">
               <div className="grid grid-cols-2 gap-0.5">
                 <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
                 <span className="w-2.5 h-2.5 bg-primary/70 rounded-full"></span>
                 <span className="w-2.5 h-2.5 bg-primary/50 rounded-full col-span-2 mx-auto"></span>
               </div>
-              <span className="text-xl font-bold tracking-tight text-slate-900">TOPO INDAH</span>
-            </div>
+              <span className="text-xl font-bold tracking-tight text-slate-900">BINTANG PERTIWI</span>
+            </Link>
             <p className="text-slate-500 text-sm leading-relaxed mb-6">
               {deskripsi}
             </p>

@@ -65,7 +65,7 @@ export default async function AdminPengaduanPage({ searchParams }: PengaduanPage
         activeFilter={filter}
         filterOptions={[
           { label: "Semua Kategori", value: "all" },
-          ...pengaduanResult.categories.map((cat) => ({
+          ...pengaduanResult.categories.map((cat: string) => ({
             label: cat,
             value: cat,
           })),
