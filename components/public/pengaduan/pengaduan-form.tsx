@@ -38,11 +38,11 @@ export function PengaduanForm() {
     }
 
     try {
-      // Compress immediately for preview and upload
+
       const compressed = await compressImage(selectedFile);
       setFile(compressed);
 
-      // Create preview
+
       const reader = new FileReader();
       reader.onload = (e) => setPreview(e.target?.result as string);
       reader.readAsDataURL(compressed);
@@ -124,7 +124,7 @@ export function PengaduanForm() {
 
       if (result.success) {
         toast.success("Laporan berhasil dikirim!");
-        // Reset form
+
         (e.target as HTMLFormElement).reset();
         setPreview(null);
         setFile(null);

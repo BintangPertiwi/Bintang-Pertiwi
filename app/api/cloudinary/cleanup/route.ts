@@ -12,7 +12,7 @@ export async function POST() {
 
     const startTime = Date.now();
     
-    // 1. Concurrent Fetch: Turso DB and Cloudinary
+
     // Menggunakan kueri langsung (bukan DAL) agar jika Turso timeout/error, fungsi ini langsung melempar error
     // dan masuk ke block catch, mencegah penghapusan media yatim piatu secara tak sengaja.
     const [beritaList, galeriList, configRows, cloudinaryResources] = await Promise.all([

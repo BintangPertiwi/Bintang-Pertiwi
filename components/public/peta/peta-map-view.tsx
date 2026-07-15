@@ -30,7 +30,7 @@ export function PetaMapView({ fasilitas, selectedId, onMarkerClick }: PetaMapVie
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
   const dropPinRef = useRef<L.Marker | null>(null);
 
-  // Initialize map
+
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
 
@@ -70,7 +70,7 @@ export function PetaMapView({ fasilitas, selectedId, onMarkerClick }: PetaMapVie
     };
     document.addEventListener("remove-drop-pin", handleRemovePin);
 
-    // Handle map click for custom dropped pin
+
     map.on("click", (e) => {
       const latLng = e.latlng;
       const url = `https://www.google.com/maps/dir/?api=1&destination=${latLng.lat},${latLng.lng}`;
@@ -129,12 +129,12 @@ export function PetaMapView({ fasilitas, selectedId, onMarkerClick }: PetaMapVie
     };
   }, []);
 
-  // Manage markers
+
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
 
-    // Clear existing markers
+
     markersRef.current.forEach((marker) => marker.remove());
     markersRef.current.clear();
 
@@ -208,7 +208,7 @@ export function PetaMapView({ fasilitas, selectedId, onMarkerClick }: PetaMapVie
     });
   }, [fasilitas, onMarkerClick]);
 
-  // Fly to selected marker
+
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !selectedId) return;

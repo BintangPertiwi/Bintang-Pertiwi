@@ -66,7 +66,7 @@ export default async function BerandaPage() {
     try {
       parsedHeroSlides = JSON.parse(globalConfig["beranda_hero_slides"]);
     } catch {
-      // ignore JSON parse error
+
     }
   }
 

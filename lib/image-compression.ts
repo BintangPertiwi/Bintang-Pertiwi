@@ -19,7 +19,7 @@ export async function compressImage(
       img.onload = () => {
         let { width, height } = img;
 
-        // Calculate aspect ratio
+
         if (width > maxWidth) {
           height = Math.round((height * maxWidth) / width);
           width = maxWidth;
@@ -48,7 +48,7 @@ export async function compressImage(
               return;
             }
             
-            // Create a new File from the blob
+
             const newFile = new File([blob], file.name, {
               type: "image/jpeg", // Always convert to JPEG for better compression
               lastModified: Date.now(),

@@ -84,7 +84,7 @@ export async function POST(request: Request) {
     const tanggal = new Date().toISOString();
     const status = "Menunggu";
 
-    // 1. Send to Telegram
+
     const isWargaLokal = status_warga === "Warga Lokal" || status_warga === "Warga"; // Note: we changed label to "Pengunjung" but value is "Bukan Warga Lokal"
     const wargaIcon = isWargaLokal ? "🏡" : "🧳";
     
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
       await sendTelegramMessage(caption);
     }
 
-    // 2. Save to Turso DB
+
     try {
       await insertPengaduan({
         id,

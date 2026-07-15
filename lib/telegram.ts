@@ -20,7 +20,7 @@ export async function sendTelegramPhoto(
     formData.append("caption", caption);
     formData.append("parse_mode", "HTML");
 
-    // Convert Node Buffer to Blob
+
     const blob = new Blob([new Uint8Array(fileBuffer)], { type: mimeType });
     formData.append("photo", blob, fileName);
 

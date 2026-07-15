@@ -30,7 +30,7 @@ export function BeritaDetail({ berita }: BeritaDetailProps) {
 
     const elements = Array.from(article.querySelectorAll("h2, h3"));
     const headingData = elements.map((el, index) => {
-      // Add ID if not present
+
       if (!el.id) {
         el.id = `heading-${index}`;
       }
