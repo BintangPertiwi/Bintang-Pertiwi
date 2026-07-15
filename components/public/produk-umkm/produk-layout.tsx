@@ -1,15 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { FadeIn } from "@/components/ui/fade-in";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Product } from "@/constants/dummy-products";
 import { MessageCircle, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useDeferredValue, useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 
 interface ProdukLayoutProps {
   products: Product[];
@@ -46,7 +46,7 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
         <div className="w-full lg:w-[25%] flex flex-col gap-8 shrink-0">
           
           <FadeIn direction="up">
-            <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-2 border-primary inline-block">Cari Produk</h4>
+            <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Cari Produk</h4>
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 pointer-events-none" />
               <Input
@@ -60,7 +60,7 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
           </FadeIn>
 
           <FadeIn direction="up" delay={0.1}>
-            <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-2 border-primary inline-block">Kategori</h4>
+            <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Kategori</h4>
             <ul className="flex flex-col gap-3">
               {categories.map(cat => (
                 <li key={cat} className="flex items-center space-x-2">
@@ -84,7 +84,7 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
           </FadeIn>
 
           <FadeIn direction="up" delay={0.2}>
-            <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-2 border-primary inline-block">Ketersediaan</h4>
+            <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Ketersediaan</h4>
             <div className="flex items-center space-x-2">
               <Checkbox 
                 id="in-stock" 
