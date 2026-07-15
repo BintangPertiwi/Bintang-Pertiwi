@@ -50,7 +50,7 @@ export function UserNav() {
             <div className="flex flex-col space-y-1.5">
               <p className="text-sm font-bold leading-none text-slate-800">Admin Dusun</p>
               <p className="text-xs leading-none text-slate-500">
-                Perangkat Desa
+                Perangkat Dusun
               </p>
             </div>
           </DropdownMenuLabel>

@@ -48,7 +48,7 @@ export default function PengaduanPage() {
                       Transparan & Terpantau
                     </h4>
                     <p className="text-sm text-slate-500 leading-relaxed">
-                      Laporan tercatat otomatis dalam sistem administrasi desa
+                      Laporan tercatat otomatis dalam sistem administrasi dusun
                       untuk dipantau dan dievaluasi penyelesaiannya.
                     </p>
                   </div>
