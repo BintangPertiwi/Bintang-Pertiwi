@@ -6,17 +6,17 @@ import { getGaleriList, getGlobalConfig } from "@/lib/google-sheets";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Galeri — Dusun Topo Indah",
-  description: "Koleksi foto dan dokumentasi kegiatan di Dusun Topo Indah.",
+  title: "Galeri — Bintang Pertiwi",
+  description: "Koleksi foto dan dokumentasi kegiatan di Bintang Pertiwi.",
   openGraph: {
-    title: "Galeri — Dusun Topo Indah",
-    description: "Koleksi foto dan dokumentasi kegiatan di Dusun Topo Indah.",
-    url: "https://www.dusun-topoindah.my.id/galeri",
+    title: "Galeri — Bintang Pertiwi",
+    description: "Koleksi foto dan dokumentasi kegiatan di Bintang Pertiwi.",
+    url: "https://www.bintangpertiwi.com/galeri",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Galeri — Dusun Topo Indah",
-    description: "Koleksi foto dan dokumentasi kegiatan di Dusun Topo Indah.",
+    title: "Galeri — Bintang Pertiwi",
+    description: "Koleksi foto dan dokumentasi kegiatan di Bintang Pertiwi.",
   },
 };
 
@@ -25,7 +25,7 @@ export default async function GaleriPage() {
   const globalConfig = await getGlobalConfig();
   
   const headerTitle = globalConfig["galeri_header_title"] || "Galeri Dusun";
-  const headerDesc = globalConfig["galeri_header_desc"] || "Melihat lebih dekat keindahan alam, kegiatan masyarakat, dan momen-momen penting di Dusun Topo Indah.";
+  const headerDesc = globalConfig["galeri_header_desc"] || "Melihat lebih dekat keindahan alam, kegiatan masyarakat, dan momen-momen penting di Bintang Pertiwi.";
 
   let items: GalleryItem[] = [];
   

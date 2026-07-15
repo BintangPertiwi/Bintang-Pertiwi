@@ -6,7 +6,7 @@ export default function LoadingAdminDashboard() {
     <div className="flex flex-col gap-6">
       <DashboardHeader 
         title="Dashboard" 
-        description="Ringkasan informasi dan statistik website Dusun Topo Indah."
+        description="Ringkasan informasi dan statistik website Bintang Pertiwi."
       />
       <DashboardSkeleton />
     </div>

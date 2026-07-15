@@ -2,7 +2,7 @@ import { WifiOff } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Offline — Dusun Topo Indah",
+  title: "Offline — Bintang Pertiwi",
   description: "Anda sedang tidak terhubung ke internet.",
 };
 

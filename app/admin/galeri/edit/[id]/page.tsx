@@ -5,7 +5,7 @@ import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context";
 import { DashboardHeader } from "@/components/admin/layout/dashboard-header";
 
 export const metadata = {
-  title: "Edit Galeri — Dusun Topo Indah",
+  title: "Edit Galeri — Bintang Pertiwi",
 };
 
 export default async function EditGaleriPage({ params }: { params: Promise<{ id: string }> }) {

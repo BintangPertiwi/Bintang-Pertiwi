@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-export const alt = "Dusun Topo Indah";
+export const alt = "Bintang Pertiwi";
 export const size = {
   width: 1200,
   height: 630,
@@ -67,7 +67,7 @@ export default async function Image() {
             display: "flex",
           }}
         >
-          Dusun Topo Indah
+          Bintang Pertiwi
         </div>
 
         {/* Subtitle */}

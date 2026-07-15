@@ -12,27 +12,27 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.dusun-topoindah.my.id"),
-  title: "Dusun Topo Indah",
-  description: "Web profil dusun dan informasi terkini Dusun Topo Indah",
+  metadataBase: new URL("https://www.bintangpertiwi.com"),
+  title: "Bintang Pertiwi",
+  description: "Web profil dusun dan informasi terkini Bintang Pertiwi",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Topo Indah",
+    title: "Bintang Pertiwi",
   },
   openGraph: {
-    title: "Dusun Topo Indah",
-    description: "Web profil dusun dan informasi terkini Dusun Topo Indah",
-    url: "https://www.dusun-topoindah.my.id",
-    siteName: "Dusun Topo Indah",
+    title: "Bintang Pertiwi",
+    description: "Web profil dusun dan informasi terkini Bintang Pertiwi",
+    url: "https://www.bintangpertiwi.com",
+    siteName: "Bintang Pertiwi",
     locale: "id_ID",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dusun Topo Indah",
-    description: "Web profil dusun dan informasi terkini Dusun Topo Indah",
+    title: "Bintang Pertiwi",
+    description: "Web profil dusun dan informasi terkini Bintang Pertiwi",
   },
 };
 

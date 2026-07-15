@@ -3,7 +3,7 @@ import { PengaturanProfilForm } from "@/components/admin/pengaturan/pengaturan-p
 import { getGlobalConfig } from "@/lib/google-sheets";
 
 export const metadata = {
-  title: "Pengaturan Profil — Dusun Topo Indah",
+  title: "Pengaturan Profil — Bintang Pertiwi",
 };
 
 export default async function PengaturanProfilPage() {

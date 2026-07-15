@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getBeritaList } from '@/lib/google-sheets';
 
-const baseUrl = 'https://dusun-topoindah.my.id';
+const baseUrl = 'https://bintangpertiwi.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let beritaUrls: MetadataRoute.Sitemap = [];

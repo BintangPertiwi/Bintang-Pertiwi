@@ -5,7 +5,7 @@ import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context";
 import { DashboardHeader } from "@/components/admin/layout/dashboard-header";
 
 export const metadata = {
-  title: "Edit Berita — Dusun Topo Indah",
+  title: "Edit Berita — Bintang Pertiwi",
 };
 
 export default async function EditBeritaPage({ params }: { params: Promise<{ id: string }> }) {

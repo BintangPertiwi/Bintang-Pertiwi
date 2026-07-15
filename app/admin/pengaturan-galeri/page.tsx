@@ -3,7 +3,7 @@ import { PengaturanGaleriForm } from "@/components/admin/pengaturan/pengaturan-g
 import { getGlobalConfig } from "@/lib/google-sheets";
 
 export const metadata = {
-  title: "Pengaturan Galeri — Dusun Topo Indah",
+  title: "Pengaturan Galeri — Bintang Pertiwi",
 };
 
 export default async function PengaturanGaleriPage() {

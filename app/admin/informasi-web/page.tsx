@@ -3,7 +3,7 @@ import { InformasiWebForm } from "@/components/admin/pengaturan/informasi-web-fo
 import { getGlobalConfig } from "@/lib/google-sheets";
 
 export const metadata = {
-  title: "Pengaturan Informasi Web — Admin Dusun Topo Indah",
+  title: "Pengaturan Informasi Web — Admin Bintang Pertiwi",
   description: "Kelola informasi kontak dan profil sosial media dusun.",
 };
 

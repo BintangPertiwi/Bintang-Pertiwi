@@ -4,20 +4,20 @@ import { Info, ShieldCheck, Zap, Users } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pengaduan Warga — Dusun Topo Indah",
+  title: "Pengaduan Warga — Bintang Pertiwi",
   description:
-    "Layanan pengaduan masyarakat Dusun Topo Indah yang terintegrasi langsung dengan sistem notifikasi perangkat dusun.",
+    "Layanan pengaduan masyarakat Bintang Pertiwi yang terintegrasi langsung dengan sistem notifikasi perangkat dusun.",
   openGraph: {
-    title: "Pengaduan Warga — Dusun Topo Indah",
+    title: "Pengaduan Warga — Bintang Pertiwi",
     description:
-      "Layanan pengaduan masyarakat Dusun Topo Indah yang terintegrasi langsung dengan sistem notifikasi perangkat dusun.",
-    url: "https://www.dusun-topoindah.my.id/pengaduan",
+      "Layanan pengaduan masyarakat Bintang Pertiwi yang terintegrasi langsung dengan sistem notifikasi perangkat dusun.",
+    url: "https://www.bintangpertiwi.com/pengaduan",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pengaduan Warga — Dusun Topo Indah",
+    title: "Pengaduan Warga — Bintang Pertiwi",
     description:
-      "Layanan pengaduan masyarakat Dusun Topo Indah yang terintegrasi langsung dengan sistem notifikasi perangkat dusun.",
+      "Layanan pengaduan masyarakat Bintang Pertiwi yang terintegrasi langsung dengan sistem notifikasi perangkat dusun.",
   },
 };
 
@@ -26,7 +26,7 @@ export default function PengaduanPage() {
     <main className="w-full bg-white min-h-screen pb-20">
       <PageHeader
         title="Layanan Pengaduan Warga"
-        description="Sampaikan laporan, keluhan, atau aspirasi Anda. Setiap laporan yang masuk akan langsung dikirimkan secara real-time ke ponsel cerdas Perangkat Dusun Topo Indah."
+        description="Sampaikan laporan, keluhan, atau aspirasi Anda. Setiap laporan yang masuk akan langsung dikirimkan secara real-time ke ponsel cerdas Perangkat Bintang Pertiwi."
       />
 
       <div className="w-full max-w-7xl mx-auto px-6 mt-12 md:mt-20">
@@ -76,7 +76,7 @@ export default function PengaduanPage() {
                     <p className="text-sm text-slate-500 leading-relaxed">
                       Baik Warga Lokal maupun Pengunjung (wisatawan/tamu) dari
                       luar daerah dipersilakan untuk melapor jika menemukan
-                      masalah atau memiliki keluhan di Dusun Topo Indah.
+                      masalah atau memiliki keluhan di Bintang Pertiwi.
                     </p>
                   </div>
                 </div>

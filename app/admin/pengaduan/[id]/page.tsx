@@ -12,7 +12,7 @@ import { notFound } from "next/navigation";
 import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context";
 
 export const metadata = {
-  title: "Detail Pengaduan — Admin Dusun Topo Indah",
+  title: "Detail Pengaduan — Admin Bintang Pertiwi",
 };
 
 interface PageProps {

@@ -3,7 +3,7 @@ import { PengaturanBeritaForm } from "@/components/admin/pengaturan/pengaturan-b
 import { getGlobalConfig } from "@/lib/google-sheets";
 
 export const metadata = {
-  title: "Pengaturan Berita — Dusun Topo Indah",
+  title: "Pengaturan Berita — Bintang Pertiwi",
 };
 
 export default async function PengaturanBeritaPage() {

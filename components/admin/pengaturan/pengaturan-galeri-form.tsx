@@ -33,7 +33,7 @@ export function PengaturanGaleriForm({ globalConfig }: PengaturanGaleriFormProps
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   
   const [headerTitle, setHeaderTitle] = useState(globalConfig["galeri_header_title"] || "Galeri & Dokumentasi");
-  const [headerDesc, setHeaderDesc] = useState(globalConfig["galeri_header_desc"] || "Koleksi foto dan dokumentasi visual berbagai kegiatan, keindahan alam, serta momen penting di Dusun Topo Indah.");
+  const [headerDesc, setHeaderDesc] = useState(globalConfig["galeri_header_desc"] || "Koleksi foto dan dokumentasi visual berbagai kegiatan, keindahan alam, serta momen penting di Bintang Pertiwi.");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

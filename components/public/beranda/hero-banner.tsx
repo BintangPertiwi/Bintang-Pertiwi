@@ -17,7 +17,7 @@ const fallbackSlides: Slide[] = [
   {
     id: 1,
     image: "/images/hero_bg_desa.png",
-    title: "Membangun Dusun Topo Indah yang Lebih Mandiri dan Sejahtera",
+    title: "Membangun Bintang Pertiwi yang Lebih Mandiri dan Sejahtera",
     linkText: "Pelajari Lebih Lanjut",
     linkHref: "#",
   },
@@ -31,7 +31,7 @@ const fallbackSlides: Slide[] = [
   {
     id: 3,
     image: "/images/hero_bg_desa_3.png",
-    title: "Pesona Pagi di Topo Indah, Destinasi Ekowisata Baru Tahun Ini",
+    title: "Pesona Pagi di Bintang Pertiwi, Destinasi Ekowisata Baru Tahun Ini",
     linkText: "Lihat Galeri",
     linkHref: "#",
   },

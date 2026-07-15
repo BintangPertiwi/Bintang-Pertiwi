@@ -3,7 +3,7 @@ import { getBeritaList } from "@/lib/google-sheets";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-export const alt = "Berita Dusun Topo Indah";
+export const alt = "Berita Bintang Pertiwi";
 export const size = {
   width: 1200,
   height: 630,
@@ -129,7 +129,7 @@ export default async function Image({
   );
   const logoSrc = `data:image/png;base64,${logoData}`;
 
-  const title = berita?.judul || "Berita Dusun Topo Indah";
+  const title = berita?.judul || "Berita Bintang Pertiwi";
 
   return new ImageResponse(
     (
@@ -191,7 +191,7 @@ export default async function Image({
             display: "flex",
           }}
         >
-          Dusun Topo Indah
+          Bintang Pertiwi
         </div>
 
         <div

@@ -8,17 +8,17 @@ import { formatDate } from "@/lib/utils";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Beranda — Dusun Topo Indah",
-  description: "Selamat datang di portal informasi resmi Dusun Topo Indah.",
+  title: "Beranda — Bintang Pertiwi",
+  description: "Selamat datang di portal informasi resmi Bintang Pertiwi.",
   openGraph: {
-    title: "Beranda — Dusun Topo Indah",
-    description: "Selamat datang di portal informasi resmi Dusun Topo Indah.",
-    url: "https://www.dusun-topoindah.my.id",
+    title: "Beranda — Bintang Pertiwi",
+    description: "Selamat datang di portal informasi resmi Bintang Pertiwi.",
+    url: "https://www.bintangpertiwi.com",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Beranda — Dusun Topo Indah",
-    description: "Selamat datang di portal informasi resmi Dusun Topo Indah.",
+    title: "Beranda — Bintang Pertiwi",
+    description: "Selamat datang di portal informasi resmi Bintang Pertiwi.",
   },
 };
 
@@ -45,7 +45,7 @@ export default async function BerandaPage() {
       id: "fallback-1",
       image: "/images/hero_bg_desa.png",
       title: "KEINDAHAN ALAM",
-      subtitle: "Dusun Topo Indah - Tidore",
+      subtitle: "Bintang Pertiwi - Tidore",
       description: "Nikmati pemandangan alam yang asri dan sejuk, membentang dari perbukitan hingga pesisir pantai. Sebuah harmoni alam yang menenangkan.",
     },
     {
@@ -53,14 +53,14 @@ export default async function BerandaPage() {
       image: "/images/hero_bg_desa_2.png",
       title: "PANEN RAYA",
       subtitle: "Pertanian Organik",
-      description: "Sektor pertanian yang terus berkembang dengan hasil panen padi organik melimpah setiap musimnya. Bukti kesuburan tanah Topo Indah.",
+      description: "Sektor pertanian yang terus berkembang dengan hasil panen padi organik melimpah setiap musimnya. Bukti kesuburan tanah Bintang Pertiwi.",
     },
     {
       id: "fallback-3",
       image: "/images/hero_bg_desa_3.png",
       title: "PESONA PAGI",
       subtitle: "Destinasi Ekowisata",
-      description: "Keindahan embun pagi dan udara segar menjadikan Topo Indah sebagai destinasi ekowisata favorit bagi wisatawan lokal maupun mancanegara.",
+      description: "Keindahan embun pagi dan udara segar menjadikan Bintang Pertiwi sebagai destinasi ekowisata favorit bagi wisatawan lokal maupun mancanegara.",
     },
   ];
 

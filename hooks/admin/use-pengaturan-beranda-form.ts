@@ -17,7 +17,7 @@ export function usePengaturanBerandaForm({
   let initialSlides: SlideData[] = [
     {
       id: "slide-1",
-      judul: "Membangun Dusun Topo Indah yang Lebih Mandiri dan Sejahtera",
+      judul: "Membangun Bintang Pertiwi yang Lebih Mandiri dan Sejahtera",
       linkText: "Pelajari Lebih Lanjut",
       linkHref: "/profil",
       foto: null,
@@ -47,7 +47,7 @@ export function usePengaturanBerandaForm({
 
   const [narasi, setNarasi] = useState(
     globalConfig?.["beranda_tentang_narasi"] || 
-    "Misi kami adalah mewujudkan Dusun Topo Indah yang sejahtera, mandiri, dan berbudaya melalui kolaborasi aktif warga, pemanfaatan potensi alam yang berkelanjutan, serta pelayanan publik yang transparan."
+    "Misi kami adalah mewujudkan Bintang Pertiwi yang sejahtera, mandiri, dan berbudaya melalui kolaborasi aktif warga, pemanfaatan potensi alam yang berkelanjutan, serta pelayanan publik yang transparan."
   );
   const [totalPenduduk, setTotalPenduduk] = useState(globalConfig?.["beranda_tentang_penduduk"] || "1250");
   const [totalRw, setTotalRw] = useState(globalConfig?.["beranda_tentang_rw"] || "4");

@@ -11,13 +11,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   
   if (!berita) {
     return {
-      title: "Berita Tidak Ditemukan — Dusun Topo Indah",
+      title: "Berita Tidak Ditemukan — Bintang Pertiwi",
     };
   }
 
-  const title = `${berita.judul} | Dusun Topo Indah`;
+  const title = `${berita.judul} | Bintang Pertiwi`;
   const description = stripHtml(berita.ringkasan || berita.isi_berita).substring(0, 150) + "...";
-  const url = `https://www.dusun-topoindah.my.id/berita/${id}`;
+  const url = `https://www.bintangpertiwi.com/berita/${id}`;
 
   return {
     title,
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       title,
       description,
       url,
-      siteName: "Dusun Topo Indah",
+      siteName: "Bintang Pertiwi",
       type: "article",
     },
     twitter: {

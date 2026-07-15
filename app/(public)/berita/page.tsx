@@ -6,17 +6,17 @@ import { formatDate } from "@/lib/utils";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Berita — Dusun Topo Indah",
-  description: "Kumpulan berita, pengumuman, dan artikel terbaru seputar kegiatan di Dusun Topo Indah.",
+  title: "Berita — Bintang Pertiwi",
+  description: "Kumpulan berita, pengumuman, dan artikel terbaru seputar kegiatan di Bintang Pertiwi.",
   openGraph: {
-    title: "Berita — Dusun Topo Indah",
-    description: "Kumpulan berita, pengumuman, dan artikel terbaru seputar kegiatan di Dusun Topo Indah.",
-    url: "https://www.dusun-topoindah.my.id/berita",
+    title: "Berita — Bintang Pertiwi",
+    description: "Kumpulan berita, pengumuman, dan artikel terbaru seputar kegiatan di Bintang Pertiwi.",
+    url: "https://www.bintangpertiwi.com/berita",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Berita — Dusun Topo Indah",
-    description: "Kumpulan berita, pengumuman, dan artikel terbaru seputar kegiatan di Dusun Topo Indah.",
+    title: "Berita — Bintang Pertiwi",
+    description: "Kumpulan berita, pengumuman, dan artikel terbaru seputar kegiatan di Bintang Pertiwi.",
   },
 };
 
@@ -24,7 +24,7 @@ export default async function BeritaPage() {
   const globalConfig = await getGlobalConfig();
   
   const headerTitle = globalConfig["berita_header_title"] || "Berita & Pengumuman";
-  const headerDesc = globalConfig["berita_header_desc"] || "Dapatkan informasi terkini, artikel, dan pengumuman resmi seputar aktivitas masyarakat di Dusun Topo Indah.";
+  const headerDesc = globalConfig["berita_header_desc"] || "Dapatkan informasi terkini, artikel, dan pengumuman resmi seputar aktivitas masyarakat di Bintang Pertiwi.";
 
   const allBerita = await getBeritaList();
   const rawBerita = allBerita.filter(b => b.status_publikasi === "Publik" || !b.status_publikasi);

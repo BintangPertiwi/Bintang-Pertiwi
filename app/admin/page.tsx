@@ -42,7 +42,7 @@ export default async function AdminDashboardPage() {
     <div className="space-y-8 pb-10 max-w-5xl">
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-        <p className="text-gray-500 mt-2">Pusat kontrol Sistem Informasi Geografis Dusun Topo Indah.</p>
+        <p className="text-gray-500 mt-2">Pusat kontrol Sistem Informasi Geografis Bintang Pertiwi.</p>
       </div>
 
       {/* Row 1: Quick Stats */}
