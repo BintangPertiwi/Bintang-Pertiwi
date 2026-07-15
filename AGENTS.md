@@ -1,8 +1,8 @@
-# Project Rules - Dusun Topo Indah
+# Project Rules - Bintang Pertiwi
 
 ## 1. Konteks Proyek
 
-Ini adalah **Sistem Informasi Geografis & Profil Dusun** untuk Dusun Topo Indah.
+Ini adalah **Sistem Informasi Geografis & Profil Dusun** untuk Bintang Pertiwi.
 
 - **Tujuan utama**: Web profil desa + Dashboard CMS yang bisa dikelola oleh perangkat dusun.
 - **Model biaya**: Rp 0 (Zero-Cost Maintenance). Tidak boleh ada layanan berbayar.
@@ -383,7 +383,7 @@ export async function POST(request: Request) {
 ### 10.5 Metadata & SEO
 
 - Setiap halaman publik HARUS memiliki `metadata` export (atau `generateMetadata`) untuk title dan description.
-- Gunakan format yang konsisten: `"Judul Halaman — SIG-Dusun Topo Indah"`.
+- Gunakan format yang konsisten: `"Judul Halaman — SIG-Bintang Pertiwi"`.
 
 ## 11. Konvensi Bahasa
 

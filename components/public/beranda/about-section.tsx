@@ -41,7 +41,7 @@ export function AboutSection({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
-  const trailingText = narasi || "Misi kami adalah mewujudkan Dusun Topo Indah yang sejahtera, mandiri, dan berbudaya melalui kolaborasi aktif warga, pemanfaatan potensi alam yang berkelanjutan, serta pelayanan publik yang transparan.";
+  const trailingText = narasi || "Misi kami adalah mewujudkan Bintang Pertiwi yang sejahtera, mandiri, dan berbudaya melalui kolaborasi aktif warga, pemanfaatan potensi alam yang berkelanjutan, serta pelayanan publik yang transparan.";
 
   const containerVariants = {
     hidden: { opacity: 1 },

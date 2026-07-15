@@ -7,8 +7,8 @@ export async function Footer() {
   const globalConfig = await getGlobalConfig();
   
   const deskripsi = globalConfig["info_deskripsi"] || "Mewujudkan dusun yang mandiri, sejahtera, dan berbudaya melalui transparansi informasi dan pelayanan digital terpadu untuk seluruh warga.";
-  const alamat = globalConfig["info_alamat"] || "Balai Dusun Topo Indah, Tidore Kepulauan, Maluku Utara";
-  const email = globalConfig["info_email"] || "halo@topoindah.desa.id";
+  const alamat = globalConfig["info_alamat"] || "Balai Bintang Pertiwi, Tidore Kepulauan, Maluku Utara";
+  const email = globalConfig["info_email"] || "halo@bintangpertiwi.com";
   const telepon = globalConfig["info_telepon"] || "+62 812 3456 7890";
 
   return (
@@ -77,7 +77,7 @@ export async function Footer() {
 
         {/* Bottom: Copyright & Legal */}
         <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 text-[13px] text-slate-500 font-medium">
-          <p>© <CopyrightYear /> Dusun Topo Indah. Seluruh hak cipta dilindungi.</p>
+          <p>© <CopyrightYear /> Bintang Pertiwi. Seluruh hak cipta dilindungi.</p>
           <div className="flex items-center gap-6">
             <Link href="#" className="hover:text-primary transition-colors">Syarat & Ketentuan</Link>
             <Link href="#" className="hover:text-primary transition-colors">Kebijakan Privasi</Link>

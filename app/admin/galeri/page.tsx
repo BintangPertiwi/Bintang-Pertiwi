@@ -13,7 +13,7 @@ import { GaleriGrid } from "./galeri-grid";
 import { GaleriTable } from "./galeri-table";
 
 export const metadata = {
-  title: "Galeri — Dusun Topo Indah",
+  title: "Galeri — Bintang Pertiwi",
 };
 
 interface GaleriPageProps {

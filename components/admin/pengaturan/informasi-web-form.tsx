@@ -107,7 +107,7 @@ export function InformasiWebForm({ initialData }: InformasiWebFormProps) {
             name="info_alamat" 
             value={formData.info_alamat} 
             onChange={handleChange}
-            placeholder="Contoh: Balai Dusun Topo Indah, Tidore Kepulauan..."
+            placeholder="Contoh: Balai Bintang Pertiwi, Tidore Kepulauan..."
             className="resize-none min-h-[100px]"
             rows={3}
           />
@@ -122,7 +122,7 @@ export function InformasiWebForm({ initialData }: InformasiWebFormProps) {
             type="email"
             value={formData.info_email} 
             onChange={handleChange}
-            placeholder="Contoh: halo@topoindah.desa.id"
+            placeholder="Contoh: halo@bintangpertiwi.com"
           />
         </div>
 
@@ -147,7 +147,7 @@ export function InformasiWebForm({ initialData }: InformasiWebFormProps) {
             type="url"
             value={formData.info_facebook} 
             onChange={handleChange}
-            placeholder="Contoh: https://facebook.com/topoindah"
+            placeholder="Contoh: https://facebook.com/bintangpertiwi"
           />
         </div>
 
@@ -160,7 +160,7 @@ export function InformasiWebForm({ initialData }: InformasiWebFormProps) {
             type="url"
             value={formData.info_instagram} 
             onChange={handleChange}
-            placeholder="Contoh: https://instagram.com/topoindah"
+            placeholder="Contoh: https://instagram.com/bintangpertiwi"
           />
         </div>
 
@@ -173,7 +173,7 @@ export function InformasiWebForm({ initialData }: InformasiWebFormProps) {
             type="url"
             value={formData.info_youtube} 
             onChange={handleChange}
-            placeholder="Contoh: https://youtube.com/@topoindah"
+            placeholder="Contoh: https://youtube.com/@bintangpertiwi"
           />
         </div>
 

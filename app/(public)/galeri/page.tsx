@@ -4,8 +4,8 @@ import { PaginatedGallery } from "@/components/public/galeri/paginated-gallery";
 import { getGaleriList, getGlobalConfig } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Galeri — Dusun Topo Indah",
-  description: "Koleksi foto dan dokumentasi kegiatan di Dusun Topo Indah.",
+  title: "Galeri — Bintang Pertiwi",
+  description: "Koleksi foto dan dokumentasi kegiatan di Bintang Pertiwi.",
 };
 
 export default async function GaleriPage() {
@@ -13,7 +13,7 @@ export default async function GaleriPage() {
   const globalConfig = await getGlobalConfig();
   
   const headerTitle = globalConfig["galeri_header_title"] || "Galeri Dusun";
-  const headerDesc = globalConfig["galeri_header_desc"] || "Melihat lebih dekat keindahan alam, kegiatan masyarakat, dan momen-momen penting di Dusun Topo Indah.";
+  const headerDesc = globalConfig["galeri_header_desc"] || "Melihat lebih dekat keindahan alam, kegiatan masyarakat, dan momen-momen penting di Bintang Pertiwi.";
 
   let items: GalleryItem[] = [];
   

@@ -3,7 +3,7 @@ import { PengaturanBeritaForm } from "@/components/admin/pengaturan/pengaturan-b
 import { getGlobalConfig } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Pengaturan Berita — SIG-Dusun Topo Indah",
+  title: "Pengaturan Berita — SIG-Bintang Pertiwi",
 };
 
 export default async function PengaturanBeritaPage() {

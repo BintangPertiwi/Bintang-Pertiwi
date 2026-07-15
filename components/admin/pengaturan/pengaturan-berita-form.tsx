@@ -33,7 +33,7 @@ export function PengaturanBeritaForm({ globalConfig }: PengaturanBeritaFormProps
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   
   const [headerTitle, setHeaderTitle] = useState(globalConfig["berita_header_title"] || "Berita & Pengumuman");
-  const [headerDesc, setHeaderDesc] = useState(globalConfig["berita_header_desc"] || "Dapatkan informasi terkini, artikel, dan pengumuman resmi seputar aktivitas masyarakat di Dusun Topo Indah.");
+  const [headerDesc, setHeaderDesc] = useState(globalConfig["berita_header_desc"] || "Dapatkan informasi terkini, artikel, dan pengumuman resmi seputar aktivitas masyarakat di Bintang Pertiwi.");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

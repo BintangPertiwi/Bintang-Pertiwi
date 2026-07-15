@@ -10,12 +10,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   
   if (!berita || (berita.status_publikasi !== "Publik" && berita.status_publikasi)) {
     return {
-      title: "Berita Tidak Ditemukan — SIG-Dusun Topo Indah",
+      title: "Berita Tidak Ditemukan — SIG-Bintang Pertiwi",
     };
   }
 
   return {
-    title: `${berita.judul} — SIG-Dusun Topo Indah`,
+    title: `${berita.judul} — SIG-Bintang Pertiwi`,
     description: stripHtml(berita.ringkasan || berita.isi_berita).substring(0, 150) + "...",
   };
 }

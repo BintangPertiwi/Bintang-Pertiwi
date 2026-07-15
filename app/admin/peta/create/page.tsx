@@ -5,7 +5,7 @@ import { getFasilitasList } from "@/lib/db/queries";
 import { getAllCategories } from "@/constants/peta";
 
 export const metadata = {
-  title: "Tambah Fasilitas — Dusun Topo Indah",
+  title: "Tambah Fasilitas — Bintang Pertiwi",
 };
 
 export default async function CreatePetaPage() {

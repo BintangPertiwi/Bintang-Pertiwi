@@ -12,7 +12,7 @@ import { BeritaTable } from "./berita-table";
 import { BeritaGrid } from "./berita-grid";
 
 export const metadata = {
-  title: "Manajemen Berita — SIG-Dusun Topo Indah",
+  title: "Manajemen Berita — SIG-Bintang Pertiwi",
 };
 
 interface BeritaPageProps {

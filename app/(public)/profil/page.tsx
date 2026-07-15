@@ -4,8 +4,8 @@ import { getGlobalConfig } from "@/lib/db/queries";
 import Image from "next/image";
 
 export const metadata = {
-  title: "Profil — Dusun Topo Indah",
-  description: "Profil, sejarah, dan potensi Dusun Topo Indah.",
+  title: "Profil — Bintang Pertiwi",
+  description: "Profil, sejarah, dan potensi Bintang Pertiwi.",
 };
 
 const profileSections = [
@@ -13,7 +13,7 @@ const profileSections = [
     id: "sejarah",
     title: "Sejarah & Perkembangan",
     description:
-      "Awal mula masyarakat mulai menetap dan membuka lahan di wilayah Topo Indah, menjadikannya pemukiman yang rukun dan berkembang secara mandiri. Seiring berjalannya waktu, semangat gotong royong warga telah membangun berbagai fasilitas umum yang memperkuat ikatan sosial masyarakat.",
+      "Awal mula masyarakat mulai menetap dan membuka lahan di wilayah Bintang Pertiwi, menjadikannya pemukiman yang rukun dan berkembang secara mandiri. Seiring berjalannya waktu, semangat gotong royong warga telah membangun berbagai fasilitas umum yang memperkuat ikatan sosial masyarakat.",
     image: "/images/hero_bg_desa.png",
     imageLeft: true,
   },
@@ -21,7 +21,7 @@ const profileSections = [
     id: "geografis",
     title: "Kondisi Geografis & Lingkungan",
     description:
-      "Topo Indah terletak di dataran tinggi dengan iklim yang sejuk dan menyegarkan. Kondisi alamnya yang asri dan kualitas tanah yang subur sangat mendukung sektor agraris. Lingkungan yang masih terjaga keasriannya menjadikan dusun ini sebagai paru-paru hijau di wilayah sekitarnya.",
+      "Bintang Pertiwi terletak di dataran tinggi dengan iklim yang sejuk dan menyegarkan. Kondisi alamnya yang asri dan kualitas tanah yang subur sangat mendukung sektor agraris. Lingkungan yang masih terjaga keasriannya menjadikan dusun ini sebagai paru-paru hijau di wilayah sekitarnya.",
     image: "/images/hero_bg_desa_2.png",
     imageLeft: false,
   },
@@ -48,7 +48,7 @@ export default async function ProfilPage() {
     }
   } catch {}
 
-  const visi = globalConfig["profil_visi"] || "Menjadikan Dusun Topo Indah sebagai pelopor dusun mandiri, sejahtera, berwawasan lingkungan, dan berpegang teguh pada nilai adat istiadat.";
+  const visi = globalConfig["profil_visi"] || "Menjadikan Bintang Pertiwi sebagai pelopor dusun mandiri, sejahtera, berwawasan lingkungan, dan berpegang teguh pada nilai adat istiadat.";
   
   let misiList = [
     "Meningkatkan kualitas SDM melalui pendidikan dan penyuluhan.",
@@ -67,7 +67,7 @@ export default async function ProfilPage() {
   } catch {}
 
   const headerTitle = globalConfig["profil_header_title"] || "Profil Dusun";
-  const headerDesc = globalConfig["profil_header_desc"] || "Mengenal lebih dekat sejarah, kondisi alam, dan potensi yang dimiliki oleh Dusun Topo Indah.";
+  const headerDesc = globalConfig["profil_header_desc"] || "Mengenal lebih dekat sejarah, kondisi alam, dan potensi yang dimiliki oleh Bintang Pertiwi.";
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-white">

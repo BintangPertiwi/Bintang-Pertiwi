@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { PetaDynamicLoader } from "@/components/public/peta/peta-dynamic-loader";
 
 export const metadata: Metadata = {
-  title: "Peta Interaktif — SIG-Dusun Topo Indah",
+  title: "Peta Interaktif — SIG-Bintang Pertiwi",
   description:
-    "Jelajahi peta interaktif Dusun Topo Indah. Temukan lokasi masjid, musholla, posyandu, tempat wisata, dan fasilitas umum lainnya.",
+    "Jelajahi peta interaktif Bintang Pertiwi. Temukan lokasi masjid, musholla, posyandu, tempat wisata, dan fasilitas umum lainnya.",
 };
 
 export default async function PetaPage() {

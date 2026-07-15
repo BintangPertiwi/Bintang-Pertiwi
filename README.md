@@ -1,6 +1,6 @@
-# Sistem Informasi Geografis & Profil Dusun Topo Indah
+# Sistem Informasi Geografis & Profil Bintang Pertiwi
 
-Ini adalah web profil dan dashboard CMS untuk Dusun Topo Indah. Dibangun dengan Next.js (App Router), Turso (libSQL) Edge Database dengan Drizzle ORM, dan Cloudinary (Media Storage).
+Ini adalah web profil dan dashboard CMS untuk Bintang Pertiwi. Dibangun dengan Next.js (App Router), Turso (libSQL) Edge Database dengan Drizzle ORM, dan Cloudinary (Media Storage).
 
 ## 🚀 Getting Started (Local Development)
 

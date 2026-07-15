@@ -6,7 +6,7 @@ import { getAllCategories } from "@/constants/peta";
 import { notFound } from "next/navigation";
 
 export const metadata = {
-  title: "Edit Fasilitas — Dusun Topo Indah",
+  title: "Edit Fasilitas — Bintang Pertiwi",
 };
 
 interface EditPetaPageProps {

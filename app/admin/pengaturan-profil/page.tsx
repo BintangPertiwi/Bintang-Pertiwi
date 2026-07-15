@@ -3,7 +3,7 @@ import { PengaturanProfilForm } from "@/components/admin/pengaturan/pengaturan-p
 import { getGlobalConfig } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Pengaturan Profil — SIG-Dusun Topo Indah",
+  title: "Pengaturan Profil — SIG-Bintang Pertiwi",
 };
 
 export default async function PengaturanProfilPage() {

@@ -4,7 +4,7 @@ import { DashboardHeader } from "@/components/admin/layout/dashboard-header";
 import { getGaleriList } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Unggah Galeri — Dusun Topo Indah",
+  title: "Unggah Galeri — Bintang Pertiwi",
 };
 
 export default async function CreateGaleriPage() {

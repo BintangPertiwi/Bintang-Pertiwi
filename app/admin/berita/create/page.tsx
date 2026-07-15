@@ -4,7 +4,7 @@ import { DashboardHeader } from "@/components/admin/layout/dashboard-header";
 import { getBeritaList } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Tulis Berita Baru — Dusun Topo Indah",
+  title: "Tulis Berita Baru — Bintang Pertiwi",
 };
 
 export default async function CreateBeritaPage() {

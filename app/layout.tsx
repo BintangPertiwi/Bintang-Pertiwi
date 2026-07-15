@@ -12,13 +12,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Sistem Informasi Geografis Dusun Topo Indah",
-  description: "Web profil desa dan sistem informasi geografis Dusun Topo Indah",
+  title: "Sistem Informasi Geografis Bintang Pertiwi",
+  description: "Web profil desa dan sistem informasi geografis Bintang Pertiwi",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Topo Indah",
+    title: "Bintang Pertiwi",
   },
 };
 

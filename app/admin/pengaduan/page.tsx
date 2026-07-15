@@ -10,7 +10,7 @@ import { Inbox } from "lucide-react";
 import { cookies } from "next/headers";
 
 export const metadata = {
-  title: "Kelola Pengaduan Warga — Admin Dusun Topo Indah",
+  title: "Kelola Pengaduan Warga — Admin Bintang Pertiwi",
 };
 
 interface PengaduanPageProps {

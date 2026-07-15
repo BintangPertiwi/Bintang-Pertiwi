@@ -84,7 +84,7 @@ export function Navbar() {
               useDarkTheme ? "text-[#0D0D0D]" : "text-white"
             }`}
           >
-            Dusun Topo Indah
+            Bintang Pertiwi
           </Link>
 
           {/* Desktop Menu */}
@@ -156,7 +156,7 @@ export function Navbar() {
             onClick={() => setIsMobileMenuOpen(false)}
             className="font-bold text-xl text-[#0D0D0D]"
           >
-            Dusun Topo Indah
+            Bintang Pertiwi
           </Link>
           <Button
             variant="ghost"

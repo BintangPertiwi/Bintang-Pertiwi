@@ -13,7 +13,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 export const metadata = {
-  title: "Peta — Dusun Topo Indah",
+  title: "Peta — Bintang Pertiwi",
 };
 
 interface PetaPageProps {
