@@ -93,7 +93,7 @@ export function InformasiWebForm({ initialData }: InformasiWebFormProps) {
             name="info_deskripsi" 
             value={formData.info_deskripsi} 
             onChange={handleChange}
-            placeholder="Mewujudkan dusun yang mandiri, sejahtera..."
+            placeholder="Mewujudkan lingkungan yang mandiri, sejahtera..."
             className="resize-none min-h-[100px]"
             rows={3}
           />

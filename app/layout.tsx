@@ -13,7 +13,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Sistem Informasi Geografis Bintang Pertiwi",
-  description: "Web profil dusun dan sistem informasi geografis Bintang Pertiwi",
+  description: "Web profil dan sistem informasi geografis Bintang Pertiwi",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

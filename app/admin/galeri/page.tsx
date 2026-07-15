@@ -49,7 +49,7 @@ export default async function AdminGaleriPage({ searchParams }: GaleriPageProps)
     <div className="flex flex-col gap-6">
       <DashboardHeader 
         title="Manajemen Galeri" 
-        description="Kelola foto kegiatan, fasilitas, dan momen penting di dusun."
+        description="Kelola foto kegiatan, fasilitas, dan momen penting."
       >
         <Button render={<Link href="/admin/galeri/create" />} nativeButton={false} className="h-14 px-6 text-base">
           <ImageIcon className="mr-2 h-5 w-5" />

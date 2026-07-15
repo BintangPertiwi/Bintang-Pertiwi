@@ -67,7 +67,7 @@ export default async function AdminDashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">{totalGaleri}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              Foto/kegiatan dusun
+              Foto/kegiatan
             </p>
           </CardContent>
         </Card>
@@ -113,7 +113,7 @@ export default async function AdminDashboardPage() {
             <h2 className="text-2xl font-bold tracking-tight">Pusat Panduan & Tutorial</h2>
           </div>
           <p className="text-muted-foreground mb-6">
-            Panduan lengkap mengelola sistem informasi dusun.
+            Panduan lengkap mengelola sistem informasi.
           </p>
           <div className="w-full">
             <Accordion multiple defaultValue={["item-1", "item-2", "item-3", "item-4", "item-5", "item-6"]} className="w-full space-y-4">
@@ -138,10 +138,10 @@ export default async function AdminDashboardPage() {
 
               <AccordionItem value="item-3" className="border-b pb-4">
                 <AccordionTrigger className="text-lg font-bold hover:no-underline">
-                  3. Mengubah Susunan Perangkat Dusun & Profil
+                  3. Mengubah Susunan Pengelola & Profil
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
-                  Apabila terjadi perombakan struktur atau pergantian kepala dusun, Anda dapat memperbarui informasi visi, misi, serta struktur organisasi pada menu <b>Pengaturan Profil</b> yang tersedia di panel samping (sidebar).
+                  Apabila terjadi perombakan struktur atau pergantian pimpinan, Anda dapat memperbarui informasi visi, misi, serta struktur organisasi pada menu <b>Pengaturan Profil</b> yang tersedia di panel samping (sidebar).
                 </AccordionContent>
               </AccordionItem>
               
@@ -150,7 +150,7 @@ export default async function AdminDashboardPage() {
                   4. Mengatur Informasi Web & Teks Footer
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
-                  Apabila Anda ingin mengubah teks sambutan utama di beranda, informasi kontak (email/telepon/alamat) yang berada di <b>bagian paling bawah website (Footer)</b>, serta tautan sosial media dusun, silakan buka menu <b>Informasi Web</b> di panel samping. Perubahan ini akan langsung memperbarui area *footer* di seluruh halaman situs.
+                  Apabila Anda ingin mengubah teks sambutan utama di beranda, informasi kontak (email/telepon/alamat) yang berada di <b>bagian paling bawah website (Footer)</b>, serta tautan sosial media, silakan buka menu <b>Informasi Web</b> di panel samping. Perubahan ini akan langsung memperbarui area *footer* di seluruh halaman situs.
                 </AccordionContent>
               </AccordionItem>
 
@@ -159,7 +159,7 @@ export default async function AdminDashboardPage() {
                   5. Mengubah Password & Cara Logout
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
-                  Untuk <b>mengubah password</b> atau <b>keluar dari sistem (Logout)</b>, perhatikan bagian <b>pojok kanan atas layar Anda</b>. Klik pada ikon profil atau nama <b>Admin Dusun</b> untuk memunculkan menu tersembunyi. 
+                  Untuk <b>mengubah password</b> atau <b>keluar dari sistem (Logout)</b>, perhatikan bagian <b>pojok kanan atas layar Anda</b>. Klik pada ikon profil atau nama <b>Admin</b> untuk memunculkan menu tersembunyi. 
                   <br /><br />
                   <ul className="list-disc pl-5 space-y-1">
                     <li>Pilih <b>Pengaturan Akun (Settings)</b> untuk mengubah <i>username</i> dan <i>password</i>.</li>

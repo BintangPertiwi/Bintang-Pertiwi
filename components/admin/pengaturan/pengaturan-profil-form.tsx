@@ -72,7 +72,7 @@ export function PengaturanProfilForm({
               </Label>
               <Input
                 id="headerTitle"
-                placeholder="Contoh: Profil Dusun"
+                placeholder="Contoh: Profil"
                 value={headerTitle}
                 onChange={(e) => setHeaderTitle(e.target.value)}
               />
@@ -100,7 +100,7 @@ export function PengaturanProfilForm({
           <AccordionContent className="pt-4 pb-6 space-y-8">
             <div className="space-y-2">
               <Label htmlFor="visi" className="text-sm font-semibold">
-                Visi Dusun
+                Visi
               </Label>
               <Textarea
                 id="visi"
@@ -112,7 +112,7 @@ export function PengaturanProfilForm({
             </div>
 
             <div className="space-y-4">
-              <Label className="text-sm font-semibold">Misi Dusun</Label>
+              <Label className="text-sm font-semibold">Misi</Label>
               {misiList.map((misi, index) => (
                 <div key={index} className="flex items-start gap-2">
                   <div className="pt-2 text-primary font-bold">{index + 1}.</div>
@@ -243,7 +243,7 @@ export function PengaturanProfilForm({
                     </Label>
                     <Input
                       id={`title-${section.id}`}
-                      placeholder="Contoh: Sejarah Dusun"
+                      placeholder="Contoh: Sejarah"
                       value={section.title}
                       onChange={(e) => updateSection(section.id, "title", e.target.value)}
                       required

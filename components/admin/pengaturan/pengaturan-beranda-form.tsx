@@ -197,7 +197,7 @@ export function PengaturanBerandaForm({
 
         <AccordionItem value="tentang" className="border-b pb-4">
           <AccordionTrigger className="text-xl font-bold hover:no-underline">
-            Bagian Tentang Dusun & Statistik
+            Bagian Tentang Kami & Statistik
           </AccordionTrigger>
           <AccordionContent className="pt-4 pb-6 space-y-6">
             <div className="space-y-2">

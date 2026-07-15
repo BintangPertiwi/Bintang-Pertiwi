@@ -145,7 +145,7 @@ export function BeritaDetail({ berita }: BeritaDetailProps) {
               </span>
               <span className="flex items-center">
                 <User className="w-4 h-4 mr-2 text-primary" />
-                Admin Dusun
+                Admin
               </span>
             </div>
           </FadeIn>

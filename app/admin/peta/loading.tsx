@@ -5,7 +5,7 @@ export default function LoadingPeta() {
   return (
     <div className="flex flex-col gap-6">
       <DashboardHeader 
-        title="Peta Dusun" 
+        title="Peta Lokasi" 
         description="Kelola informasi batas wilayah dan marker penting pada peta."
       />
       <div className="w-full max-w-4xl space-y-8 pb-20">

@@ -16,7 +16,7 @@ export default async function CreateGaleriPage() {
       <SetBreadcrumb label="Unggah Galeri" />
       <DashboardHeader
         title="Unggah Galeri"
-        description="Tambahkan foto kegiatan dusun dengan tampilan form yang lebih nyaman."
+        description="Tambahkan foto kegiatan dengan tampilan form yang lebih nyaman."
       />
 
       <GaleriFormFields existingCategories={existingCategories} />

@@ -5,8 +5,8 @@ export default function LoadingGaleriList() {
   return (
     <div className="flex flex-col gap-6">
       <DashboardHeader 
-        title="Galeri Dusun" 
-        description="Kelola foto dan dokumentasi kegiatan dusun."
+        title="Galeri" 
+        description="Kelola foto dan dokumentasi kegiatan."
       />
       <TableSkeleton columnCount={4} rowCount={10} />
     </div>

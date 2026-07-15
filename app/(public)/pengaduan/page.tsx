@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Pengaduan Warga — Bintang Pertiwi",
   description:
-    "Layanan pengaduan masyarakat Bintang Pertiwi yang terintegrasi langsung dengan sistem notifikasi perangkat dusun.",
+    "Layanan pengaduan masyarakat Bintang Pertiwi yang terintegrasi langsung dengan sistem notifikasi Pengelola.",
 };
 
 export default function PengaduanPage() {
@@ -35,7 +35,7 @@ export default function PengaduanPage() {
                     </h4>
                     <p className="text-sm text-slate-500 leading-relaxed">
                       Laporan Anda akan langsung terkirim sebagai notifikasi ke
-                      perangkat komunikasi cerdas Perangkat Dusun saat itu juga.
+                      perangkat komunikasi cerdas Pengelola saat itu juga.
                     </p>
                   </div>
                 </div>
@@ -48,7 +48,7 @@ export default function PengaduanPage() {
                       Transparan & Terpantau
                     </h4>
                     <p className="text-sm text-slate-500 leading-relaxed">
-                      Laporan tercatat otomatis dalam sistem administrasi dusun
+                      Laporan tercatat otomatis dalam sistem administrasi
                       untuk dipantau dan dievaluasi penyelesaiannya.
                     </p>
                   </div>
@@ -77,7 +77,7 @@ export default function PengaduanPage() {
                 <p className="text-sm text-slate-500 leading-relaxed">
                   <strong className="text-slate-900">Privasi Terjaga:</strong>{" "}
                   Data NIK dan Nomor Telepon Anda hanya dapat dilihat oleh
-                  internal Perangkat Dusun dan dijamin kerahasiaannya.
+                  internal Pengelola dan dijamin kerahasiaannya.
                 </p>
               </div>
             </div>

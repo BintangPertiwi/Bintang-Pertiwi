@@ -57,7 +57,7 @@ export default async function BeritaPage({ searchParams }: BeritaPageProps) {
   return (
     <div className="flex flex-col gap-6">
       <DashboardHeader 
-        title="Kabar Dusun (Berita)" 
+        title="Berita & Pengumuman" 
         description="Kelola publikasi artikel berita dan pengumuman untuk warga."
       >
         <Button render={<Link href="/admin/berita/create" />} nativeButton={false} className="h-14 px-6 text-base">

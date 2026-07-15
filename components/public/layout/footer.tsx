@@ -6,7 +6,7 @@ import { getGlobalConfig } from "@/lib/db/queries";
 export async function Footer() {
   const globalConfig = await getGlobalConfig();
   
-  const deskripsi = globalConfig["info_deskripsi"] || "Mewujudkan dusun yang mandiri, sejahtera, dan berbudaya melalui transparansi informasi dan pelayanan digital terpadu untuk seluruh warga.";
+  const deskripsi = globalConfig["info_deskripsi"] || "Mewujudkan lingkungan yang mandiri, sejahtera, dan berbudaya melalui transparansi informasi dan pelayanan digital terpadu untuk seluruh warga.";
   const alamat = globalConfig["info_alamat"] || "Balai Bintang Pertiwi, Tidore Kepulauan, Maluku Utara";
   const email = globalConfig["info_email"] || "halo@bintangpertiwi.com";
   const telepon = globalConfig["info_telepon"] || "+62 812 3456 7890";
@@ -48,7 +48,7 @@ export async function Footer() {
             <h4 className="font-bold text-slate-900 mb-6">Platform</h4>
             <ul className="space-y-4 text-sm font-medium text-slate-500">
               <li><Link href="/" className="hover:text-primary transition-colors">Beranda</Link></li>
-              <li><Link href="/profil" className="hover:text-primary transition-colors">Profil Dusun</Link></li>
+              <li><Link href="/profil" className="hover:text-primary transition-colors">Profil</Link></li>
               <li><Link href="/berita" className="hover:text-primary transition-colors">Berita & Artikel</Link></li>
               <li><Link href="/galeri" className="hover:text-primary transition-colors">Galeri Foto</Link></li>
             </ul>

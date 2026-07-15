@@ -12,7 +12,7 @@ export default async function GaleriPage() {
   const galeriData = await getGaleriList();
   const globalConfig = await getGlobalConfig();
   
-  const headerTitle = globalConfig["galeri_header_title"] || "Galeri Dusun";
+  const headerTitle = globalConfig["galeri_header_title"] || "Galeri";
   const headerDesc = globalConfig["galeri_header_desc"] || "Melihat lebih dekat keindahan alam, kegiatan masyarakat, dan momen-momen penting di Bintang Pertiwi.";
 
   let items: GalleryItem[] = [];

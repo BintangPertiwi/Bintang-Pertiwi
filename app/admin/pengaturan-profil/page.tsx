@@ -12,7 +12,7 @@ export default async function PengaturanProfilPage() {
   return (
     <div className="flex flex-col gap-6">
       <DashboardHeader 
-        title="Pengaturan Profil Dusun" 
+        title="Pengaturan Profil" 
         description="Kelola teks visi misi serta bagian sejarah dan potensi pada halaman profil."
       />
 

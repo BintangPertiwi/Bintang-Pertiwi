@@ -18,7 +18,7 @@ export default async function CreatePetaPage() {
       <SetBreadcrumb label="Tambah Fasilitas" />
       <DashboardHeader
         title="Tambah Fasilitas"
-        description="Tambahkan titik fasilitas baru ke dalam peta dusun."
+        description="Tambahkan titik fasilitas baru ke dalam peta lokasi."
       />
 
       <PetaFormFields existingCategories={existingCategories} />

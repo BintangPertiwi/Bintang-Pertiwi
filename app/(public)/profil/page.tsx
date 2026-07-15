@@ -21,7 +21,7 @@ const profileSections = [
     id: "geografis",
     title: "Kondisi Geografis & Lingkungan",
     description:
-      "Bintang Pertiwi terletak di dataran tinggi dengan iklim yang sejuk dan menyegarkan. Kondisi alamnya yang asri dan kualitas tanah yang subur sangat mendukung sektor agraris. Lingkungan yang masih terjaga keasriannya menjadikan dusun ini sebagai paru-paru hijau di wilayah sekitarnya.",
+      "Bintang Pertiwi terletak di dataran tinggi dengan iklim yang sejuk dan menyegarkan. Kondisi alamnya yang asri dan kualitas tanah yang subur sangat mendukung sektor agraris. Lingkungan yang masih terjaga keasriannya menjadikan tempat ini sebagai paru-paru hijau di wilayah sekitarnya.",
     image: "/images/hero_bg_desa_2.png",
     imageLeft: false,
   },
@@ -29,7 +29,7 @@ const profileSections = [
     id: "potensi",
     title: "Potensi & Sumber Daya",
     description:
-      "Dusun ini perlahan bertransformasi menjadi sentra pertanian organik dan destinasi ekowisata. Sebagian besar warga berprofesi sebagai petani yang menjunjung tinggi pelestarian alam, menghasilkan panen berkualitas tinggi sekaligus memelihara keseimbangan ekosistem lokal.",
+      "Kawasan ini perlahan bertransformasi menjadi sentra pertanian organik dan destinasi ekowisata. Sebagian besar warga berprofesi sebagai petani yang menjunjung tinggi pelestarian alam, menghasilkan panen berkualitas tinggi sekaligus memelihara keseimbangan ekosistem lokal.",
     image: "/images/hero_bg_desa_3.png",
     imageLeft: true,
   },
@@ -48,7 +48,7 @@ export default async function ProfilPage() {
     }
   } catch {}
 
-  const visi = globalConfig["profil_visi"] || "Menjadikan Bintang Pertiwi sebagai pelopor dusun mandiri, sejahtera, berwawasan lingkungan, dan berpegang teguh pada nilai adat istiadat.";
+  const visi = globalConfig["profil_visi"] || "Menjadikan Bintang Pertiwi sebagai pelopor mandiri, sejahtera, berwawasan lingkungan, dan berpegang teguh pada nilai adat istiadat.";
   
   let misiList = [
     "Meningkatkan kualitas SDM melalui pendidikan dan penyuluhan.",
@@ -66,7 +66,7 @@ export default async function ProfilPage() {
     }
   } catch {}
 
-  const headerTitle = globalConfig["profil_header_title"] || "Profil Dusun";
+  const headerTitle = globalConfig["profil_header_title"] || "Profil";
   const headerDesc = globalConfig["profil_header_desc"] || "Mengenal lebih dekat sejarah, kondisi alam, dan potensi yang dimiliki oleh Bintang Pertiwi.";
 
   return (

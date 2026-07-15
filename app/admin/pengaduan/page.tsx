@@ -56,7 +56,7 @@ export default async function AdminPengaduanPage({ searchParams }: PengaduanPage
     <div className="flex flex-col gap-6">
       <DashboardHeader 
         title="Pengaduan Warga" 
-        description="Kelola laporan dan keluhan yang masuk dari warga dusun."
+        description="Kelola laporan dan keluhan yang masuk dari pengguna."
       />
 
       <ListingToolbar

@@ -4,7 +4,7 @@ import { getGlobalConfig } from "@/lib/db/queries";
 
 export const metadata = {
   title: "Pengaturan Informasi Web — Admin Bintang Pertiwi",
-  description: "Kelola informasi kontak dan profil sosial media dusun.",
+  description: "Kelola informasi kontak dan profil sosial media.",
 };
 
 export default async function InformasiWebPage() {

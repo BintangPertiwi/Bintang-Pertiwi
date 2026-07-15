@@ -79,7 +79,7 @@ export function AboutSection({
         <FadeIn direction="up" className="mb-10 md:mb-14 flex flex-col md:flex-row justify-between items-start md:items-end">
           <div className="inline-flex flex-col gap-3">
             <h2 className="text-slate-800 text-sm md:text-base font-bold tracking-[0.3em] uppercase">
-              Tentang Dusun
+              Tentang Kami
             </h2>
             <div className="w-12 md:w-16 h-0.5 md:h-1 bg-primary rounded-full"></div>
           </div>

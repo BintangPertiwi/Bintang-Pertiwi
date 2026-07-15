@@ -16,7 +16,7 @@ export default async function CreateBeritaPage() {
       <SetBreadcrumb label="Tulis Berita Baru" />
       <DashboardHeader 
         title="Tulis Berita Baru" 
-        description="Buat artikel untuk mempublikasikan kegiatan atau pengumuman dusun."
+        description="Buat artikel untuk mempublikasikan kegiatan atau pengumuman."
       />
 
       <BeritaForm existingCategories={existingCategories} />

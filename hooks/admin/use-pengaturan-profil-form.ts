@@ -15,7 +15,7 @@ export function usePengaturanProfilForm({
   const [draggingSectionId, setDraggingSectionId] = useState<string | null>(null);
 
   const [visi, setVisi] = useState(globalConfig["profil_visi"] || "");
-  const [headerTitle, setHeaderTitle] = useState(globalConfig["profil_header_title"] || "Profil Dusun");
+  const [headerTitle, setHeaderTitle] = useState(globalConfig["profil_header_title"] || "Profil");
   const [headerDesc, setHeaderDesc] = useState(globalConfig["profil_header_desc"] || "Mengenal lebih dekat sejarah, kondisi alam, dan potensi yang dimiliki oleh Bintang Pertiwi.");
   
   const [misiList, setMisiList] = useState<string[]>(() => {

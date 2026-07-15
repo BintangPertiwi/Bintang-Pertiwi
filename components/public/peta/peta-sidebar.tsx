@@ -213,7 +213,7 @@ export function PetaSidebar({
       <aside className="hidden md:flex flex-col absolute top-0 left-0 bottom-0 z-10 w-[450px] bg-white/95 backdrop-blur-md shadow-2xl border-r border-slate-200/50 p-5 gap-3 overflow-hidden">
         <div className="flex items-center gap-2 pb-2">
           <MapPin className="h-7 w-7 text-primary" />
-          <h2 className="text-2xl font-bold text-slate-900">Fasilitas Dusun</h2>
+          <h2 className="text-2xl font-bold text-slate-900">Fasilitas</h2>
         </div>
         {sidebarContent}
       </aside>
@@ -261,7 +261,7 @@ export function PetaSidebar({
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                   <MapPin className="h-4 w-4 text-primary" />
                 </div>
-                <h2 className="text-lg font-bold text-slate-900">Fasilitas Dusun</h2>
+                <h2 className="text-lg font-bold text-slate-900">Fasilitas</h2>
               </div>
               <button
                 onClick={() => setIsMobileOpen(false)}
