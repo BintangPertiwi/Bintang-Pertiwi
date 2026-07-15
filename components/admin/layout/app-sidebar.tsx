@@ -95,7 +95,7 @@ export function AppSidebar() {
                 </div>
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
-                <span className="font-bold text-slate-900 tracking-tight text-lg">TOPO INDAH</span>
+                <span className="font-bold text-slate-900 tracking-tight text-lg">BINTANG PERTIWI</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
