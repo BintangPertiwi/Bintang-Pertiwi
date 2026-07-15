@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 const navItems = [
   { label: "Beranda", href: "/" },
-  { label: "Profil", href: "/profil" },
+  { label: "Produk UMKM", href: "/produk-umkm" },
   { label: "Berita", href: "/berita" },
   { label: "Galeri", href: "/galeri" },
   { label: "Peta", href: "/peta" },
