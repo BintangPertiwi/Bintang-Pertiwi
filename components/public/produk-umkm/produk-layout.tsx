@@ -43,7 +43,7 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
         
         {/* Left Sidebar (Filters) */}
-        <div className="w-full lg:w-[25%] flex flex-col gap-8 shrink-0">
+        <div className="w-full lg:w-[25%] flex flex-col gap-8 shrink-0 lg:sticky lg:top-28 lg:self-start">
           
           <FadeIn direction="up">
             <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Cari Produk</h4>
