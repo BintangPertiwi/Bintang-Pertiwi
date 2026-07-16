@@ -22,7 +22,6 @@ Ini adalah **Sistem Informasi Geografis & Profil Dusun** untuk Bintang Pertiwi.
 | Database/CMS     | Turso (libSQL Edge Database) + Drizzle ORM                    |
 | Media Storage    | Cloudinary (Direct Client-Side Upload, unsigned preset)       |
 | Rich Text Editor | Tiptap (`@tiptap/react`, `@tiptap/starter-kit`)               |
-| Peta/GIS         | Leaflet.js (`react-leaflet`)                                  |
 | Auth             | JWT via `jose` library, disimpan di HTTP-only cookie          |
 | Icons            | `lucide-react`                                                |
 | Deployment       | Vercel                                                        |
@@ -111,7 +110,7 @@ export interface GaleriRow {
 
 ```
 app/
-├── (public)/           # Grup route publik (beranda, berita, galeri, peta, kontak)
+├── (public)/           # Grup route publik (beranda, berita, galeri, kontak)
 │   ├── layout.tsx
 │   └── page.tsx
 ├── admin/              # Dashboard CMS (protected by proxy.ts)
@@ -119,7 +118,6 @@ app/
 │   ├── page.tsx        # Overview dashboard
 │   ├── berita/
 │   ├── galeri/
-│   ├── peta/
 │   ├── pengaduan/
 │   └── pengaturan/
 ├── login/
@@ -364,11 +362,8 @@ export async function POST(request: Request) {
 
 ### 10.3 Dynamic Imports & Code Splitting
 
-- Gunakan `next/dynamic` untuk komponen berat yang tidak dibutuhkan saat initial load (misal: Leaflet Map, Tiptap Editor):
+- Gunakan `next/dynamic` untuk komponen berat yang tidak dibutuhkan saat initial load (misal: Tiptap Editor):
   ```ts
-  const MapComponent = dynamic(() => import("@/components/map"), {
-    ssr: false,
-  });
   const TiptapEditor = dynamic(() => import("@/components/tiptap-editor"), {
     ssr: false,
   });

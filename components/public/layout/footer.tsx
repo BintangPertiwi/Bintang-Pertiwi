@@ -51,6 +51,7 @@ export async function Footer() {
               <li><Link href="/produk-umkm" className="hover:text-primary transition-colors">Produk UMKM</Link></li>
               <li><Link href="/berita" className="hover:text-primary transition-colors">Berita & Artikel</Link></li>
               <li><Link href="/galeri" className="hover:text-primary transition-colors">Galeri Foto</Link></li>
+              <li><Link href="/kontak" className="hover:text-primary transition-colors">Kontak</Link></li>
             </ul>
           </div>
 

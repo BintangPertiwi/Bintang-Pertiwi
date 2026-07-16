@@ -54,16 +54,6 @@ export interface PengaduanRow {
   created_at: string | null;
 }
 
-export interface FasilitasRow {
-  id: string;
-  nama_fasum: string;
-  kategori_ikon: string;
-  latitude: number;
-  longitude: number;
-  deskripsi: string;
-  url_foto: string;
-}
-
 export interface PerangkatRow {
   id: string;
   urutan: number;

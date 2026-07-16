@@ -11,7 +11,7 @@ const navItems = [
   { label: "Produk UMKM", href: "/produk-umkm" },
   { label: "Berita", href: "/berita" },
   { label: "Galeri", href: "/galeri" },
-  { label: "Peta", href: "/peta" },
+  { label: "Kontak", href: "/kontak" },
 ];
 
 export function Navbar() {

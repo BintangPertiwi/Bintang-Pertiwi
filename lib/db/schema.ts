@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 
 export const adminAuth = sqliteTable("admin_auth", {
@@ -54,16 +54,6 @@ export const produkUmkm = sqliteTable("produk_umkm", {
 export const globalConfig = sqliteTable("global_config", {
   key: text("key").primaryKey(),
   value: text("value").default(""),
-});
-
-export const mapsData = sqliteTable("maps_data", {
-  id: text("id").primaryKey(),
-  nama_fasum: text("nama_fasum").notNull(),
-  kategori_ikon: text("kategori_ikon").default(""),
-  latitude: real("latitude").notNull(),
-  longitude: real("longitude").notNull(),
-  deskripsi: text("deskripsi").default(""),
-  url_foto: text("url_foto").default(""),
 });
 
 export const pengaduanWarga = sqliteTable("pengaduan_warga", {

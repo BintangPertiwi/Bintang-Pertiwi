@@ -37,17 +37,6 @@ export const galeriSchema = z.object({
 
 export type GaleriFormValues = z.infer<typeof galeriSchema>;
 
-export const petaSchema = z.object({
-  nama_fasum: z.string().min(3, { message: "Nama fasilitas minimal 3 karakter." }),
-  kategori_ikon: z.string().min(1, { message: "Kategori wajib dipilih." }),
-  latitude: z.string().regex(/^-?([0-8]?[0-9]|90)(\.\d+)?$/, { message: "Format latitude tidak valid (contoh: 0.45612)." }),
-  longitude: z.string().regex(/^-?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/, { message: "Format longitude tidak valid (contoh: 117.51320)." }),
-  deskripsi: z.string().optional(),
-  foto: z.any().optional(),
-});
-
-export type PetaFormValues = z.infer<typeof petaSchema>;
-
 export const produkSchema = z
   .object({
     nama: z.string().min(3, { message: "Nama produk minimal 3 karakter." }).max(120, { message: "Nama maksimal 120 karakter." }),
