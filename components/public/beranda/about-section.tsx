@@ -55,23 +55,30 @@ export function AboutSection({
 
   const trailingText = narasi || "Misi kami adalah mewujudkan Bintang Pertiwi yang sejahtera, mandiri, dan berbudaya melalui kolaborasi aktif warga, pemanfaatan potensi alam yang berkelanjutan, serta pelayanan publik yang transparan.";
 
+  // Pisah narasi jadi paragraf pada baris kosong; newline tunggal (antar-item daftar)
+  // tetap dijaga lewat `whitespace-pre-line` saat render.
+  const paragraphs = trailingText
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
   const containerVariants = {
     hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.15,
         delayChildren: 0.2,
       },
     },
   };
 
-  const wordVariants = {
-    hidden: { color: "#cbd5e1", opacity: 0.3 },
+  const paragraphVariants = {
+    hidden: { opacity: 0, y: 12 },
     visible: {
-      color: "#1e293b",
       opacity: 1,
-      transition: { duration: 0.4 },
+      y: 0,
+      transition: { duration: 0.5 },
     },
   };
 
@@ -100,22 +107,22 @@ export function AboutSection({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20" ref={ref}>
 
           <div className="lg:col-span-8">
-            <p className="text-2xl md:text-3xl lg:text-5xl leading-relaxed md:leading-snug lg:leading-snug font-medium text-slate-800 text-justify">
-              <motion.span
-                variants={containerVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              >
-                {trailingText.split(" ").map((word, index) => (
-                  <span key={index}>
-                    <motion.span variants={wordVariants} className="inline-block">
-                      {word}
-                    </motion.span>
-                    {" "}
-                  </span>
-                ))}
-              </motion.span>
-            </p>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="space-y-4 md:space-y-5"
+            >
+              {paragraphs.map((para, index) => (
+                <motion.p
+                  key={index}
+                  variants={paragraphVariants}
+                  className="text-lg md:text-xl lg:text-2xl leading-relaxed font-medium text-slate-800 whitespace-pre-line"
+                >
+                  {para}
+                </motion.p>
+              ))}
+            </motion.div>
           </div>
 
           <FadeIn direction="up" delay={0.4} className="lg:col-span-4 flex flex-col gap-6 lg:gap-10 lg:border-l lg:border-slate-200 lg:pl-16">

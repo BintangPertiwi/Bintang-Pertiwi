@@ -210,12 +210,12 @@ export function PengaturanBerandaForm({
               <Textarea
                 id="narasi"
                 placeholder="Tuliskan cerita singkat atau misi organisasi..."
-                className="resize-none min-h-[120px]"
+                className="resize-y min-h-[200px]"
                 value={narasi}
                 onChange={(e) => setNarasi(e.target.value)}
                 required
               />
-              <p className="text-xs text-muted-foreground">Teks ini akan tampil besar di halaman beranda dengan efek pengetikan.</p>
+              <p className="text-xs text-muted-foreground">Tekan Enter untuk baris baru dan boleh memakai daftar bernomor (1., 2., 3.). Baris kosong memisahkan antar-paragraf di halaman beranda.</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">

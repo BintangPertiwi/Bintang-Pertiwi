@@ -152,7 +152,7 @@ export function GaleriSection({ initialSlides }: GaleriSectionProps) {
                     {slide.subtitle}
                   </p>
                 </div>
-                <h2 className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold uppercase tracking-tighter mb-6 leading-[1.1] drop-shadow-lg">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-6 leading-[1.1] drop-shadow-lg">
                   {slide.title}
                 </h2>
                 <p className="text-base lg:text-lg text-white/80 max-w-md leading-relaxed">
