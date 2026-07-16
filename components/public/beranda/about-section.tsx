@@ -117,7 +117,7 @@ export function AboutSection({
                 <motion.p
                   key={index}
                   variants={paragraphVariants}
-                  className="text-lg md:text-xl lg:text-2xl leading-relaxed font-medium text-slate-800 whitespace-pre-line"
+                  className="text-xl md:text-2xl lg:text-3xl leading-relaxed font-medium text-slate-800 whitespace-pre-line"
                 >
                   {para}
                 </motion.p>
