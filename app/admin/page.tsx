@@ -138,10 +138,10 @@ export default async function AdminDashboardPage() {
 
               <AccordionItem value="item-3" className="border-b pb-4">
                 <AccordionTrigger className="text-lg font-bold hover:no-underline">
-                  3. Mengubah Susunan Pengelola & Profil
+                  3. Mengelola Produk UMKM
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
-                  Apabila terjadi perombakan struktur atau pergantian pimpinan, Anda dapat memperbarui informasi visi, misi, serta struktur organisasi pada menu <b>Pengaturan Profil</b> yang tersedia di panel samping (sidebar).
+                  Untuk menambah, mengubah, atau menghapus produk yang tampil di katalog publik, buka menu <b>Produk</b> di panel samping (sidebar). Unggah minimal satu gambar (gambar pertama menjadi <i>thumbnail</i>), lalu isi nama, harga, kategori, dan ketersediaan stok. Gambar otomatis dikompres sebelum diunggah agar hemat penyimpanan.
                 </AccordionContent>
               </AccordionItem>
               

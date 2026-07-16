@@ -1,0 +1,184 @@
+import type { ProdukRow, StokStatus } from "@/types";
+import { and, count, desc, eq, like, or } from "drizzle-orm";
+import { cacheLife, cacheTag } from "next/cache";
+import { db } from "../index";
+import { produkUmkm } from "../schema";
+
+function parseJsonArray(value: string | null): string[] {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function mapProdukRow(r: typeof produkUmkm.$inferSelect): ProdukRow {
+  return {
+    id: r.id,
+    slug: r.slug,
+    nama: r.nama,
+    kategori: r.kategori || "",
+    harga: r.harga,
+    harga_coret: r.harga_coret ?? undefined,
+    stok: (r.stok as StokStatus) || "Tersedia",
+    deskripsi_singkat: r.deskripsi_singkat || "",
+    deskripsi_lengkap: r.deskripsi_lengkap || "",
+    informasi_tambahan: r.informasi_tambahan || "",
+    gambar_urls: parseJsonArray(r.gambar_urls),
+    sku: r.sku || "",
+    tags: parseJsonArray(r.tags),
+    created_at: r.created_at ?? undefined,
+  };
+}
+
+export async function getProdukList(): Promise<ProdukRow[]> {
+  "use cache";
+  cacheTag("produk");
+
+  try {
+    const result = await db.select().from(produkUmkm).orderBy(desc(produkUmkm.created_at));
+    cacheLife("hours");
+    return result.map(mapProdukRow);
+  } catch (error) {
+    cacheLife("minutes");
+    console.error("Failed to fetch produk:", error);
+    return [];
+  }
+}
+
+export async function getProdukBySlug(slug: string): Promise<ProdukRow | undefined> {
+  "use cache";
+  cacheTag("produk", `produk-${slug}`);
+
+  try {
+    const result = await db.select().from(produkUmkm).where(eq(produkUmkm.slug, slug));
+    cacheLife("hours");
+    if (result.length === 0) return undefined;
+    return mapProdukRow(result[0]);
+  } catch (error) {
+    cacheLife("minutes");
+    console.error("Failed to fetch produk by slug:", error);
+    return undefined;
+  }
+}
+
+export async function getProdukById(id: string): Promise<ProdukRow | undefined> {
+  const result = await db.select().from(produkUmkm).where(eq(produkUmkm.id, id));
+  if (result.length === 0) return undefined;
+  return mapProdukRow(result[0]);
+}
+
+export async function isSlugTaken(slug: string, exceptId?: string): Promise<boolean> {
+  const result = await db.select({ id: produkUmkm.id }).from(produkUmkm).where(eq(produkUmkm.slug, slug));
+  return result.some((row) => row.id !== exceptId);
+}
+
+export async function appendProduk(data: ProdukRow): Promise<void> {
+  await db.insert(produkUmkm).values({
+    id: data.id,
+    slug: data.slug,
+    nama: data.nama,
+    kategori: data.kategori,
+    harga: data.harga,
+    harga_coret: data.harga_coret ?? null,
+    stok: data.stok,
+    deskripsi_singkat: data.deskripsi_singkat,
+    deskripsi_lengkap: data.deskripsi_lengkap,
+    informasi_tambahan: data.informasi_tambahan,
+    gambar_urls: JSON.stringify(data.gambar_urls),
+    sku: data.sku,
+    tags: JSON.stringify(data.tags),
+  });
+}
+
+export async function updateProdukById(id: string, updatedData: Partial<ProdukRow>): Promise<boolean> {
+  const setData: Partial<typeof produkUmkm.$inferInsert> = {};
+
+  if (updatedData.slug !== undefined) setData.slug = updatedData.slug;
+  if (updatedData.nama !== undefined) setData.nama = updatedData.nama;
+  if (updatedData.kategori !== undefined) setData.kategori = updatedData.kategori;
+  if (updatedData.harga !== undefined) setData.harga = updatedData.harga;
+  if ("harga_coret" in updatedData) setData.harga_coret = updatedData.harga_coret ?? null;
+  if (updatedData.stok !== undefined) setData.stok = updatedData.stok;
+  if (updatedData.deskripsi_singkat !== undefined) setData.deskripsi_singkat = updatedData.deskripsi_singkat;
+  if (updatedData.deskripsi_lengkap !== undefined) setData.deskripsi_lengkap = updatedData.deskripsi_lengkap;
+  if (updatedData.informasi_tambahan !== undefined) setData.informasi_tambahan = updatedData.informasi_tambahan;
+  if (updatedData.gambar_urls !== undefined) setData.gambar_urls = JSON.stringify(updatedData.gambar_urls);
+  if (updatedData.sku !== undefined) setData.sku = updatedData.sku;
+  if (updatedData.tags !== undefined) setData.tags = JSON.stringify(updatedData.tags);
+
+  if (Object.keys(setData).length === 0) return false;
+  setData.updated_at = new Date().toISOString();
+
+  const result = await db.update(produkUmkm).set(setData).where(eq(produkUmkm.id, id));
+  return result.rowsAffected > 0;
+}
+
+export async function deleteProdukById(id: string): Promise<boolean> {
+  const result = await db.delete(produkUmkm).where(eq(produkUmkm.id, id));
+  return result.rowsAffected > 0;
+}
+
+interface ProdukListingArgs {
+  q: string;
+  filter: string;
+  page: number;
+  limit: number;
+}
+
+export async function getProdukListing(args: ProdukListingArgs) {
+  const categoriesResult = await db
+    .selectDistinct({ kategori: produkUmkm.kategori })
+    .from(produkUmkm);
+
+  const categories = categoriesResult
+    .map((r) => r.kategori)
+    .filter(Boolean)
+    .sort((a, b) => a!.localeCompare(b!, "id")) as string[];
+
+  const conditions = [];
+
+  if (args.q) {
+    const searchTerm = `%${args.q}%`;
+    conditions.push(
+      or(
+        like(produkUmkm.nama, searchTerm),
+        like(produkUmkm.deskripsi_singkat, searchTerm),
+        like(produkUmkm.kategori, searchTerm),
+        like(produkUmkm.sku, searchTerm)
+      )
+    );
+  }
+
+  if (args.filter && args.filter !== "all") {
+    conditions.push(eq(produkUmkm.kategori, args.filter));
+  }
+
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+  const countResult = await db
+    .select({ value: count() })
+    .from(produkUmkm)
+    .where(whereClause);
+  const totalItems = countResult[0].value;
+  const totalPages = Math.ceil(totalItems / args.limit) || 1;
+  const currentPage = Math.max(1, Math.min(args.page, totalPages));
+
+  const data = await db
+    .select()
+    .from(produkUmkm)
+    .where(whereClause)
+    .orderBy(desc(produkUmkm.created_at))
+    .limit(args.limit)
+    .offset((currentPage - 1) * args.limit);
+
+  return {
+    items: data.map(mapProdukRow),
+    totalItems,
+    totalPages,
+    page: currentPage,
+    categories,
+  };
+}

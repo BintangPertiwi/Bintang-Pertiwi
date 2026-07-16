@@ -2,8 +2,6 @@
 
 import { FadeIn } from "@/components/ui/fade-in";
 import { animate, motion, useInView } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 function Counter({ from = 0, to, duration = 2 }: { from?: number; to: number; duration?: number }) {
@@ -83,9 +81,6 @@ export function AboutSection({
             </h2>
             <div className="w-12 md:w-16 h-0.5 md:h-1 bg-primary rounded-full"></div>
           </div>
-          <Link href="/profil" className="group hidden md:inline-flex mt-6 md:mt-0 items-center text-primary font-bold hover:text-primary/80 transition-colors">
-            Baca Selengkapnya <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
         </FadeIn>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20" ref={ref}>
@@ -136,13 +131,6 @@ export function AboutSection({
             </div>
           </FadeIn>
 
-        </div>
-
-        {/* Mobile View All Link */}
-        <div className="mt-10 flex md:hidden justify-start">
-          <Link href="/profil" className="group inline-flex items-center text-primary font-bold hover:text-primary/80 transition-colors">
-            Baca Selengkapnya <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
         </div>
       </div>
     </section>

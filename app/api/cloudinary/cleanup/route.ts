@@ -1,7 +1,7 @@
 import { verifyAdminSession } from "@/lib/auth";
 import { deleteFromCloudinary, getCloudinaryResources } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
-import { beritaDusun, galeriDusun, globalConfig } from "@/lib/db/schema";
+import { beritaDusun, galeriDusun, globalConfig, produkUmkm } from "@/lib/db/schema";
 import { NextResponse } from "next/server";
 
 export async function POST() {
@@ -15,9 +15,10 @@ export async function POST() {
 
     // Menggunakan kueri langsung (bukan DAL) agar jika Turso timeout/error, fungsi ini langsung melempar error
     // dan masuk ke block catch, mencegah penghapusan media yatim piatu secara tak sengaja.
-    const [beritaList, galeriList, configRows, cloudinaryResources] = await Promise.all([
+    const [beritaList, galeriList, produkList, configRows, cloudinaryResources] = await Promise.all([
       db.select().from(beritaDusun),
       db.select().from(galeriDusun),
+      db.select().from(produkUmkm),
       db.select().from(globalConfig),
       getCloudinaryResources(),
     ]);
@@ -55,6 +56,21 @@ export async function POST() {
       if (g.url_foto) usedUrls.add(g.url_foto);
     });
 
+    produkList.forEach(p => {
+      if (p.gambar_urls) {
+        try {
+          const urls = JSON.parse(p.gambar_urls);
+          if (Array.isArray(urls)) {
+            urls.forEach(url => {
+              if (typeof url === "string") usedUrls.add(url);
+            });
+          }
+        } catch {
+          // ignore
+        }
+      }
+    });
+
     // Parse Hero Slides (Global Config)
     if (gConfig["beranda_hero_slides"]) {
       try {
@@ -70,19 +86,6 @@ export async function POST() {
       }
     }
 
-    // Parse Profil Sections (Global Config)
-    if (gConfig["profil_sections"]) {
-      try {
-        const sections = JSON.parse(gConfig["profil_sections"]);
-        if (Array.isArray(sections)) {
-          sections.forEach((sec: { image?: string }) => {
-            if (sec.image) usedUrls.add(sec.image);
-          });
-        }
-      } catch (e) {
-        console.error("Error parsing profil_sections:", e);
-      }
-    }
     // 3. Find Orphaned Media older than 24 hours
     const oneDayInMs = 24 * 60 * 60 * 1000;
     const now = Date.now();

@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/constants/dummy-products";
+import type { ProdukRow } from "@/types";
 import { ChevronRight, Home, MessageCircle, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export function ProdukDetail({ product }: { product: Product }) {
+export function ProdukDetail({ product }: { product: ProdukRow }) {
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
 

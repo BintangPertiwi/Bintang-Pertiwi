@@ -19,6 +19,25 @@ export interface GaleriRow {
   url_foto: string;
 }
 
+export type StokStatus = "Tersedia" | "Habis";
+
+export interface ProdukRow {
+  id: string;
+  slug: string;
+  nama: string;
+  kategori: string;
+  harga: number;
+  harga_coret?: number;
+  stok: StokStatus;
+  deskripsi_singkat: string;
+  deskripsi_lengkap: string;
+  informasi_tambahan: string;
+  gambar_urls: string[];
+  sku: string;
+  tags: string[];
+  created_at?: string;
+}
+
 export interface PengaduanRow {
   id: string;
   tanggal: string;

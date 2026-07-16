@@ -15,14 +15,6 @@ export type ParsedSlide = {
   image?: string;
 };
 
-export type ProfileSection = {
-  id: string;
-  title: string;
-  description: string;
-  foto: File | null;
-  currentFotoUrl: string;
-};
-
 import * as z from "zod";
 
 export const beritaSchema = z.object({
@@ -55,3 +47,28 @@ export const petaSchema = z.object({
 });
 
 export type PetaFormValues = z.infer<typeof petaSchema>;
+
+export const produkSchema = z
+  .object({
+    nama: z.string().min(3, { message: "Nama produk minimal 3 karakter." }).max(120, { message: "Nama maksimal 120 karakter." }),
+    kategori: z.string().min(1, { message: "Kategori wajib dipilih atau diisi." }),
+    harga: z.string().regex(/^\d+$/, { message: "Harga harus berupa angka (tanpa titik/koma)." }),
+    harga_coret: z.string().regex(/^\d*$/, { message: "Harga coret harus berupa angka." }).optional(),
+    stok: z.enum(["Tersedia", "Habis"]),
+    deskripsi_singkat: z.string().min(1, { message: "Deskripsi singkat wajib diisi." }).max(200, { message: "Deskripsi singkat maksimal 200 karakter." }),
+    deskripsi_lengkap: z.string().max(5000, { message: "Deskripsi lengkap maksimal 5000 karakter." }).optional(),
+    informasi_tambahan: z.string().max(2000, { message: "Informasi tambahan maksimal 2000 karakter." }).optional(),
+    sku: z.string().max(60, { message: "SKU maksimal 60 karakter." }).optional(),
+    tags: z.string().max(200, { message: "Tags maksimal 200 karakter." }).optional(),
+  })
+  .refine(
+    (data) => {
+      if (!data.harga_coret) return true;
+      const coret = Number.parseInt(data.harga_coret, 10);
+      const harga = Number.parseInt(data.harga, 10);
+      return coret === 0 || coret > harga;
+    },
+    { message: "Harga coret harus lebih besar dari harga jual.", path: ["harga_coret"] }
+  );
+
+export type ProdukFormValues = z.infer<typeof produkSchema>;

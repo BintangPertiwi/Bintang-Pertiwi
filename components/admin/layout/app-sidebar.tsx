@@ -9,7 +9,8 @@ import {
   MessageSquare,
   Newspaper,
   PanelTop,
-  Settings
+  Settings,
+  ShoppingBag
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -40,6 +41,7 @@ const menuGroups = [
   {
     section: "Master Data",
     items: [
+      { title: "Produk", icon: ShoppingBag, href: "/admin/produk" },
       { title: "Berita", icon: Newspaper, href: "/admin/berita" },
       { title: "Galeri", icon: ImageIcon, href: "/admin/galeri" },
       { title: "Pengaduan", icon: MessageSquare, href: "/admin/pengaduan" },
@@ -51,7 +53,6 @@ const menuGroups = [
     section: "Halaman Web",
     items: [
       { title: "Pengaturan Beranda", icon: PanelTop, href: "/admin/pengaturan-beranda" },
-      { title: "Pengaturan Profil", icon: PanelTop, href: "/admin/pengaturan-profil" },
       { title: "Pengaturan Berita", icon: PanelTop, href: "/admin/pengaturan-berita" },
       { title: "Pengaturan Galeri", icon: PanelTop, href: "/admin/pengaturan-galeri" },
     ],

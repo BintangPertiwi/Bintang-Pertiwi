@@ -48,7 +48,7 @@ export async function Footer() {
             <h4 className="font-bold text-slate-900 mb-6">Platform</h4>
             <ul className="space-y-4 text-sm font-medium text-slate-500">
               <li><Link href="/" className="hover:text-primary transition-colors">Beranda</Link></li>
-              <li><Link href="/profil" className="hover:text-primary transition-colors">Profil</Link></li>
+              <li><Link href="/produk-umkm" className="hover:text-primary transition-colors">Produk UMKM</Link></li>
               <li><Link href="/berita" className="hover:text-primary transition-colors">Berita & Artikel</Link></li>
               <li><Link href="/galeri" className="hover:text-primary transition-colors">Galeri Foto</Link></li>
             </ul>

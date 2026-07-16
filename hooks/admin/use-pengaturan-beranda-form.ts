@@ -19,7 +19,7 @@ export function usePengaturanBerandaForm({
       id: "slide-1",
       judul: "Membangun Bintang Pertiwi yang Lebih Mandiri dan Sejahtera",
       linkText: "Pelajari Lebih Lanjut",
-      linkHref: "/profil",
+      linkHref: "/produk-umkm",
       foto: null,
       currentFotoUrl: "",
     },

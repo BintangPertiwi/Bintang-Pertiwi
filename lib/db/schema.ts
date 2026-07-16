@@ -31,6 +31,24 @@ export const galeriDusun = sqliteTable("galeri_dusun", {
   created_at: text("created_at").default(sql`(datetime('now'))`),
 });
 
+export const produkUmkm = sqliteTable("produk_umkm", {
+  id: text("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  nama: text("nama").notNull(),
+  kategori: text("kategori").default(""),
+  harga: integer("harga").notNull().default(0),
+  harga_coret: integer("harga_coret"),
+  stok: text("stok").default("Tersedia"),
+  deskripsi_singkat: text("deskripsi_singkat").default(""),
+  deskripsi_lengkap: text("deskripsi_lengkap").default(""),
+  informasi_tambahan: text("informasi_tambahan").default(""),
+  gambar_urls: text("gambar_urls").default("[]"),
+  sku: text("sku").default(""),
+  tags: text("tags").default("[]"),
+  created_at: text("created_at").default(sql`(datetime('now'))`),
+  updated_at: text("updated_at").default(sql`(datetime('now'))`),
+});
+
 export const globalConfig = sqliteTable("global_config", {
   key: text("key").primaryKey(),
   value: text("value").default(""),

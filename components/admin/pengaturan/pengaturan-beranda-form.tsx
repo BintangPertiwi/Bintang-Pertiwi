@@ -174,7 +174,7 @@ export function PengaturanBerandaForm({
                     <Label htmlFor={`linkHref-${slide.id}`} className="text-sm font-semibold">Tujuan Tautan (URL)</Label>
                     <Input
                       id={`linkHref-${slide.id}`}
-                      placeholder="Contoh: /profil atau https://..."
+                      placeholder="Contoh: /produk-umkm atau https://..."
                       value={slide.linkHref}
                       onChange={(e) => updateSlide(slide.id, "linkHref", e.target.value)}
                     />
