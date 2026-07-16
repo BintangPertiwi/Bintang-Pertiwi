@@ -136,7 +136,7 @@ export function ProdukForm({ existingCategories, initialData, onSuccess }: Produ
                           <CommandInput
                             placeholder="Cari kategori..."
                             value={search}
-                            onValueChange={(val) => setSearch(val)}
+                            onValueChange={(val) => setSearch(val.toUpperCase())}
                           />
                           <CommandList>
                             <CommandEmpty>
@@ -146,7 +146,7 @@ export function ProdukForm({ existingCategories, initialData, onSuccess }: Produ
                                 className="w-full justify-start text-sm"
                                 onPointerDown={(event) => {
                                   event.preventDefault();
-                                  const newCat = search.trim();
+                                  const newCat = search.trim().toUpperCase();
                                   if (
                                     newCat &&
                                     !customCategories.includes(newCat) &&
@@ -160,7 +160,7 @@ export function ProdukForm({ existingCategories, initialData, onSuccess }: Produ
                                 }}
                               >
                                 <Plus className="mr-2 h-4 w-4" />
-                                Buat &quot;{search.trim()}&quot;
+                                Buat &quot;{search.trim().toUpperCase()}&quot;
                               </Button>
                             </CommandEmpty>
                             <CommandGroup>
