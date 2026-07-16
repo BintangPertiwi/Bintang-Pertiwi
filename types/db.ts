@@ -28,12 +28,14 @@ export interface ProdukRow {
   kategori: string;
   harga: number;
   harga_coret?: number;
+  satuan: string;
   stok: StokStatus;
   deskripsi_singkat: string;
   deskripsi_lengkap: string;
   informasi_tambahan: string;
   gambar_urls: string[];
   sku: string;
+  varian: string[];
   tags: string[];
   created_at?: string;
 }

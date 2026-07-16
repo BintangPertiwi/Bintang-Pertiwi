@@ -46,8 +46,9 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { nama, kategori, harga, harga_coret, stok, deskripsi_singkat, deskripsi_lengkap, informasi_tambahan, sku } = body;
+    const { nama, kategori, harga, harga_coret, satuan, stok, deskripsi_singkat, deskripsi_lengkap, informasi_tambahan, sku } = body;
     const gambar_urls = sanitizeStringArray(body.gambar_urls);
+    const varian = sanitizeStringArray(body.varian);
     const tags = sanitizeStringArray(body.tags);
 
     if (!nama || typeof nama !== "string" || !kategori || typeof kategori !== "string") {
@@ -91,12 +92,14 @@ export async function PUT(
       kategori: kategori.trim(),
       harga: Math.round(hargaNumber),
       harga_coret: hargaCoret,
+      satuan: (satuan || "").trim(),
       stok: (stok === "Habis" ? "Habis" : "Tersedia") as StokStatus,
       deskripsi_singkat: (deskripsi_singkat || "").trim(),
       deskripsi_lengkap: (deskripsi_lengkap || "").trim(),
       informasi_tambahan: (informasi_tambahan || "").trim(),
       gambar_urls,
       sku: (sku || "").trim(),
+      varian,
       tags,
     };
 

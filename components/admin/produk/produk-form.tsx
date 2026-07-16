@@ -243,6 +243,20 @@ export function ProdukForm({ existingCategories, initialData, onSuccess }: Produ
 
           <FormField
             control={form.control}
+            name="satuan"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-semibold">Satuan Harga (Opsional)</FormLabel>
+                <FormControl>
+                  <Input placeholder="Contoh: kg, ikat, botol, 250 gr" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="stok"
             render={({ field }) => (
               <FormItem>
@@ -276,6 +290,23 @@ export function ProdukForm({ existingCategories, initialData, onSuccess }: Produ
               </FormItem>
             )}
           />
+
+          <div className="md:col-span-2">
+            <FormField
+              control={form.control}
+              name="varian"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold">Varian (Opsional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Pisahkan dengan koma. Contoh: Standar, Premium" {...field} />
+                  </FormControl>
+                  <p className="text-xs text-muted-foreground">Pembeli memilih salah satu varian; harga tetap sama. Kosongkan jika produk tidak punya varian.</p>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <div className="md:col-span-2">
             <FormField

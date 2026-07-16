@@ -49,11 +49,13 @@ export function useProdukForm({ existingCategories, initialData, onSuccess }: Us
       kategori: initialData?.kategori || "",
       harga: initialData?.harga !== undefined ? String(initialData.harga) : "",
       harga_coret: initialData?.harga_coret !== undefined ? String(initialData.harga_coret) : "",
+      satuan: initialData?.satuan || "",
       stok: initialData?.stok || "Tersedia",
       deskripsi_singkat: initialData?.deskripsi_singkat || "",
       deskripsi_lengkap: initialData?.deskripsi_lengkap || "",
       informasi_tambahan: initialData?.informasi_tambahan || "",
       sku: initialData?.sku || "",
+      varian: initialData?.varian?.join(", ") || "",
       tags: initialData?.tags?.join(", ") || "",
     },
   });
@@ -167,6 +169,11 @@ export function useProdukForm({ existingCategories, initialData, onSuccess }: Us
         .map((tag) => tag.trim())
         .filter(Boolean);
 
+      const varian = (values.varian || "")
+        .split(",")
+        .map((v) => v.trim())
+        .filter(Boolean);
+
       const endpoint = mode === "edit" && initialData ? `/api/produk/${initialData.id}` : "/api/produk";
       const method = mode === "edit" ? "PUT" : "POST";
 
@@ -178,11 +185,13 @@ export function useProdukForm({ existingCategories, initialData, onSuccess }: Us
           kategori: values.kategori.trim(),
           harga: Number.parseInt(values.harga, 10),
           harga_coret: values.harga_coret ? Number.parseInt(values.harga_coret, 10) : undefined,
+          satuan: values.satuan?.trim() || "",
           stok: values.stok,
           deskripsi_singkat: values.deskripsi_singkat.trim(),
           deskripsi_lengkap: values.deskripsi_lengkap?.trim() || "",
           informasi_tambahan: values.informasi_tambahan?.trim() || "",
           sku: values.sku?.trim() || "",
+          varian,
           tags,
           gambar_urls,
         }),

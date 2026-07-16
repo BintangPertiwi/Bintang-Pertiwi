@@ -58,6 +58,9 @@ export function ProdukGrid({ data, emptyState }: ProdukGridProps) {
             <div className="flex items-baseline gap-2">
               <span className="text-sm font-bold text-slate-900">
                 Rp {produk.harga.toLocaleString("id-ID")}
+                {produk.satuan && (
+                  <span className="text-xs font-medium text-slate-400"> / {produk.satuan}</span>
+                )}
               </span>
               {produk.harga_coret ? (
                 <span className="text-xs text-slate-400 line-through">

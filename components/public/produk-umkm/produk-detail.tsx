@@ -12,9 +12,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export function ProdukDetail({ product }: { product: ProdukRow }) {
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [selectedVarian, setSelectedVarian] = useState(product.varian[0] ?? "");
 
   const WA_NUMBER = "6289501603099";
-  const waMessage = encodeURIComponent(`Halo Bintang Pertiwi, saya tertarik untuk memesan produk:\n\n*${product.nama}*\nJumlah: ${quantity}\nSKU: ${product.sku}\n\nApakah stoknya masih tersedia?`);
+  const varianLine = selectedVarian ? `\nVarian: ${selectedVarian}` : "";
+  const jumlahText = product.satuan ? `${quantity} ${product.satuan}` : `${quantity}`;
+  const waMessage = encodeURIComponent(`Halo Bintang Pertiwi, saya tertarik untuk memesan produk:\n\n*${product.nama}*${varianLine}\nJumlah: ${jumlahText}\nSKU: ${product.sku}\n\nApakah stoknya masih tersedia?`);
   const waLink = `https://wa.me/${WA_NUMBER}?text=${waMessage}`;
 
   return (
@@ -89,6 +92,9 @@ export function ProdukDetail({ product }: { product: ProdukRow }) {
           <div className="flex items-end gap-3 mb-6 pb-6 border-b border-slate-100">
             <span className="text-3xl font-bold text-slate-900">
               Rp {product.harga.toLocaleString('id-ID')}
+              {product.satuan && (
+                <span className="text-base font-medium text-slate-400"> / {product.satuan}</span>
+              )}
             </span>
             {product.harga_coret && (
               <span className="text-lg text-slate-400 line-through decoration-slate-300 mb-1">
@@ -101,13 +107,27 @@ export function ProdukDetail({ product }: { product: ProdukRow }) {
             {product.deskripsi_singkat}
           </p>
 
-          <div className="mb-8">
-            <h4 className="text-sm font-bold text-slate-900 mb-3">Varian / Satuan</h4>
-            <div className="flex gap-3">
-              <button className="border-2 border-primary text-primary font-semibold px-4 py-2 rounded-full text-sm">Standar</button>
-              <button className="border border-slate-200 text-slate-500 hover:border-slate-300 font-medium px-4 py-2 rounded-full text-sm transition-colors">Premium</button>
+          {product.varian.length > 0 && (
+            <div className="mb-8">
+              <h4 className="text-sm font-bold text-slate-900 mb-3">Varian</h4>
+              <div className="flex flex-wrap gap-3">
+                {product.varian.map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    onClick={() => setSelectedVarian(v)}
+                    className={`px-4 py-2 rounded-full text-sm transition-colors ${
+                      v === selectedVarian
+                        ? "border-2 border-primary text-primary font-semibold"
+                        : "border border-slate-200 text-slate-500 hover:border-slate-300 font-medium"
+                    }`}
+                  >
+                    {v}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="flex gap-3 sm:gap-4 mb-10 w-full">
             {/* Quantity */}

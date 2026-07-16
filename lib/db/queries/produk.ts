@@ -22,12 +22,14 @@ function mapProdukRow(r: typeof produkUmkm.$inferSelect): ProdukRow {
     kategori: r.kategori || "",
     harga: r.harga,
     harga_coret: r.harga_coret ?? undefined,
+    satuan: r.satuan || "",
     stok: (r.stok as StokStatus) || "Tersedia",
     deskripsi_singkat: r.deskripsi_singkat || "",
     deskripsi_lengkap: r.deskripsi_lengkap || "",
     informasi_tambahan: r.informasi_tambahan || "",
     gambar_urls: parseJsonArray(r.gambar_urls),
     sku: r.sku || "",
+    varian: parseJsonArray(r.varian),
     tags: parseJsonArray(r.tags),
     created_at: r.created_at ?? undefined,
   };
@@ -83,12 +85,14 @@ export async function appendProduk(data: ProdukRow): Promise<void> {
     kategori: data.kategori,
     harga: data.harga,
     harga_coret: data.harga_coret ?? null,
+    satuan: data.satuan,
     stok: data.stok,
     deskripsi_singkat: data.deskripsi_singkat,
     deskripsi_lengkap: data.deskripsi_lengkap,
     informasi_tambahan: data.informasi_tambahan,
     gambar_urls: JSON.stringify(data.gambar_urls),
     sku: data.sku,
+    varian: JSON.stringify(data.varian),
     tags: JSON.stringify(data.tags),
   });
 }
@@ -101,12 +105,14 @@ export async function updateProdukById(id: string, updatedData: Partial<ProdukRo
   if (updatedData.kategori !== undefined) setData.kategori = updatedData.kategori;
   if (updatedData.harga !== undefined) setData.harga = updatedData.harga;
   if ("harga_coret" in updatedData) setData.harga_coret = updatedData.harga_coret ?? null;
+  if (updatedData.satuan !== undefined) setData.satuan = updatedData.satuan;
   if (updatedData.stok !== undefined) setData.stok = updatedData.stok;
   if (updatedData.deskripsi_singkat !== undefined) setData.deskripsi_singkat = updatedData.deskripsi_singkat;
   if (updatedData.deskripsi_lengkap !== undefined) setData.deskripsi_lengkap = updatedData.deskripsi_lengkap;
   if (updatedData.informasi_tambahan !== undefined) setData.informasi_tambahan = updatedData.informasi_tambahan;
   if (updatedData.gambar_urls !== undefined) setData.gambar_urls = JSON.stringify(updatedData.gambar_urls);
   if (updatedData.sku !== undefined) setData.sku = updatedData.sku;
+  if (updatedData.varian !== undefined) setData.varian = JSON.stringify(updatedData.varian);
   if (updatedData.tags !== undefined) setData.tags = JSON.stringify(updatedData.tags);
 
   if (Object.keys(setData).length === 0) return false;

@@ -58,6 +58,9 @@ export const columns: ColumnDef<ProdukRow>[] = [
       <div className="flex flex-col gap-0.5">
         <span className="font-semibold text-foreground text-sm">
           Rp {row.original.harga.toLocaleString("id-ID")}
+          {row.original.satuan && (
+            <span className="text-muted-foreground text-xs font-medium"> / {row.original.satuan}</span>
+          )}
         </span>
         {row.original.harga_coret ? (
           <span className="text-muted-foreground text-xs line-through">

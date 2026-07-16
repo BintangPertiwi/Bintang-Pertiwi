@@ -54,11 +54,13 @@ export const produkSchema = z
     kategori: z.string().min(1, { message: "Kategori wajib dipilih atau diisi." }),
     harga: z.string().regex(/^\d+$/, { message: "Harga harus berupa angka (tanpa titik/koma)." }),
     harga_coret: z.string().regex(/^\d*$/, { message: "Harga coret harus berupa angka." }).optional(),
+    satuan: z.string().max(30, { message: "Satuan maksimal 30 karakter." }).optional(),
     stok: z.enum(["Tersedia", "Habis"]),
     deskripsi_singkat: z.string().min(1, { message: "Deskripsi singkat wajib diisi." }).max(200, { message: "Deskripsi singkat maksimal 200 karakter." }),
     deskripsi_lengkap: z.string().max(5000, { message: "Deskripsi lengkap maksimal 5000 karakter." }).optional(),
     informasi_tambahan: z.string().max(2000, { message: "Informasi tambahan maksimal 2000 karakter." }).optional(),
     sku: z.string().max(60, { message: "SKU maksimal 60 karakter." }).optional(),
+    varian: z.string().max(300, { message: "Varian maksimal 300 karakter." }).optional(),
     tags: z.string().max(200, { message: "Tags maksimal 200 karakter." }).optional(),
   })
   .refine(

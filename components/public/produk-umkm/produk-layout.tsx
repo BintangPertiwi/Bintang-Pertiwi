@@ -192,6 +192,9 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
                             )}
                             <span className="text-sm sm:text-xl font-bold text-slate-900 leading-none sm:leading-normal">
                               Rp {item.harga.toLocaleString("id-ID")}
+                              {item.satuan && (
+                                <span className="text-[10px] sm:text-xs font-medium text-slate-400"> / {item.satuan}</span>
+                              )}
                             </span>
                           </div>
 
