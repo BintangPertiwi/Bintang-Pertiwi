@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CurrencyInput } from "@/components/ui/currency-input";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -40,12 +41,14 @@ export function PengaturanBerandaForm({
     slides,
     narasi,
     setNarasi,
-    totalPenduduk,
-    setTotalPenduduk,
-    totalRw,
-    setTotalRw,
-    totalRt,
-    setTotalRt,
+    nilaiEkonomi,
+    setNilaiEkonomi,
+    mitraBinaan,
+    setMitraBinaan,
+    penerimaLangsung,
+    setPenerimaLangsung,
+    penerimaTidakLangsung,
+    setPenerimaTidakLangsung,
     selectedGaleriIds,
     handleAddSlide,
     handleRemoveSlide,
@@ -215,37 +218,47 @@ export function PengaturanBerandaForm({
               <p className="text-xs text-muted-foreground">Teks ini akan tampil besar di halaman beranda dengan efek pengetikan.</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
               <div className="space-y-2">
-                <Label htmlFor="totalPenduduk" className="text-sm font-semibold">Total Penduduk</Label>
+                <Label htmlFor="nilaiEkonomi" className="text-sm font-semibold">Nilai Ekonomi yang Dihasilkan (Rp)</Label>
+                <CurrencyInput
+                  id="nilaiEkonomi"
+                  value={nilaiEkonomi}
+                  onChange={setNilaiEkonomi}
+                  required
+                />
+                <p className="text-xs text-muted-foreground">Ketik angka saja, otomatis diformat (mis. 250.000.000).</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="mitraBinaan" className="text-sm font-semibold">Mitra Kelompok Binaan</Label>
                 <Input
-                  id="totalPenduduk"
+                  id="mitraBinaan"
                   type="number"
                   min="0"
-                  value={totalPenduduk}
-                  onChange={(e) => setTotalPenduduk(e.target.value)}
+                  value={mitraBinaan}
+                  onChange={(e) => setMitraBinaan(e.target.value)}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="totalRw" className="text-sm font-semibold">Jumlah RW</Label>
+                <Label htmlFor="penerimaLangsung" className="text-sm font-semibold">Penerima Manfaat Langsung</Label>
                 <Input
-                  id="totalRw"
+                  id="penerimaLangsung"
                   type="number"
                   min="0"
-                  value={totalRw}
-                  onChange={(e) => setTotalRw(e.target.value)}
+                  value={penerimaLangsung}
+                  onChange={(e) => setPenerimaLangsung(e.target.value)}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="totalRt" className="text-sm font-semibold">Jumlah RT</Label>
+                <Label htmlFor="penerimaTidakLangsung" className="text-sm font-semibold">Penerima Manfaat Tidak Langsung</Label>
                 <Input
-                  id="totalRt"
+                  id="penerimaTidakLangsung"
                   type="number"
                   min="0"
-                  value={totalRt}
-                  onChange={(e) => setTotalRt(e.target.value)}
+                  value={penerimaTidakLangsung}
+                  onChange={(e) => setPenerimaTidakLangsung(e.target.value)}
                   required
                 />
               </div>

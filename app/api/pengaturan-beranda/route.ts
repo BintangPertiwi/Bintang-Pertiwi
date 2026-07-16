@@ -24,6 +24,7 @@ export async function POST(request: Request) {
       "beranda_tentang_penduduk",
       "beranda_tentang_rw",
       "beranda_tentang_rt",
+      "beranda_tentang_penerima_tidak_langsung",
       "beranda_galeri_ids",
     ];
     

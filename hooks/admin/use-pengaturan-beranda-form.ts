@@ -49,9 +49,11 @@ export function usePengaturanBerandaForm({
     globalConfig?.["beranda_tentang_narasi"] || 
     "Misi kami adalah mewujudkan Bintang Pertiwi yang sejahtera, mandiri, dan berbudaya melalui kolaborasi aktif warga, pemanfaatan potensi alam yang berkelanjutan, serta pelayanan publik yang transparan."
   );
-  const [totalPenduduk, setTotalPenduduk] = useState(globalConfig?.["beranda_tentang_penduduk"] || "1250");
-  const [totalRw, setTotalRw] = useState(globalConfig?.["beranda_tentang_rw"] || "4");
-  const [totalRt, setTotalRt] = useState(globalConfig?.["beranda_tentang_rt"] || "12");
+  
+  const [nilaiEkonomi, setNilaiEkonomi] = useState(globalConfig?.["beranda_tentang_penduduk"] || "0");
+  const [mitraBinaan, setMitraBinaan] = useState(globalConfig?.["beranda_tentang_rw"] || "0");
+  const [penerimaLangsung, setPenerimaLangsung] = useState(globalConfig?.["beranda_tentang_rt"] || "0");
+  const [penerimaTidakLangsung, setPenerimaTidakLangsung] = useState(globalConfig?.["beranda_tentang_penerima_tidak_langsung"] || "0");
 
   const [selectedGaleriIds, setSelectedGaleriIds] = useState<string[]>(
     globalConfig?.["beranda_galeri_ids"] ? globalConfig["beranda_galeri_ids"].split(",").map(id => id.trim()) : []
@@ -162,9 +164,10 @@ export function usePengaturanBerandaForm({
         body: JSON.stringify({
           beranda_hero_slides: JSON.stringify(finalSlides),
           beranda_tentang_narasi: narasi,
-          beranda_tentang_penduduk: totalPenduduk,
-          beranda_tentang_rw: totalRw,
-          beranda_tentang_rt: totalRt,
+          beranda_tentang_penduduk: nilaiEkonomi,
+          beranda_tentang_rw: mitraBinaan,
+          beranda_tentang_rt: penerimaLangsung,
+          beranda_tentang_penerima_tidak_langsung: penerimaTidakLangsung,
           beranda_galeri_ids: selectedGaleriIds.join(","),
         }),
       });
@@ -185,12 +188,14 @@ export function usePengaturanBerandaForm({
     slides,
     narasi,
     setNarasi,
-    totalPenduduk,
-    setTotalPenduduk,
-    totalRw,
-    setTotalRw,
-    totalRt,
-    setTotalRt,
+    nilaiEkonomi,
+    setNilaiEkonomi,
+    mitraBinaan,
+    setMitraBinaan,
+    penerimaLangsung,
+    setPenerimaLangsung,
+    penerimaTidakLangsung,
+    setPenerimaTidakLangsung,
     selectedGaleriIds,
     handleAddSlide,
     handleRemoveSlide,

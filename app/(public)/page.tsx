@@ -1,7 +1,7 @@
 import { AboutSection } from "@/components/public/beranda/about-section";
-import { GaleriSection } from "@/components/public/galeri/galeri-section";
 import { HeroBanner } from "@/components/public/beranda/hero-banner";
 import { NewsSection } from "@/components/public/beranda/news-section";
+import { GaleriSection } from "@/components/public/galeri/galeri-section";
 import { getGaleriList, getGlobalConfig, getRecentBerita } from "@/lib/db/queries";
 import { formatDate } from "@/lib/utils";
 
@@ -76,20 +76,22 @@ export default async function BerandaPage() {
     return isNaN(parsed) ? undefined : parsed;
   };
 
-  const totalPenduduk = parseStat(globalConfig["beranda_tentang_penduduk"]);
-  const totalRw = parseStat(globalConfig["beranda_tentang_rw"]);
-  const totalRt = parseStat(globalConfig["beranda_tentang_rt"]);
+  const nilaiEkonomi = parseStat(globalConfig["beranda_tentang_penduduk"]);
+  const mitraBinaan = parseStat(globalConfig["beranda_tentang_rw"]);
+  const penerimaLangsung = parseStat(globalConfig["beranda_tentang_rt"]);
+  const penerimaTidakLangsung = parseStat(globalConfig["beranda_tentang_penerima_tidak_langsung"]);
   const narasi = globalConfig["beranda_tentang_narasi"];
 
   return (
     <div className="flex flex-col w-full">
       <HeroBanner initialSlides={parsedHeroSlides} />
       {/* About Section */}
-      <AboutSection 
-        narasi={narasi} 
-        totalPenduduk={totalPenduduk} 
-        totalRw={totalRw} 
-        totalRt={totalRt} 
+      <AboutSection
+        narasi={narasi}
+        nilaiEkonomi={nilaiEkonomi}
+        mitraBinaan={mitraBinaan}
+        penerimaLangsung={penerimaLangsung}
+        penerimaTidakLangsung={penerimaTidakLangsung}
       />
       {/* Galeri Section */}
       <GaleriSection initialSlides={galeriSlides} />

@@ -4,7 +4,19 @@ import { FadeIn } from "@/components/ui/fade-in";
 import { animate, motion, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 
-function Counter({ from = 0, to, duration = 2 }: { from?: number; to: number; duration?: number }) {
+function Counter({
+  from = 0,
+  to,
+  duration = 2,
+  prefix = "",
+  suffix = "",
+}: {
+  from?: number;
+  to: number;
+  duration?: number;
+  prefix?: string;
+  suffix?: string;
+}) {
   const nodeRef = useRef<HTMLSpanElement>(null);
   const isInView = useInView(nodeRef, { once: true, amount: 0.5 });
 
@@ -14,27 +26,29 @@ function Counter({ from = 0, to, duration = 2 }: { from?: number; to: number; du
         duration,
         onUpdate(value) {
           if (nodeRef.current) {
-            nodeRef.current.textContent = Math.round(value).toLocaleString("id-ID");
+            nodeRef.current.textContent = `${prefix}${Math.round(value).toLocaleString("id-ID")}${suffix}`;
           }
         },
       });
       return () => controls.stop();
     }
-  }, [from, to, duration, isInView]);
+  }, [from, to, duration, isInView, prefix, suffix]);
 
-  return <span ref={nodeRef}>{from}</span>;
+  return <span ref={nodeRef}>{`${prefix}${from}${suffix}`}</span>;
 }
 
 export function AboutSection({
   narasi,
-  totalPenduduk = 1250,
-  totalRw = 4,
-  totalRt = 12,
+  nilaiEkonomi = 0,
+  mitraBinaan = 0,
+  penerimaLangsung = 0,
+  penerimaTidakLangsung = 0,
 }: {
   narasi?: string;
-  totalPenduduk?: number;
-  totalRw?: number;
-  totalRt?: number;
+  nilaiEkonomi?: number;
+  mitraBinaan?: number;
+  penerimaLangsung?: number;
+  penerimaTidakLangsung?: number;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
@@ -106,28 +120,37 @@ export function AboutSection({
 
           <FadeIn direction="up" delay={0.4} className="lg:col-span-4 flex flex-col gap-6 lg:gap-10 lg:border-l lg:border-slate-200 lg:pl-16">
             <div className="flex flex-col border-y border-slate-200 py-6 lg:border-none lg:py-0">
-              <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
-                <Counter to={totalPenduduk} />+
+              <div className="text-3xl md:text-5xl font-bold text-primary mb-2 break-words">
+                <Counter to={nilaiEkonomi} prefix="Rp " />
               </div>
-              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Total Penduduk</div>
+              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Nilai Ekonomi yang Dihasilkan</div>
             </div>
-            
+
             <div className="w-16 h-[1px] bg-slate-200 hidden lg:block"></div>
-            
+
             <div className="flex flex-col border-y border-slate-200 py-6 lg:border-none lg:py-0">
               <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
-                <Counter to={totalRw} />
+                <Counter to={mitraBinaan} suffix="+" />
               </div>
-              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Rukun Warga (RW)</div>
+              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Mitra Kelompok Binaan</div>
             </div>
-            
+
             <div className="w-16 h-[1px] bg-slate-200 hidden lg:block"></div>
-            
+
             <div className="flex flex-col border-y border-slate-200 py-6 lg:border-none lg:py-0">
               <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
-                <Counter to={totalRt} />
+                <Counter to={penerimaLangsung} suffix="+" />
               </div>
-              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Rukun Tetangga (RT)</div>
+              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Penerima Manfaat Langsung</div>
+            </div>
+
+            <div className="w-16 h-[1px] bg-slate-200 hidden lg:block"></div>
+
+            <div className="flex flex-col border-y border-slate-200 py-6 lg:border-none lg:py-0">
+              <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
+                <Counter to={penerimaTidakLangsung} suffix="+" />
+              </div>
+              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Penerima Manfaat Tidak Langsung</div>
             </div>
           </FadeIn>
 

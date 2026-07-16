@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { CurrencyInput } from "@/components/ui/currency-input";
 import { Input } from "@/components/ui/input";
 import {
   Popover,
@@ -205,7 +206,14 @@ export function ProdukForm({ existingCategories, initialData, onSuccess }: Produ
                   Harga (Rp) <span className="text-red-500 ml-0.5">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input inputMode="numeric" placeholder="Contoh: 15000" {...field} />
+                  <CurrencyInput
+                    placeholder="Contoh: 15.000"
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -219,7 +227,14 @@ export function ProdukForm({ existingCategories, initialData, onSuccess }: Produ
               <FormItem>
                 <FormLabel className="text-sm font-semibold">Harga Coret (Opsional)</FormLabel>
                 <FormControl>
-                  <Input inputMode="numeric" placeholder="Harga sebelum diskon" {...field} />
+                  <CurrencyInput
+                    placeholder="Contoh: 20.000"
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
