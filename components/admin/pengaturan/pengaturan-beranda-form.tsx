@@ -206,7 +206,7 @@ export function PengaturanBerandaForm({
               </Label>
               <Textarea
                 id="narasi"
-                placeholder="Tuliskan cerita singkat atau misi dusun..."
+                placeholder="Tuliskan cerita singkat atau misi organisasi..."
                 className="resize-none min-h-[120px]"
                 value={narasi}
                 onChange={(e) => setNarasi(e.target.value)}

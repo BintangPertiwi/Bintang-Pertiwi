@@ -101,13 +101,13 @@ export function InformasiWebForm({ initialData }: InformasiWebFormProps) {
         
         {/* Alamat Lengkap */}
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="info_alamat" className="text-sm font-semibold">Alamat Lengkap Dusun</Label>
+          <Label htmlFor="info_alamat" className="text-sm font-semibold">Alamat Lengkap</Label>
           <Textarea 
             id="info_alamat" 
             name="info_alamat" 
             value={formData.info_alamat} 
             onChange={handleChange}
-            placeholder="Contoh: Balai Bintang Pertiwi, Tidore Kepulauan..."
+            placeholder="Contoh: Sekretariat Bintang Pertiwi, Jl. ... No. ..., Kota ..."
             className="resize-none min-h-[100px]"
             rows={3}
           />

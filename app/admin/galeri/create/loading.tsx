@@ -6,7 +6,7 @@ export default function LoadingGaleriCreate() {
     <div className="flex flex-col gap-6">
       <DashboardHeader 
         title="Tambah Galeri" 
-        description="Unggah foto baru ke galeri dusun."
+        description="Unggah foto baru ke galeri."
       />
       <FormSkeleton />
     </div>
