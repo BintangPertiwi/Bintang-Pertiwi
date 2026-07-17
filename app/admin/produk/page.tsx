@@ -1,4 +1,5 @@
 import { getProdukListing } from "@/lib/db/queries";
+import { getSession } from "@/lib/auth";
 import { cookies } from "next/headers";
 
 import { EmptyState } from "@/components/admin/common/empty-state";
@@ -38,7 +39,11 @@ export default async function AdminProdukPage({ searchParams }: ProdukPageProps)
     DEFAULT_PAGE_LIMITS.produk
   );
 
-  const produkResult = await getProdukListing({ q, filter, page, limit });
+  // Kontributor hanya melihat produk miliknya; super admin melihat semua.
+  const session = await getSession();
+  const ownerId = session?.role === "kontributor" ? session.id : undefined;
+
+  const produkResult = await getProdukListing({ q, filter, page, limit, ownerId });
 
   const emptyState = (
     <EmptyState

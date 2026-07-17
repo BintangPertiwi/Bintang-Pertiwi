@@ -1,6 +1,6 @@
 import { PageHeader } from "@/components/public/common/page-header";
 import { ProdukDetail } from "@/components/public/produk-umkm/produk-detail";
-import { getProdukBySlug } from "@/lib/db/queries";
+import { getGlobalConfig, getProdukBySlug } from "@/lib/db/queries";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -27,13 +27,17 @@ export default async function ProdukDetailPage({ params }: { params: Promise<{ s
     notFound();
   }
 
+  // Nomor WA cadangan bila pemilik produk belum mengatur nomornya sendiri.
+  const globalConfig = await getGlobalConfig();
+  const fallbackWa = globalConfig["kontak_person_wa"] || "";
+
   return (
     <main className="w-full bg-white min-h-screen">
       <PageHeader
         title={product.nama}
         description="Detail informasi produk UMKM Bintang Pertiwi."
       />
-      <ProdukDetail product={product} />
+      <ProdukDetail product={product} fallbackWa={fallbackWa} />
     </main>
   );
 }

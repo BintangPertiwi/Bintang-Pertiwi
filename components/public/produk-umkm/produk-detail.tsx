@@ -9,12 +9,14 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export function ProdukDetail({ product }: { product: ProdukRow }) {
+export function ProdukDetail({ product, fallbackWa = "" }: { product: ProdukRow; fallbackWa?: string }) {
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedVarian, setSelectedVarian] = useState(product.varian[0] ?? "");
 
-  const WA_NUMBER = "6289501603099";
+  // Pesanan diarahkan ke WA pemilik produk; fallback ke Kontak Person, lalu nomor pusat.
+  const rawWa = product.owner_wa || fallbackWa || "6289501603099";
+  const WA_NUMBER = rawWa.replace(/^0/, "62").replace(/\D/g, "");
   const varianLine = selectedVarian ? `\nVarian: ${selectedVarian}` : "";
   const jumlahText = product.satuan ? `${quantity} ${product.satuan}` : `${quantity}`;
   const waMessage = encodeURIComponent(`Halo Bintang Pertiwi, saya tertarik untuk memesan produk:\n\n*${product.nama}*${varianLine}\nJumlah: ${jumlahText}\nSKU: ${product.sku}\n\nApakah stoknya masih tersedia?`);

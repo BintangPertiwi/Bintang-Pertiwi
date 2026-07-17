@@ -1,4 +1,4 @@
-import { verifyAdminSession } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 import { deleteFromCloudinary } from "@/lib/cloudinary";
 import { deleteBeritaById, getBeritaById, updateBeritaById } from "@/lib/db/queries";
 import { sanitizeHtml } from "@/lib/sanitize";
@@ -11,7 +11,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!(await verifyAdminSession())) {
+    if (!(await requireRole(["super_admin"]))) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }
@@ -126,7 +126,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!(await verifyAdminSession())) {
+    if (!(await requireRole(["super_admin"]))) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }

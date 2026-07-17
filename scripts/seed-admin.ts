@@ -25,7 +25,7 @@ async function main() {
     console.log("Menghubungkan ke Turso DB...");
 
     await db.insert(adminAuth)
-      .values({ username, password: hashedPassword })
+      .values({ username, password: hashedPassword, role: "super_admin" })
       .onConflictDoUpdate({
         target: adminAuth.username,
         set: { password: sql`excluded.password` }

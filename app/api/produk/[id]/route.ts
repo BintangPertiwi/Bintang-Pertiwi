@@ -30,7 +30,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!(await verifyAdminSession())) {
+    const session = await verifyAdminSession();
+    if (!session) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }
@@ -78,6 +79,14 @@ export async function PUT(
       return NextResponse.json(
         { success: false, message: "Produk tidak ditemukan." },
         { status: 404 }
+      );
+    }
+
+    // Kontributor hanya boleh mengubah produk miliknya sendiri.
+    if (session.role !== "super_admin" && oldProduk.created_by !== session.id) {
+      return NextResponse.json(
+        { success: false, message: "Anda tidak berhak mengubah produk ini." },
+        { status: 403 }
       );
     }
 
@@ -135,7 +144,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!(await verifyAdminSession())) {
+    const session = await verifyAdminSession();
+    if (!session) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }
@@ -155,6 +165,14 @@ export async function DELETE(
       return NextResponse.json(
         { success: false, message: "Produk tidak ditemukan." },
         { status: 404 }
+      );
+    }
+
+    // Kontributor hanya boleh menghapus produk miliknya sendiri.
+    if (session.role !== "super_admin" && produk.created_by !== session.id) {
+      return NextResponse.json(
+        { success: false, message: "Anda tidak berhak menghapus produk ini." },
+        { status: 403 }
       );
     }
 

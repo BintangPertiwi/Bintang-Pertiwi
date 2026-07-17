@@ -2,7 +2,7 @@ import type { ProdukRow, StokStatus } from "@/types";
 import { and, count, desc, eq, like, or } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { db } from "../index";
-import { produkUmkm } from "../schema";
+import { adminAuth, produkUmkm } from "../schema";
 
 function parseJsonArray(value: string | null): string[] {
   if (!value) return [];
@@ -31,6 +31,7 @@ function mapProdukRow(r: typeof produkUmkm.$inferSelect): ProdukRow {
     sku: r.sku || "",
     varian: parseJsonArray(r.varian),
     tags: parseJsonArray(r.tags),
+    created_by: r.created_by ?? undefined,
     created_at: r.created_at ?? undefined,
   };
 }
@@ -55,10 +56,16 @@ export async function getProdukBySlug(slug: string): Promise<ProdukRow | undefin
   cacheTag("produk", `produk-${slug}`);
 
   try {
-    const result = await db.select().from(produkUmkm).where(eq(produkUmkm.slug, slug));
+    const result = await db
+      .select()
+      .from(produkUmkm)
+      .leftJoin(adminAuth, eq(produkUmkm.created_by, adminAuth.id))
+      .where(eq(produkUmkm.slug, slug));
     cacheLife("hours");
     if (result.length === 0) return undefined;
-    return mapProdukRow(result[0]);
+    const produk = mapProdukRow(result[0].produk_umkm);
+    produk.owner_wa = result[0].admin_auth?.wa_number ?? "";
+    return produk;
   } catch (error) {
     cacheLife("minutes");
     console.error("Failed to fetch produk by slug:", error);
@@ -94,6 +101,7 @@ export async function appendProduk(data: ProdukRow): Promise<void> {
     sku: data.sku,
     varian: JSON.stringify(data.varian),
     tags: JSON.stringify(data.tags),
+    created_by: data.created_by ?? null,
   });
 }
 
@@ -132,6 +140,7 @@ interface ProdukListingArgs {
   filter: string;
   page: number;
   limit: number;
+  ownerId?: number;
 }
 
 export async function getProdukListing(args: ProdukListingArgs) {
@@ -160,6 +169,11 @@ export async function getProdukListing(args: ProdukListingArgs) {
 
   if (args.filter && args.filter !== "all") {
     conditions.push(eq(produkUmkm.kategori, args.filter));
+  }
+
+  // Kontributor hanya melihat produk miliknya.
+  if (args.ownerId !== undefined) {
+    conditions.push(eq(produkUmkm.created_by, args.ownerId));
   }
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;

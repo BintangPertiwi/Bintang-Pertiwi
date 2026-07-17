@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 import { appendBerita } from "@/lib/db/queries";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { revalidateTag } from "next/cache";
-import { verifyAdminSession } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 
 export async function POST(request: Request) {
   try {
-    if (!(await verifyAdminSession())) {
+    if (!(await requireRole(["super_admin"]))) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }

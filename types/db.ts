@@ -37,6 +37,8 @@ export interface ProdukRow {
   sku: string;
   varian: string[];
   tags: string[];
+  created_by?: number;
+  owner_wa?: string;
   created_at?: string;
 }
 

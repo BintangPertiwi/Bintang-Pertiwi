@@ -38,8 +38,12 @@ export async function POST(request: Request) {
       );
     }
 
-    // Buat token JWT
-    const token = await new SignJWT({ username })
+    // Buat token JWT (memuat id & role untuk kontrol akses multi-role)
+    const token = await new SignJWT({
+      id: adminRow.id,
+      username: adminRow.username,
+      role: adminRow.role,
+    })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
       .setExpirationTime("24h")

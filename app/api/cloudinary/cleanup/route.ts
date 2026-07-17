@@ -1,4 +1,4 @@
-import { verifyAdminSession } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 import { deleteFromCloudinary, getCloudinaryResources } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { beritaDusun, galeriDusun, globalConfig, produkUmkm } from "@/lib/db/schema";
@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 
 export async function POST() {
   try {
-    if (!(await verifyAdminSession())) {
+    if (!(await requireRole(["super_admin"]))) {
       return NextResponse.json({ success: false, message: "Sesi tidak valid." }, { status: 401 });
     }
 

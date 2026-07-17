@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { deleteGaleriById, getGaleriById, updateGaleriById } from "@/lib/db/queries";
 import { deleteFromCloudinary } from "@/lib/cloudinary";
 import { revalidateTag } from "next/cache";
-import { verifyAdminSession } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 
 interface GaleriPayload {
   judul?: string;
@@ -16,7 +16,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!(await verifyAdminSession())) {
+    if (!(await requireRole(["super_admin"]))) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }
@@ -88,7 +88,7 @@ export async function PUT(
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    if (!(await verifyAdminSession())) {
+    if (!(await requireRole(["super_admin"]))) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }

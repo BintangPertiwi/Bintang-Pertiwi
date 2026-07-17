@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getProdukById, getProdukList } from "@/lib/db/queries";
+import { getSession } from "@/lib/auth";
 import { ProdukForm } from "@/components/admin/produk/produk-form";
 import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context";
 import { DashboardHeader } from "@/components/admin/layout/dashboard-header";
@@ -10,10 +11,16 @@ export const metadata = {
 
 export default async function EditProdukPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const session = await getSession();
   const produkList = await getProdukList();
   const produk = await getProdukById(id);
 
   if (!produk) {
+    notFound();
+  }
+
+  // Kontributor tidak boleh membuka produk milik orang lain.
+  if (session?.role === "kontributor" && produk.created_by !== session.id) {
     notFound();
   }
 

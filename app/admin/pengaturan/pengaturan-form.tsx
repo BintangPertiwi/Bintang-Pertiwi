@@ -16,6 +16,8 @@ import { StorageManagement } from "./storage-management";
 
 interface PengaturanFormProps {
   initialUsername: string;
+  initialWa: string;
+  role: string;
 }
 
 interface UpdatePayload {
@@ -24,11 +26,13 @@ interface UpdatePayload {
   newPassword?: string;
 }
 
-export function PengaturanForm({ initialUsername }: PengaturanFormProps) {
+export function PengaturanForm({ initialUsername, initialWa, role }: PengaturanFormProps) {
   const router = useRouter();
-  
+
   const [isUsernameLoading, setIsUsernameLoading] = useState(false);
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
+  const [isWaLoading, setIsWaLoading] = useState(false);
+  const [waNumber, setWaNumber] = useState(initialWa);
 
   const [usernameData, setUsernameData] = useState({
     newUsername: initialUsername,
@@ -115,10 +119,69 @@ export function PengaturanForm({ initialUsername }: PengaturanFormProps) {
     );
   };
 
+  // Update nomor WA tidak mereset sesi (tidak perlu login ulang).
+  const handleWaSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsWaLoading(true);
+    try {
+      const res = await fetch("/api/akun/wa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ wa_number: waNumber }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Gagal menyimpan nomor WhatsApp");
+      }
+      toast.success(data.message);
+      router.refresh();
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Terjadi kesalahan. Silakan coba lagi.");
+    } finally {
+      setIsWaLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-3xl pb-20">
-      <Accordion multiple defaultValue={["username", "password", "storage"]} className="w-full space-y-4">
-        
+      <Accordion multiple defaultValue={["wa", "username", "password", "storage"]} className="w-full space-y-4">
+
+        {/* SECTION 0: NOMOR WHATSAPP */}
+        <AccordionItem value="wa" className="border-b pb-4">
+          <AccordionTrigger className="text-xl font-bold hover:no-underline">
+            Nomor WhatsApp
+          </AccordionTrigger>
+          <AccordionContent className="pt-4 pb-6">
+            <form onSubmit={handleWaSubmit} className="space-y-6">
+              <p className="text-sm text-muted-foreground mb-2">
+                Nomor ini menjadi tujuan tombol &quot;Pesan via WA&quot; pada produk yang Anda tambahkan. Boleh format 08xxxx atau 628xxxx.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                <div className="space-y-2 md:col-span-2">
+                  <label htmlFor="waNumber" className="text-sm font-semibold">
+                    Nomor WhatsApp
+                  </label>
+                  <Input
+                    id="waNumber"
+                    name="waNumber"
+                    inputMode="numeric"
+                    placeholder="Contoh: 08123456789"
+                    value={waNumber}
+                    onChange={(e) => setWaNumber(e.target.value)}
+                    disabled={isWaLoading}
+                  />
+                </div>
+                <div className="pt-4 flex md:col-span-2">
+                  <Button type="submit" disabled={isWaLoading} className="w-full px-8 text-base h-14">
+                    <Save className="mr-2 h-5 w-5" />
+                    {isWaLoading ? "Menyimpan..." : "Simpan Nomor WA"}
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </AccordionContent>
+        </AccordionItem>
+
         {/* SECTION 1: UPDATE USERNAME */}
         <AccordionItem value="username" className="border-b pb-4">
           <AccordionTrigger className="text-xl font-bold hover:no-underline">
@@ -244,20 +307,22 @@ export function PengaturanForm({ initialUsername }: PengaturanFormProps) {
           </AccordionContent>
         </AccordionItem>
 
-        {/* SECTION 3: STORAGE MANAGEMENT */}
-        <AccordionItem value="storage" className="border-b pb-4">
-          <AccordionTrigger className="text-xl font-bold hover:no-underline text-red-700">
-            Manajemen Penyimpanan
-          </AccordionTrigger>
-          <AccordionContent className="pt-4 pb-6">
-            <div className="space-y-4">
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Alat pembersih ini berguna untuk menghapus sisa-sisa gambar sampah (yatim piatu) di Database akibat peramban tertutup sebelum artikel sempat disimpan. Hanya gambar yang usianya lebih dari 24 jam yang akan dipindai dan dibersihkan dari Database.
-              </p>
-              <StorageManagement />
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+        {/* SECTION 3: STORAGE MANAGEMENT (khusus Super Admin) */}
+        {role === "super_admin" && (
+          <AccordionItem value="storage" className="border-b pb-4">
+            <AccordionTrigger className="text-xl font-bold hover:no-underline text-red-700">
+              Manajemen Penyimpanan
+            </AccordionTrigger>
+            <AccordionContent className="pt-4 pb-6">
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Alat pembersih ini berguna untuk menghapus sisa-sisa gambar sampah (yatim piatu) di Database akibat peramban tertutup sebelum artikel sempat disimpan. Hanya gambar yang usianya lebih dari 24 jam yang akan dipindai dan dibersihkan dari Database.
+                </p>
+                <StorageManagement />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
 
       </Accordion>
     </div>

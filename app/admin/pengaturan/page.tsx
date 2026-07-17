@@ -1,35 +1,24 @@
 import { DashboardHeader } from "@/components/admin/layout/dashboard-header";
-import { jwtVerify } from "jose";
-import { cookies } from "next/headers";
+import { getSession } from "@/lib/auth";
+import { getAdminById } from "@/lib/db/queries";
 import { PengaturanForm } from "./pengaturan-form";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "default_secret_key_for_dev_only"
-);
-
 export default async function PengaturanPage() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("admin_session")?.value;
-  let currentUsername = "admin";
+  const session = await getSession();
+  const user = session ? await getAdminById(session.id) : undefined;
 
-  if (token) {
-    try {
-      const verified = await jwtVerify(token, JWT_SECRET);
-      if (verified.payload.username) {
-        currentUsername = verified.payload.username as string;
-      }
-    } catch {
-    }
-  }
+  const currentUsername = user?.username || session?.username || "admin";
+  const currentWa = user?.wa_number || "";
+  const role = session?.role || "super_admin";
 
   return (
     <div className="flex flex-col gap-6">
-      <DashboardHeader 
-        title="Pengaturan" 
-        description="Kelola kredensial administrator dan pemeliharaan sistem." 
+      <DashboardHeader
+        title="Pengaturan Akun"
+        description="Kelola nomor WhatsApp, username, dan password akun Anda."
       />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <PengaturanForm initialUsername={currentUsername} />
+        <PengaturanForm initialUsername={currentUsername} initialWa={currentWa} role={role} />
       </div>
     </div>
   );

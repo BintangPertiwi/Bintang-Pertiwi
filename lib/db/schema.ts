@@ -5,6 +5,9 @@ export const adminAuth = sqliteTable("admin_auth", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  role: text("role").notNull().default("super_admin"),
+  nama: text("nama").default(""),
+  wa_number: text("wa_number").default(""),
 });
 
 export const beritaDusun = sqliteTable("berita_dusun", {
@@ -47,6 +50,7 @@ export const produkUmkm = sqliteTable("produk_umkm", {
   sku: text("sku").default(""),
   varian: text("varian").default("[]"),
   tags: text("tags").default("[]"),
+  created_by: integer("created_by"),
   created_at: text("created_at").default(sql`(datetime('now'))`),
   updated_at: text("updated_at").default(sql`(datetime('now'))`),
 });

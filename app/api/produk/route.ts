@@ -18,7 +18,8 @@ async function buildUniqueSlug(nama: string): Promise<string> {
 
 export async function POST(request: Request) {
   try {
-    if (!(await verifyAdminSession())) {
+    const session = await verifyAdminSession();
+    if (!session) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }
@@ -75,6 +76,7 @@ export async function POST(request: Request) {
       sku: (sku || "").trim(),
       varian,
       tags,
+      created_by: session.id,
     };
 
     await appendProduk(payload);

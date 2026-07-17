@@ -9,7 +9,8 @@ import {
   Newspaper,
   PanelTop,
   Settings,
-  ShoppingBag
+  ShoppingBag,
+  Users
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -30,7 +31,19 @@ import {
   useSidebar
 } from "@/components/ui/sidebar";
 
-const menuGroups = [
+type SidebarItem = {
+  title: string;
+  icon: React.ElementType;
+  href: string;
+  superAdminOnly?: boolean;
+};
+
+type SidebarGroupDef = {
+  section: string;
+  items: SidebarItem[];
+};
+
+const menuGroups: SidebarGroupDef[] = [
   {
     section: "Main",
     items: [
@@ -41,32 +54,40 @@ const menuGroups = [
     section: "Master Data",
     items: [
       { title: "Produk", icon: ShoppingBag, href: "/admin/produk" },
-      { title: "Berita", icon: Newspaper, href: "/admin/berita" },
-      { title: "Galeri", icon: ImageIcon, href: "/admin/galeri" },
-      { title: "Informasi Web", icon: BadgeInfo, href: "/admin/informasi-web" },
-      { title: "Kontak Person", icon: Contact, href: "/admin/kontak-person" },
+      { title: "Berita", icon: Newspaper, href: "/admin/berita", superAdminOnly: true },
+      { title: "Galeri", icon: ImageIcon, href: "/admin/galeri", superAdminOnly: true },
+      { title: "Informasi Web", icon: BadgeInfo, href: "/admin/informasi-web", superAdminOnly: true },
+      { title: "Kontak Person", icon: Contact, href: "/admin/kontak-person", superAdminOnly: true },
     ],
   },
   {
     section: "Halaman Web",
     items: [
-      { title: "Pengaturan Beranda", icon: PanelTop, href: "/admin/pengaturan-beranda" },
-      { title: "Pengaturan Berita", icon: PanelTop, href: "/admin/pengaturan-berita" },
-      { title: "Pengaturan Galeri", icon: PanelTop, href: "/admin/pengaturan-galeri" },
+      { title: "Pengaturan Beranda", icon: PanelTop, href: "/admin/pengaturan-beranda", superAdminOnly: true },
+      { title: "Pengaturan Berita", icon: PanelTop, href: "/admin/pengaturan-berita", superAdminOnly: true },
+      { title: "Pengaturan Galeri", icon: PanelTop, href: "/admin/pengaturan-galeri", superAdminOnly: true },
     ],
   },
   {
     section: "Lainnya",
     items: [
-      { title: "Pengaturan", icon: Settings, href: "/admin/pengaturan" }
+      { title: "Pengguna", icon: Users, href: "/admin/pengguna", superAdminOnly: true },
+      { title: "Pengaturan", icon: Settings, href: "/admin/pengaturan" },
     ],
   }
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ role }: { role: string }) {
   const pathname = usePathname();
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
+
+  const visibleGroups = menuGroups
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => role === "super_admin" || !item.superAdminOnly),
+    }))
+    .filter((group) => group.items.length > 0);
 
   const handleLogout = async () => {
     try {
@@ -102,7 +123,7 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        {menuGroups.map((group, index) => (
+        {visibleGroups.map((group, index) => (
           <React.Fragment key={group.section}>
             {index > 0 && <SidebarSeparator className="mx-4" />}
             <SidebarGroup>
