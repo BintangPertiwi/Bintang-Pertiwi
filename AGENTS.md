@@ -118,7 +118,6 @@ app/
 │   ├── page.tsx        # Overview dashboard
 │   ├── berita/
 │   ├── galeri/
-│   ├── pengaduan/
 │   └── pengaturan/
 ├── login/
 │   └── page.tsx
@@ -295,7 +294,7 @@ export async function POST(request: Request) {
 
 ### 8.4 Rate Limiting & Abuse Prevention
 
-- Pertimbangkan rate limiting sederhana di Route Handler publik (misal: form pengaduan) untuk mencegah spam.
+- Pertimbangkan rate limiting sederhana di Route Handler publik (misal: form submission publik) untuk mencegah spam.
 - Endpoint login HARUS membatasi percobaan gagal berturut-turut (misal: delay response setelah 5x gagal).
 
 ## 9. Code Quality & Best Practices (Wajib)

@@ -1,7 +1,7 @@
 /**
  * Client-side image compression utility using Canvas API.
  * Reduces image size to prevent payload limit issues (Vercel 4.5MB limit)
- * and speeds up uploads to Cloudinary/Telegram.
+ * and speeds up uploads to Cloudinary.
  */
 export async function compressImage(
   file: File,

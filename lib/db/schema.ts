@@ -56,20 +56,6 @@ export const globalConfig = sqliteTable("global_config", {
   value: text("value").default(""),
 });
 
-export const pengaduanWarga = sqliteTable("pengaduan_warga", {
-  id: text("id").primaryKey(),
-  tanggal: text("tanggal").notNull(),
-  nama_lengkap: text("nama_lengkap").notNull(),
-  nik: text("nik").notNull(),
-  status_warga: text("status_warga").notNull(),
-  no_hp: text("no_hp").default(""),
-  kategori: text("kategori").default(""),
-  isi_laporan: text("isi_laporan").notNull(),
-  url_foto: text("url_foto").default(""),
-  status: text("status").default("Menunggu"),
-  created_at: text("created_at").default(sql`(datetime('now'))`),
-});
-
 export const perangkatDusun = sqliteTable("perangkat_dusun", {
   id: text("id").primaryKey(),
   urutan: integer("urutan").notNull(),

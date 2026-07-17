@@ -40,20 +40,6 @@ export interface ProdukRow {
   created_at?: string;
 }
 
-export interface PengaduanRow {
-  id: string;
-  tanggal: string;
-  nama_lengkap: string;
-  nik: string;
-  status_warga: string;
-  no_hp: string | null;
-  kategori: string | null;
-  isi_laporan: string;
-  url_foto: string | null;
-  status: string | null;
-  created_at: string | null;
-}
-
 export interface PerangkatRow {
   id: string;
   urutan: number;
