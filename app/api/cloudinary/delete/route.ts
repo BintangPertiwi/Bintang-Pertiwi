@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { deleteFromCloudinary } from "@/lib/cloudinary";
 import { verifyAdminSession } from "@/lib/auth";
+import { isMediaUrlReferenced } from "@/lib/db/queries";
 
 interface DeleteCloudinaryBody {
   secure_url?: string;
@@ -22,6 +23,17 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { success: false, message: "URL gambar tidak valid." },
         { status: 400 }
+      );
+    }
+
+    // Cegah penghapusan gambar yang masih dipakai konten lain (berita/galeri/hero/
+    // produk milik siapa pun). Endpoint ini hanya untuk membersihkan gambar yatim
+    // (baru di-upload, belum tersimpan) — penghapusan konten tersimpan harus lewat
+    // alur entitasnya masing-masing yang sudah memvalidasi kepemilikan.
+    if (await isMediaUrlReferenced(secureUrl)) {
+      return NextResponse.json(
+        { success: false, message: "Gambar sedang dipakai konten lain dan tidak dapat dihapus dari sini." },
+        { status: 403 }
       );
     }
 

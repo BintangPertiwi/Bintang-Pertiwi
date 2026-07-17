@@ -3,10 +3,7 @@ import { getAdminByUsername, updateAdminCredentials } from "@/lib/db/queries";
 import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "default_secret_key_for_dev_only"
-);
+import { getJwtSecret } from "@/lib/jwt";
 
 export async function POST(request: Request) {
   try {
@@ -15,6 +12,13 @@ export async function POST(request: Request) {
     if (!newUsername || !oldPassword) {
       return NextResponse.json(
         { message: "Username dan Password Lama harus diisi" },
+        { status: 400 }
+      );
+    }
+
+    if (newPassword && String(newPassword).length < 8) {
+      return NextResponse.json(
+        { message: "Password baru minimal 8 karakter." },
         { status: 400 }
       );
     }
@@ -28,7 +32,7 @@ export async function POST(request: Request) {
 
     let payload;
     try {
-      const verified = await jwtVerify(token, JWT_SECRET);
+      const verified = await jwtVerify(token, getJwtSecret());
       payload = verified.payload;
     } catch {
       return NextResponse.json({ message: "Sesi tidak valid" }, { status: 401 });

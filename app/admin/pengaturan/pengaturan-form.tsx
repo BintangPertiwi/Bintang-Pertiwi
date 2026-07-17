@@ -108,8 +108,8 @@ export function PengaturanForm({ initialUsername, initialWa, role }: PengaturanF
       return;
     }
 
-    if (passwordData.newPassword.length < 6) {
-      toast.error("Password baru minimal 6 karakter.");
+    if (passwordData.newPassword.length < 8) {
+      toast.error("Password baru minimal 8 karakter.");
       return;
     }
 

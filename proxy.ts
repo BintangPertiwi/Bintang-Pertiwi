@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "default_secret_key_for_dev_only"
-);
+import { getJwtSecret } from '@/lib/jwt';
 
 // Path admin yang boleh diakses role "kontributor".
 // Hanya dashboard, modul produk, dan pengaturan akun sendiri.
@@ -24,7 +21,7 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
     try {
-      const { payload } = await jwtVerify(token, JWT_SECRET);
+      const { payload } = await jwtVerify(token, getJwtSecret());
 
       // Token lama (tanpa id) → paksa login ulang agar dapat klaim role/id.
       if (!payload.id) {
@@ -49,7 +46,7 @@ export async function proxy(request: NextRequest) {
   if (pathname === '/login') {
     if (token) {
       try {
-        await jwtVerify(token, JWT_SECRET);
+        await jwtVerify(token, getJwtSecret());
         return NextResponse.redirect(new URL('/admin', request.url));
       } catch {
         const response = NextResponse.next();

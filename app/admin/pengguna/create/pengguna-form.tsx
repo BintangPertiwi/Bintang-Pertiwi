@@ -39,8 +39,8 @@ export function PenggunaForm() {
       toast.error("Username dan password wajib diisi.");
       return;
     }
-    if (form.password.length < 6) {
-      toast.error("Password minimal 6 karakter.");
+    if (form.password.length < 8) {
+      toast.error("Password minimal 8 karakter.");
       return;
     }
 

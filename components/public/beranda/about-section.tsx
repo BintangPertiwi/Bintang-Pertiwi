@@ -10,12 +10,14 @@ function Counter({
   duration = 2,
   prefix = "",
   suffix = "",
+  compact = false,
 }: {
   from?: number;
   to: number;
   duration?: number;
   prefix?: string;
   suffix?: string;
+  compact?: boolean;
 }) {
   const nodeRef = useRef<HTMLSpanElement>(null);
   const isInView = useInView(nodeRef, { once: true, amount: 0.5 });
@@ -26,15 +28,34 @@ function Counter({
         duration,
         onUpdate(value) {
           if (nodeRef.current) {
-            nodeRef.current.textContent = `${prefix}${Math.round(value).toLocaleString("id-ID")}${suffix}`;
+            let formattedValue = "";
+            if (compact) {
+              formattedValue = new Intl.NumberFormat("id-ID", {
+                notation: "compact",
+                maximumFractionDigits: 1,
+              }).format(value);
+            } else {
+              formattedValue = Math.round(value).toLocaleString("id-ID");
+            }
+            nodeRef.current.textContent = `${prefix}${formattedValue}${suffix}`;
           }
         },
       });
       return () => controls.stop();
     }
-  }, [from, to, duration, isInView, prefix, suffix]);
+  }, [from, to, duration, isInView, prefix, suffix, compact]);
 
-  return <span ref={nodeRef}>{`${prefix}${from}${suffix}`}</span>;
+  let initialFormatted = "";
+  if (compact) {
+    initialFormatted = new Intl.NumberFormat("id-ID", {
+      notation: "compact",
+      maximumFractionDigits: 1,
+    }).format(from);
+  } else {
+    initialFormatted = from.toLocaleString("id-ID");
+  }
+
+  return <span ref={nodeRef}>{`${prefix}${initialFormatted}${suffix}`}</span>;
 }
 
 export function AboutSection({
@@ -127,8 +148,11 @@ export function AboutSection({
 
           <FadeIn direction="up" delay={0.4} className="lg:col-span-4 flex flex-col gap-6 lg:gap-10 lg:border-l lg:border-border lg:pl-16">
             <div className="flex flex-col border-y border-border py-6 lg:border-none lg:py-0">
-              <div className="text-3xl md:text-5xl font-bold text-primary mb-2 break-words">
-                <Counter to={nilaiEkonomi} prefix="Rp " />
+              <div className="flex items-baseline gap-1.5 mb-2 flex-wrap">
+                <span className="text-2xl md:text-3xl xl:text-4xl font-bold text-primary">Rp</span>
+                <div className="text-4xl md:text-5xl xl:text-6xl font-bold text-primary tracking-tight">
+                  <Counter to={nilaiEkonomi} compact />
+                </div>
               </div>
               <div className="text-sm md:text-base font-medium text-muted-foreground uppercase tracking-wide">Nilai Ekonomi yang Dihasilkan</div>
             </div>
@@ -136,8 +160,8 @@ export function AboutSection({
             <div className="w-16 h-[1px] bg-border hidden lg:block"></div>
 
             <div className="flex flex-col border-y border-border py-6 lg:border-none lg:py-0">
-              <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
-                <Counter to={mitraBinaan} suffix="+" />
+              <div className="text-4xl md:text-5xl xl:text-6xl font-bold text-primary mb-2 tracking-tight">
+                <Counter to={mitraBinaan} suffix="+" compact />
               </div>
               <div className="text-sm md:text-base font-medium text-muted-foreground uppercase tracking-wide">Mitra Kelompok Binaan</div>
             </div>
@@ -145,8 +169,8 @@ export function AboutSection({
             <div className="w-16 h-[1px] bg-border hidden lg:block"></div>
 
             <div className="flex flex-col border-y border-border py-6 lg:border-none lg:py-0">
-              <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
-                <Counter to={penerimaLangsung} suffix="+" />
+              <div className="text-4xl md:text-5xl xl:text-6xl font-bold text-primary mb-2 tracking-tight">
+                <Counter to={penerimaLangsung} suffix="+" compact />
               </div>
               <div className="text-sm md:text-base font-medium text-muted-foreground uppercase tracking-wide">Penerima Manfaat Langsung</div>
             </div>
@@ -154,8 +178,8 @@ export function AboutSection({
             <div className="w-16 h-[1px] bg-border hidden lg:block"></div>
 
             <div className="flex flex-col border-y border-border py-6 lg:border-none lg:py-0">
-              <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
-                <Counter to={penerimaTidakLangsung} suffix="+" />
+              <div className="text-4xl md:text-5xl xl:text-6xl font-bold text-primary mb-2 tracking-tight">
+                <Counter to={penerimaTidakLangsung} suffix="+" compact />
               </div>
               <div className="text-sm md:text-base font-medium text-muted-foreground uppercase tracking-wide">Penerima Manfaat Tidak Langsung</div>
             </div>

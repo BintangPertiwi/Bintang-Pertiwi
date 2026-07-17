@@ -1,9 +1,6 @@
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "default_secret_key_for_dev_only"
-);
+import { getJwtSecret } from "@/lib/jwt";
 
 export type UserRole = "super_admin" | "kontributor";
 
@@ -28,7 +25,7 @@ export async function getSession(): Promise<AdminSession | null> {
   if (!token) return null;
 
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(token, getJwtSecret());
     const id = Number(payload.id);
     const username = typeof payload.username === "string" ? payload.username : "";
     if (!Number.isFinite(id) || id <= 0 || !username) return null;

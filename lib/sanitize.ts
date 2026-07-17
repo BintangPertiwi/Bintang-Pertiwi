@@ -12,5 +12,12 @@ export function sanitizeHtml(dirty: string): string {
       "a": ["href", "target", "rel"],
       "img": ["src", "alt", "width", "height"]
     },
+    // Skema eksplisit: blokir javascript:, data:, dsb pada href/src.
+    allowedSchemes: ["http", "https", "mailto", "tel"],
+    allowedSchemesByTag: { img: ["http", "https"] },
+    // Paksa rel aman pada semua link (cegah reverse tabnabbing untuk target=_blank).
+    transformTags: {
+      a: sanitize.simpleTransform("a", { rel: "noopener noreferrer" }, true),
+    },
   });
 }
