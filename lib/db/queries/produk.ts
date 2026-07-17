@@ -32,6 +32,7 @@ function mapProdukRow(r: typeof produkUmkm.$inferSelect): ProdukRow {
     varian: parseJsonArray(r.varian),
     tags: parseJsonArray(r.tags),
     created_by: r.created_by ?? undefined,
+    nomor_wa: r.nomor_wa || "",
     created_at: r.created_at ?? undefined,
   };
 }
@@ -64,7 +65,7 @@ export async function getProdukBySlug(slug: string): Promise<ProdukRow | undefin
     cacheLife("hours");
     if (result.length === 0) return undefined;
     const produk = mapProdukRow(result[0].produk_umkm);
-    produk.owner_wa = result[0].admin_auth?.wa_number ?? "";
+    produk.owner_wa = produk.nomor_wa || result[0].admin_auth?.wa_number || "";
     return produk;
   } catch (error) {
     cacheLife("minutes");
@@ -102,6 +103,7 @@ export async function appendProduk(data: ProdukRow): Promise<void> {
     varian: JSON.stringify(data.varian),
     tags: JSON.stringify(data.tags),
     created_by: data.created_by ?? null,
+    nomor_wa: data.nomor_wa || "",
   });
 }
 
@@ -122,6 +124,7 @@ export async function updateProdukById(id: string, updatedData: Partial<ProdukRo
   if (updatedData.sku !== undefined) setData.sku = updatedData.sku;
   if (updatedData.varian !== undefined) setData.varian = JSON.stringify(updatedData.varian);
   if (updatedData.tags !== undefined) setData.tags = JSON.stringify(updatedData.tags);
+  if (updatedData.nomor_wa !== undefined) setData.nomor_wa = updatedData.nomor_wa;
 
   if (Object.keys(setData).length === 0) return false;
   setData.updated_at = new Date().toISOString();

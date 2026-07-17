@@ -51,6 +51,7 @@ export const produkSchema = z
     sku: z.string().max(60, { message: "SKU maksimal 60 karakter." }).optional(),
     varian: z.string().max(300, { message: "Varian maksimal 300 karakter." }).optional(),
     tags: z.string().max(200, { message: "Tags maksimal 200 karakter." }).optional(),
+    nomor_wa: z.string().max(20, { message: "Nomor WhatsApp maksimal 20 karakter." }).optional(),
   })
   .refine(
     (data) => {

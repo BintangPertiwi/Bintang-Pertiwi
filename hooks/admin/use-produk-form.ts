@@ -12,6 +12,7 @@ import { produkSchema, type ProdukFormValues } from "@/types/forms";
 interface UseProdukFormProps {
   existingCategories: string[];
   initialData?: ProdukRow;
+  defaultWa?: string;
   onSuccess?: () => void;
 }
 
@@ -25,7 +26,7 @@ export interface ProdukImage {
 const MAX_IMAGE_SIZE_MB = 4;
 const MAX_IMAGES = 6;
 
-export function useProdukForm({ existingCategories, initialData, onSuccess }: UseProdukFormProps) {
+export function useProdukForm({ existingCategories, initialData, defaultWa, onSuccess }: UseProdukFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [comboboxOpen, setComboboxOpen] = useState(false);
@@ -57,6 +58,7 @@ export function useProdukForm({ existingCategories, initialData, onSuccess }: Us
       sku: initialData?.sku || "",
       varian: initialData?.varian?.join(", ") || "",
       tags: initialData?.tags?.join(", ") || "",
+      nomor_wa: initialData?.nomor_wa || defaultWa || "",
     },
   });
 
@@ -194,6 +196,7 @@ export function useProdukForm({ existingCategories, initialData, onSuccess }: Us
           varian,
           tags,
           gambar_urls,
+          nomor_wa: values.nomor_wa?.trim() || "",
         }),
       });
 

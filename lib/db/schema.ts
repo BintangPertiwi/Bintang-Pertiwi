@@ -51,6 +51,7 @@ export const produkUmkm = sqliteTable("produk_umkm", {
   varian: text("varian").default("[]"),
   tags: text("tags").default("[]"),
   created_by: integer("created_by"),
+  nomor_wa: text("nomor_wa").default(""),
   created_at: text("created_at").default(sql`(datetime('now'))`),
   updated_at: text("updated_at").default(sql`(datetime('now'))`),
 });

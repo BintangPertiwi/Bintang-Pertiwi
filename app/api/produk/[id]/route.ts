@@ -47,7 +47,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { nama, kategori, harga, harga_coret, satuan, stok, deskripsi_singkat, deskripsi_lengkap, informasi_tambahan, sku } = body;
+    const { nama, kategori, harga, harga_coret, satuan, stok, deskripsi_singkat, deskripsi_lengkap, informasi_tambahan, sku, nomor_wa } = body;
     const gambar_urls = sanitizeStringArray(body.gambar_urls);
     const varian = sanitizeStringArray(body.varian);
     const tags = sanitizeStringArray(body.tags);
@@ -110,6 +110,7 @@ export async function PUT(
       sku: (sku || "").trim(),
       varian,
       tags,
+      nomor_wa: (nomor_wa || "").trim(),
     };
 
     const success = await updateProdukById(id, updatePayload);

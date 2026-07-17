@@ -41,10 +41,11 @@ import { ProdukImageUploader } from "./produk-image-uploader";
 interface ProdukFormProps {
   existingCategories: string[];
   initialData?: ProdukRow;
+  defaultWa?: string;
   onSuccess?: () => void;
 }
 
-export function ProdukForm({ existingCategories, initialData, onSuccess }: ProdukFormProps) {
+export function ProdukForm({ existingCategories, initialData, defaultWa, onSuccess }: ProdukFormProps) {
   const {
     form,
     isLoading,
@@ -66,7 +67,7 @@ export function ProdukForm({ existingCategories, initialData, onSuccess }: Produ
     handleDrop,
     handleCancel,
     onSubmit,
-  } = useProdukForm({ existingCategories, initialData, onSuccess });
+  } = useProdukForm({ existingCategories, initialData, defaultWa, onSuccess });
 
   return (
     <Form {...form}>
@@ -318,6 +319,23 @@ export function ProdukForm({ existingCategories, initialData, onSuccess }: Produ
                   <FormControl>
                     <Input placeholder="Pisahkan dengan koma. Contoh: Camilan, Gurih" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <FormField
+              control={form.control}
+              name="nomor_wa"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold">Nomor WhatsApp (Opsional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Contoh: 08123456789" {...field} />
+                  </FormControl>
+                  <p className="text-xs text-muted-foreground">Otomatis menggunakan nomor profil Anda jika dikosongkan. Boleh diisi dengan format 08xx atau 628xx.</p>
                   <FormMessage />
                 </FormItem>
               )}

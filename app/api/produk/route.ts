@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { nama, kategori, harga, harga_coret, satuan, stok, deskripsi_singkat, deskripsi_lengkap, informasi_tambahan, sku } = body;
+    const { nama, kategori, harga, harga_coret, satuan, stok, deskripsi_singkat, deskripsi_lengkap, informasi_tambahan, sku, nomor_wa } = body;
     const gambar_urls = sanitizeStringArray(body.gambar_urls);
     const varian = sanitizeStringArray(body.varian);
     const tags = sanitizeStringArray(body.tags);
@@ -77,6 +77,7 @@ export async function POST(request: Request) {
       varian,
       tags,
       created_by: session.id,
+      nomor_wa: (nomor_wa || "").trim(),
     };
 
     await appendProduk(payload);
