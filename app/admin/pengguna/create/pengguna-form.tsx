@@ -10,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -58,117 +57,111 @@ export function PenggunaForm() {
       }
       toast.success(data.message);
       
-      // Redirect back to listing page after successful creation
       router.push("/admin/pengguna");
       router.refresh();
     } catch (error: unknown) {
       toast.error(error instanceof Error ? error.message : "Terjadi kesalahan.");
-      setIsSubmitting(false); // Only stop loading if error (if success, keep loading until redirect)
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Card className="max-w-3xl border-slate-200 shadow-sm">
-      <CardContent className="p-6">
-        <form onSubmit={handleCreate} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="nama" className="text-sm font-semibold">Nama Lengkap</Label>
-              <Input 
-                id="nama" 
-                name="nama" 
-                value={form.nama} 
-                onChange={handleChange} 
-                placeholder="Contoh: Budi Santoso" 
-                disabled={isSubmitting} 
-                className="h-12"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="username" className="text-sm font-semibold">
-                Username <span className="text-red-500">*</span>
-              </Label>
-              <Input 
-                id="username" 
-                name="username" 
-                value={form.username} 
-                onChange={handleChange} 
-                placeholder="Untuk login" 
-                disabled={isSubmitting} 
-                className="h-12"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="wa_number" className="text-sm font-semibold">Nomor WhatsApp</Label>
-              <Input 
-                id="wa_number" 
-                name="wa_number" 
-                inputMode="numeric" 
-                value={form.wa_number} 
-                onChange={handleChange} 
-                placeholder="Contoh: 08123456789" 
-                disabled={isSubmitting} 
-                className="h-12"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-semibold">
-                Password <span className="text-red-500">*</span>
-              </Label>
-              <Input 
-                id="password" 
-                name="password" 
-                type="password" 
-                value={form.password} 
-                onChange={handleChange} 
-                placeholder="Minimal 6 karakter" 
-                disabled={isSubmitting} 
-                className="h-12"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="role" className="text-sm font-semibold">Peran</Label>
-              <Select 
-                value={form.role} 
-                onValueChange={(value) => setForm((prev) => ({ ...prev, role: value ?? "kontributor" }))} 
-                disabled={isSubmitting}
-              >
-                <SelectTrigger id="role" className="w-full h-12">
-                  <SelectValue placeholder="Pilih peran" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="kontributor">Kontributor (UMKM)</SelectItem>
-                  <SelectItem value="super_admin">Super Admin</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          
-          <div className="pt-4 flex justify-end gap-3 border-t">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={() => router.push("/admin/pengguna")}
-              disabled={isSubmitting} 
-              className="h-12 px-6"
-            >
-              Batal
-            </Button>
-            <Button type="submit" disabled={isSubmitting} className="h-12 px-6">
-              {isSubmitting ? (
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              ) : (
-                <UserPlus className="mr-2 h-5 w-5" />
-              )}
-              {isSubmitting ? "Menyimpan..." : "Tambah Akun"}
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+    <form onSubmit={handleCreate} className="max-w-3xl space-y-10 pb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <div className="space-y-2">
+          <Label htmlFor="nama" className="text-sm font-semibold">Nama Lengkap</Label>
+          <Input 
+            id="nama" 
+            name="nama" 
+            value={form.nama} 
+            onChange={handleChange} 
+            placeholder="Contoh: Budi Santoso" 
+            disabled={isSubmitting} 
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="username" className="text-sm font-semibold">
+            Username <span className="text-red-500">*</span>
+          </Label>
+          <Input 
+            id="username" 
+            name="username" 
+            value={form.username} 
+            onChange={handleChange} 
+            placeholder="Untuk login" 
+            disabled={isSubmitting} 
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="wa_number" className="text-sm font-semibold">Nomor WhatsApp</Label>
+          <Input 
+            id="wa_number" 
+            name="wa_number" 
+            inputMode="numeric" 
+            value={form.wa_number} 
+            onChange={handleChange} 
+            placeholder="Contoh: 08123456789" 
+            disabled={isSubmitting} 
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="password" className="text-sm font-semibold">
+            Password <span className="text-red-500">*</span>
+          </Label>
+          <Input 
+            id="password" 
+            name="password" 
+            type="password" 
+            value={form.password} 
+            onChange={handleChange} 
+            placeholder="Minimal 6 karakter" 
+            disabled={isSubmitting} 
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="role" className="text-sm font-semibold">Peran</Label>
+          <Select 
+            value={form.role} 
+            onValueChange={(value) => setForm((prev) => ({ ...prev, role: value ?? "kontributor" }))} 
+            disabled={isSubmitting}
+          >
+            <SelectTrigger id="role" className="w-full">
+              <SelectValue placeholder="Pilih peran" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="kontributor">Kontributor (UMKM)</SelectItem>
+              <SelectItem value="super_admin">Super Admin</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      
+      <div className="pt-4 flex flex-col sm:flex-row gap-3 md:col-span-2">
+        <Button 
+          type="button" 
+          variant="destructive" 
+          disabled={isSubmitting} 
+          onClick={() => router.push("/admin/pengguna")}
+          className="w-full sm:w-auto text-base h-14 order-2 sm:order-1"
+        >
+          Batal
+        </Button>
+        <Button 
+          type="submit" 
+          disabled={isSubmitting} 
+          className="w-full sm:flex-1 text-base h-14 order-1 sm:order-2"
+        >
+          {isSubmitting ? (
+            <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Menyimpan...</>
+          ) : (
+            <><UserPlus className="mr-2 h-5 w-5" /> Tambah Akun</>
+          )}
+        </Button>
+      </div>
+    </form>
   );
 }
