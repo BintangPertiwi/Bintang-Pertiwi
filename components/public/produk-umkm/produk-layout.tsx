@@ -79,21 +79,21 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
         {/* Left Sidebar (Filters) */}
         <div className="w-full lg:w-[25%] flex flex-col gap-8 shrink-0 lg:sticky lg:top-28 lg:self-start">
           <FadeIn direction="up">
-            <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Cari Produk</h4>
+            <h4 className="text-lg font-bold text-foreground mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Cari Produk</h4>
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 pointer-events-none" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
               <Input
                 type="text"
                 placeholder="Cari..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 h-12 bg-white shadow-sm border-slate-200"
+                className="w-full pl-11 pr-4 h-12 bg-background shadow-sm border-border"
               />
             </div>
           </FadeIn>
 
           <FadeIn direction="up" delay={0.1}>
-            <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Kategori</h4>
+            <h4 className="text-lg font-bold text-foreground mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Kategori</h4>
             <ul className="flex flex-col gap-3">
               {categories.map((cat) => (
                 <li key={cat} className="flex items-center space-x-2">
@@ -102,7 +102,7 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
                     checked={activeCategory === cat}
                     onCheckedChange={() => setActiveCategory(cat)}
                   />
-                  <Label htmlFor={`cat-${cat}`} className="text-slate-600 font-medium cursor-pointer">
+                  <Label htmlFor={`cat-${cat}`} className="text-muted-foreground font-medium cursor-pointer">
                     {cat}
                   </Label>
                 </li>
@@ -111,14 +111,14 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
           </FadeIn>
 
           <FadeIn direction="up" delay={0.2}>
-            <h4 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Ketersediaan</h4>
+            <h4 className="text-lg font-bold text-foreground mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">Ketersediaan</h4>
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="in-stock"
                 checked={inStockOnly}
                 onCheckedChange={(checked) => setInStockOnly(checked === true)}
               />
-              <Label htmlFor="in-stock" className="text-slate-600 font-medium cursor-pointer">
+              <Label htmlFor="in-stock" className="text-muted-foreground font-medium cursor-pointer">
                 Hanya Stok Tersedia
               </Label>
             </div>
@@ -136,8 +136,8 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
 
         {/* Right Column (Product Grid) */}
         <div className="w-full lg:flex-1">
-          <div className="mb-6 flex justify-between items-end pb-4 border-b border-slate-100">
-            <span className="text-slate-500 font-medium">Menampilkan {filteredProducts.length} produk</span>
+          <div className="mb-6 flex justify-between items-end pb-4 border-b border-border">
+            <span className="text-muted-foreground font-medium">Menampilkan {filteredProducts.length} produk</span>
           </div>
 
           {visibleItems.length > 0 ? (
@@ -145,9 +145,9 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
               <div className="grid grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
                 {visibleItems.map((item, index) => (
                   <FadeIn key={item.id} direction="up" delay={Math.min((index % LOAD_STEP) * 0.05, 0.2)}>
-                    <Link href={`/produk-umkm/${item.slug}`} className="group block bg-white border border-slate-200 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 relative">
+                    <Link href={`/produk-umkm/${item.slug}`} className="group block bg-background border border-border rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 relative">
                       {/* Image Area */}
-                      <div className="aspect-square sm:aspect-[4/3] w-full relative bg-slate-100 overflow-hidden">
+                      <div className="aspect-square sm:aspect-[4/3] w-full relative bg-muted overflow-hidden">
                         <Image
                           src={item.gambar_urls[0]}
                           alt={item.nama}
@@ -174,32 +174,32 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
                       {/* Content Area */}
                       <div className="p-3 sm:p-5 flex flex-col h-[130px] sm:h-[180px]">
                         <div className="flex items-center justify-between mb-1.5 sm:mb-2">
-                          <span className="text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider truncate mr-1">
+                          <span className="text-muted-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-wider truncate mr-1">
                             {item.kategori}
                           </span>
                         </div>
 
-                        <h3 className="text-[13px] sm:text-lg font-bold text-slate-900 leading-snug mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                        <h3 className="text-[13px] sm:text-lg font-bold text-foreground leading-snug mb-1 line-clamp-2 group-hover:text-primary transition-colors">
                           {item.nama}
                         </h3>
 
                         <div className="mt-auto pt-2 sm:pt-4 flex items-end justify-between">
                           <div className="flex flex-col">
                             {item.harga_coret && (
-                              <span className="text-slate-400 text-[10px] sm:text-sm line-through decoration-slate-300 mb-0.5 sm:mb-0">
+                              <span className="text-muted-foreground text-[10px] sm:text-sm line-through decoration-slate-300 mb-0.5 sm:mb-0">
                                 Rp {item.harga_coret.toLocaleString("id-ID")}
                               </span>
                             )}
-                            <span className="text-sm sm:text-xl font-bold text-slate-900 leading-none sm:leading-normal">
+                            <span className="text-sm sm:text-xl font-bold text-foreground leading-none sm:leading-normal">
                               Rp {item.harga.toLocaleString("id-ID")}
                               {item.satuan && (
-                                <span className="text-[10px] sm:text-xs font-medium text-slate-400"> / {item.satuan}</span>
+                                <span className="text-[10px] sm:text-xs font-medium text-muted-foreground"> / {item.satuan}</span>
                               )}
                             </span>
                           </div>
 
-                          <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-colors shrink-0 shadow-sm">
-                            <MessageCircle className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-slate-400 group-hover:text-white transition-colors" />
+                          <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-colors shrink-0 shadow-sm">
+                            <MessageCircle className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground group-hover:text-white transition-colors" />
                           </div>
                         </div>
                       </div>
@@ -217,12 +217,12 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
               )}
             </>
           ) : (
-            <div className="py-20 text-center flex flex-col items-center border border-dashed border-slate-200 rounded-2xl">
-              <div className="w-16 h-16 bg-slate-50 flex items-center justify-center rounded-full mb-4">
-                <Search className="w-8 h-8 text-slate-300" />
+            <div className="py-20 text-center flex flex-col items-center border border-dashed border-border rounded-2xl">
+              <div className="w-16 h-16 bg-muted flex items-center justify-center rounded-full mb-4">
+                <Search className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Produk tidak ditemukan</h3>
-              <p className="text-slate-500">Silakan gunakan kata kunci atau filter lain.</p>
+              <h3 className="text-xl font-bold text-foreground mb-2">Produk tidak ditemukan</h3>
+              <p className="text-muted-foreground">Silakan gunakan kata kunci atau filter lain.</p>
               <Button onClick={resetFilters} className="mt-6">
                 Reset Semua Filter
               </Button>

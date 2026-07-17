@@ -32,7 +32,7 @@ export default async function ProdukDetailPage({ params }: { params: Promise<{ s
   const fallbackWa = globalConfig["kontak_person_wa"] || "";
 
   return (
-    <main className="w-full bg-white min-h-screen">
+    <main className="w-full bg-background min-h-screen">
       <PageHeader
         title={product.nama}
         description="Detail informasi produk UMKM Bintang Pertiwi."

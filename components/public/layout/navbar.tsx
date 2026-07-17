@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { LogIn, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -65,15 +66,15 @@ export function Navbar() {
   const safePathname = pathname || "/";
   const isHomePage = safePathname === "/";
   
-  const useDarkTheme = !isHomePage || isScrolled;
+  const isSolid = !isHomePage || isScrolled;
 
   return (
     <>
       <nav
         key={mounted ? "nav-client" : "nav-server"}
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b-[0.5px] ${
-          useDarkTheme
-            ? "bg-white/90 backdrop-blur-md border-black/10"
+          isSolid
+            ? "bg-background/90 backdrop-blur-md border-border"
             : "bg-transparent border-white/20"
         }`}
       >
@@ -81,7 +82,7 @@ export function Navbar() {
           <Link
             href="/"
             className={`font-bold text-xl transition-colors duration-300 ${
-              useDarkTheme ? "text-[#0D0D0D]" : "text-white"
+              isSolid ? "text-foreground" : "text-white"
             }`}
           >
             Bintang Pertiwi
@@ -99,7 +100,7 @@ export function Navbar() {
                   key={item.label}
                   href={item.href}
                   className={`relative text-sm font-medium transition-colors ${
-                    useDarkTheme ? "text-slate-700 hover:text-primary" : "text-white/90 hover:text-white"
+                    isSolid ? "text-foreground hover:text-primary" : "text-white/90 hover:text-white"
                   } after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-current after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100 ${
                     isActive ? "after:origin-bottom-left after:scale-x-100" : "after:origin-bottom-right after:scale-x-0"
                   }`}
@@ -111,22 +112,24 @@ export function Navbar() {
             <Link href="/login">
               <Button
                 variant="ghost"
-                className={`font-semibold rounded-none px-4 gap-2 ${useDarkTheme ? "text-slate-700 hover:text-primary" : "text-white/90 hover:text-white hover:bg-white/10"}`}
+                className={`font-semibold rounded-none px-4 gap-2 ${isSolid ? "text-foreground hover:text-primary" : "text-white/90 hover:text-white hover:bg-white/10"}`}
               >
                 <LogIn className="w-4 h-4" />
                 Masuk
               </Button>
             </Link>
+            <ThemeToggle className={isSolid ? undefined : "text-white hover:text-white hover:bg-white/10"} />
           </div>
 
           {/* Action Button & Mobile Toggle */}
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center gap-1 md:hidden">
+            <ThemeToggle className={isSolid ? undefined : "text-white hover:text-white hover:bg-white/20"} />
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(true)}
               className={`transition-colors ${
-                useDarkTheme ? "text-slate-900 hover:bg-slate-100" : "text-white hover:bg-white/20"
+                isSolid ? "text-foreground hover:bg-muted" : "text-white hover:bg-white/20"
               }`}
             >
               <Menu className="h-6 w-6" />
@@ -138,15 +141,15 @@ export function Navbar() {
       {/* Mobile Menu Overlay */}
       <div
         key={mounted ? "mobile-client" : "mobile-server"}
-        className={`fixed inset-0 z-50 bg-white transition-transform duration-500 ease-in-out md:hidden flex flex-col ${
+        className={`fixed inset-0 z-50 bg-background transition-transform duration-500 ease-in-out md:hidden flex flex-col ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between px-6 h-20 border-b border-slate-100 shrink-0">
+        <div className="flex items-center justify-between px-6 h-20 border-b border-border shrink-0">
           <Link
             href="/"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="font-bold text-xl text-[#0D0D0D]"
+            className="font-bold text-xl text-foreground"
           >
             Bintang Pertiwi
           </Link>
@@ -154,7 +157,7 @@ export function Navbar() {
             variant="ghost"
             size="icon"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="text-slate-900 hover:bg-slate-100"
+            className="text-foreground hover:bg-muted"
           >
             <X className="h-6 w-6" />
           </Button>
@@ -171,8 +174,8 @@ export function Navbar() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-4xl py-10 border-b border-slate-200/60 last:border-0 font-bold tracking-tight transition-colors ${
-                  isActive ? "text-primary" : "text-slate-900 hover:text-slate-600"
+                className={`text-4xl py-10 border-b border-border/60 last:border-0 font-bold tracking-tight transition-colors ${
+                  isActive ? "text-primary" : "text-foreground hover:text-muted-foreground"
                 }`}
               >
                 {item.label}
@@ -182,8 +185,8 @@ export function Navbar() {
           <Link
             href="/login"
             onClick={() => setIsMobileMenuOpen(false)}
-            className={`text-4xl py-10 border-b border-slate-200/60 last:border-0 font-bold tracking-tight transition-colors flex items-center gap-4 ${
-              safePathname.startsWith("/login") ? "text-primary" : "text-slate-900 hover:text-slate-600"
+            className={`text-4xl py-10 border-b border-border/60 last:border-0 font-bold tracking-tight transition-colors flex items-center gap-4 ${
+              safePathname.startsWith("/login") ? "text-primary" : "text-foreground hover:text-muted-foreground"
             }`}
           >
             Masuk

@@ -30,7 +30,7 @@ export default async function BeritaPage() {
   }));
 
   return (
-    <main className="w-full bg-white min-h-screen">
+    <main className="w-full bg-background min-h-screen">
       <PageHeader 
         title={headerTitle} 
         description={headerDesc}

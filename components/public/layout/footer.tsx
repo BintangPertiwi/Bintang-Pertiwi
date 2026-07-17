@@ -12,12 +12,12 @@ export async function Footer() {
   const telepon = globalConfig["info_telepon"] || "+62 812 3456 7890";
 
   return (
-    <footer className="relative bg-white pt-16 pb-8 lg:pt-20 border-t border-slate-200 overflow-hidden">
+    <footer className="relative bg-background pt-16 pb-8 lg:pt-20 border-t border-border overflow-hidden">
       {/* Background Pattern Grid */}
       <div
         className="absolute inset-0 pointer-events-none opacity-40"
         style={{
-          backgroundImage: "linear-gradient(to right, #cbd5e1 1px, transparent 1px), linear-gradient(to bottom, #cbd5e1 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(to right, var(--pattern-dot) 1px, transparent 1px), linear-gradient(to bottom, var(--pattern-dot) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
           maskImage: "radial-gradient(ellipse at center, black 10%, transparent 70%)",
           WebkitMaskImage: "radial-gradient(ellipse at center, black 10%, transparent 70%)",
@@ -36,17 +36,17 @@ export async function Footer() {
                 <span className="w-2.5 h-2.5 bg-primary/70 rounded-full"></span>
                 <span className="w-2.5 h-2.5 bg-primary/50 rounded-full col-span-2 mx-auto"></span>
               </div>
-              <span className="text-xl font-bold tracking-tight text-slate-900">BINTANG PERTIWI</span>
+              <span className="text-xl font-bold tracking-tight text-foreground">BINTANG PERTIWI</span>
             </Link>
-            <p className="text-slate-500 text-sm leading-relaxed mb-6">
+            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
               {deskripsi}
             </p>
           </div>
 
           {/* Navigasi */}
           <div className="lg:col-span-3 lg:col-start-7">
-            <h4 className="font-bold text-slate-900 mb-6">Platform</h4>
-            <ul className="space-y-4 text-sm font-medium text-slate-500">
+            <h4 className="font-bold text-foreground mb-6">Platform</h4>
+            <ul className="space-y-4 text-sm font-medium text-muted-foreground">
               <li><Link href="/" className="hover:text-primary transition-colors">Beranda</Link></li>
               <li><Link href="/produk-umkm" className="hover:text-primary transition-colors">Produk UMKM</Link></li>
               <li><Link href="/berita" className="hover:text-primary transition-colors">Berita & Artikel</Link></li>
@@ -57,8 +57,8 @@ export async function Footer() {
 
           {/* Kontak */}
           <div className="lg:col-span-3 lg:col-start-10">
-            <h4 className="font-bold text-slate-900 mb-6">Hubungi Kami</h4>
-            <ul className="space-y-4 text-sm font-medium text-slate-500">
+            <h4 className="font-bold text-foreground mb-6">Hubungi Kami</h4>
+            <ul className="space-y-4 text-sm font-medium text-muted-foreground">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                 <span className="leading-relaxed">{alamat}</span>
@@ -77,7 +77,7 @@ export async function Footer() {
         </div>
 
         {/* Bottom: Copyright & Legal */}
-        <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 text-[13px] text-slate-500 font-medium">
+        <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-[13px] text-muted-foreground font-medium">
           <p>© <CopyrightYear /> Bintang Pertiwi. Seluruh hak cipta dilindungi.</p>
           <div className="flex items-center gap-6">
             <Link href="#" className="hover:text-primary transition-colors">Syarat & Ketentuan</Link>

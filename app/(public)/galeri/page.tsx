@@ -52,7 +52,7 @@ export default async function GaleriPage() {
   }
 
   return (
-    <main className="w-full bg-slate-50 min-h-screen pb-20">
+    <main className="w-full bg-muted min-h-screen pb-20">
       <PageHeader 
         title={headerTitle} 
         description={headerDesc}

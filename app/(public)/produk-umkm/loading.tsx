@@ -3,7 +3,7 @@ import { ProdukCardSkeletonGrid } from "@/components/ui/skeletons/produk-card-sk
 
 export default function LoadingProdukList() {
   return (
-    <main className="w-full bg-slate-50/50 min-h-screen">
+    <main className="w-full bg-muted/50 min-h-screen">
       <PageHeader
         title="Katalog Produk UMKM"
         description="Temukan berbagai produk pertanian segar, olahan makanan, dan kerajinan tangan hasil karya masyarakat Bintang Pertiwi."

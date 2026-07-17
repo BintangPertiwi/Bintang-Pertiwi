@@ -32,15 +32,15 @@ export function NewsSection({ initialNews = [] }: NewsSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   if (!initialNews || initialNews.length === 0) {
     return (
-      <section className="bg-white py-24 md:py-32 relative">
+      <section className="bg-background py-24 md:py-32 relative">
         <div className="w-full max-w-7xl mx-auto px-6 relative z-10 text-center">
           <div className="inline-flex flex-col gap-3 mb-6 items-center">
-            <h2 className="text-slate-800 text-sm md:text-base font-bold tracking-[0.3em] uppercase">
+            <h2 className="text-foreground text-sm md:text-base font-bold tracking-[0.3em] uppercase">
               Berita & Informasi
             </h2>
             <div className="w-12 md:w-16 h-0.5 md:h-1 bg-primary rounded-full"></div>
           </div>
-          <p className="text-slate-500 mt-4">Belum ada berita yang tersedia saat ini.</p>
+          <p className="text-muted-foreground mt-4">Belum ada berita yang tersedia saat ini.</p>
         </div>
       </section>
     );
@@ -56,12 +56,12 @@ export function NewsSection({ initialNews = [] }: NewsSectionProps) {
   };
 
   return (
-    <section className="bg-white py-24 md:py-32 relative">
+    <section className="bg-background py-24 md:py-32 relative">
       {/* Background Pattern Grid */}
       <div
         className="absolute inset-0 pointer-events-none opacity-40"
         style={{
-          backgroundImage: "linear-gradient(to right, #cbd5e1 1px, transparent 1px), linear-gradient(to bottom, #cbd5e1 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(to right, var(--pattern-dot) 1px, transparent 1px), linear-gradient(to bottom, var(--pattern-dot) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
           maskImage: "radial-gradient(ellipse at center, black 10%, transparent 70%)",
           WebkitMaskImage: "radial-gradient(ellipse at center, black 10%, transparent 70%)",
@@ -72,7 +72,7 @@ export function NewsSection({ initialNews = [] }: NewsSectionProps) {
         {/* Header - Mengikuti style About Section */}
         <FadeIn direction="up" className="mb-10 md:mb-14 flex flex-col md:flex-row justify-between items-start md:items-end">
           <div className="inline-flex flex-col gap-3">
-            <h2 className="text-slate-800 text-sm md:text-base font-bold tracking-[0.3em] uppercase">
+            <h2 className="text-foreground text-sm md:text-base font-bold tracking-[0.3em] uppercase">
               Berita & Informasi
             </h2>
             <div className="w-12 md:w-16 h-0.5 md:h-1 bg-primary rounded-full"></div>
@@ -123,14 +123,14 @@ export function NewsSection({ initialNews = [] }: NewsSectionProps) {
 
                 {/* Konten Text di bawah */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 pointer-events-none">
-                  <div className="inline-block px-2.5 py-1 bg-primary text-slate-900 text-[10px] font-bold uppercase tracking-wider mb-3">
+                  <div className="inline-block px-2.5 py-1 bg-primary text-foreground text-[10px] font-bold uppercase tracking-wider mb-3">
                     {activeNews.kategori}
                   </div>
                   <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
                     {activeNews.judul}
                   </h3>
                   
-                  <div className="flex items-center text-slate-300 text-[11px] font-bold uppercase tracking-wider gap-4 mb-6">
+                  <div className="flex items-center text-muted-foreground text-[11px] font-bold uppercase tracking-wider gap-4 mb-6">
                     <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" /> {activeNews.tanggal}</span>
                   </div>
 
@@ -177,7 +177,7 @@ export function NewsSection({ initialNews = [] }: NewsSectionProps) {
                     onClick={() => setActiveIndex(idx)}
                   >
                   {/* Thumbnail Image - Persegi panjang / Landscape, Kotak */}
-                  <div className="relative w-36 h-24 md:w-48 md:h-32 overflow-hidden flex-shrink-0 bg-slate-100 group">
+                  <div className="relative w-36 h-24 md:w-48 md:h-32 overflow-hidden flex-shrink-0 bg-muted group">
                     <Skeleton className="absolute inset-0 w-full h-full rounded-none" />
                     <Image
                       src={news.url_foto}
@@ -191,7 +191,7 @@ export function NewsSection({ initialNews = [] }: NewsSectionProps) {
                   {/* Content Right Side */}
                   <div className="flex flex-col py-0">
                     <div className="mb-2">
-                      <span className="inline-block px-2.5 py-1 bg-primary text-slate-900 text-[10px] font-bold uppercase tracking-wider">
+                      <span className="inline-block px-2.5 py-1 bg-primary text-foreground text-[10px] font-bold uppercase tracking-wider">
                         {news.kategori}
                       </span>
                     </div>
@@ -199,13 +199,13 @@ export function NewsSection({ initialNews = [] }: NewsSectionProps) {
                       href={`/berita/${news.id}`}
                       className={cn(
                         "text-base md:text-lg font-bold leading-snug line-clamp-2 mb-2 transition-colors pointer-events-auto",
-                        activeIndex === idx ? "text-primary" : "text-slate-900 hover:text-primary"
+                        activeIndex === idx ? "text-primary" : "text-foreground hover:text-primary"
                       )}
                       onClick={(e) => e.stopPropagation()}
                     >
                       {news.judul}
                     </Link>
-                    <div className="flex items-center text-[10px] font-bold uppercase text-slate-500 gap-3 tracking-wider">
+                    <div className="flex items-center text-[10px] font-bold uppercase text-muted-foreground gap-3 tracking-wider">
                       <span className="flex items-center gap-1"><Calendar className="w-3 h-3"/> {news.tanggal}</span>
                     </div>
                   </div>

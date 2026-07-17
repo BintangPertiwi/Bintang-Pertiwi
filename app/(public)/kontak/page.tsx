@@ -21,7 +21,7 @@ export default async function KontakPage() {
   const telepon = globalConfig["info_telepon"] || "";
 
   return (
-    <main className="w-full bg-white min-h-screen pb-20">
+    <main className="w-full bg-background min-h-screen pb-20">
       <PageHeader
         title="Hubungi Kami"
         description="Punya pertanyaan, masukan, atau ingin bekerja sama? Sampaikan langsung ke kontak person kami melalui WhatsApp."
@@ -32,7 +32,7 @@ export default async function KontakPage() {
 
           <div className="lg:col-span-5 lg:sticky lg:top-32 space-y-8">
             <div>
-              <h3 className="text-2xl font-bold tracking-tight text-slate-900 mb-6">
+              <h3 className="text-2xl font-bold tracking-tight text-foreground mb-6">
                 Informasi Kontak
               </h3>
               <div className="space-y-6">
@@ -42,8 +42,8 @@ export default async function KontakPage() {
                       <User className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Kontak Person</h4>
-                      <p className="text-sm text-slate-500 leading-relaxed">
+                      <h4 className="font-semibold text-foreground mb-1">Kontak Person</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
                         {kontakNama}
                         {kontakJabatan ? ` — ${kontakJabatan}` : ""}
                       </p>
@@ -57,8 +57,8 @@ export default async function KontakPage() {
                       <MapPin className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Alamat</h4>
-                      <p className="text-sm text-slate-500 leading-relaxed">{alamat}</p>
+                      <h4 className="font-semibold text-foreground mb-1">Alamat</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{alamat}</p>
                     </div>
                   </div>
                 )}
@@ -69,8 +69,8 @@ export default async function KontakPage() {
                       <Mail className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Email</h4>
-                      <p className="text-sm text-slate-500 leading-relaxed break-all">{email}</p>
+                      <h4 className="font-semibold text-foreground mb-1">Email</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed break-all">{email}</p>
                     </div>
                   </div>
                 )}
@@ -81,8 +81,8 @@ export default async function KontakPage() {
                       <Phone className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Telepon</h4>
-                      <p className="text-sm text-slate-500 leading-relaxed">{telepon}</p>
+                      <h4 className="font-semibold text-foreground mb-1">Telepon</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{telepon}</p>
                     </div>
                   </div>
                 )}

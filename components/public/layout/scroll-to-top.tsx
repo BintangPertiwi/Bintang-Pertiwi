@@ -47,8 +47,8 @@ export function ScrollToTop() {
       className={`
         fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 
         w-11 h-11 md:w-12 md:h-12 rounded-md 
-        flex items-center justify-center overflow-hidden 
-        bg-white
+        flex items-center justify-center overflow-hidden
+        bg-card
         shadow-[4px_4px_0_0_#a5e00a]
         transition-all duration-300 ease-in-out
         hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0_0_#a5e00a]

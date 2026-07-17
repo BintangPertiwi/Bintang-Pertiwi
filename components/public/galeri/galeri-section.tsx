@@ -230,13 +230,13 @@ export function GaleriSection({ initialSlides }: GaleriSectionProps) {
               <div className="flex gap-2 md:gap-3 shrink-0 ml-auto">
                 <button 
                   onClick={handlePrev}
-                  className="h-10 w-10 cursor-pointer md:h-12 md:w-12 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black text-white transition-all bg-black/20 backdrop-blur-sm"
+                  className="h-10 w-10 cursor-pointer md:h-12 md:w-12 rounded-full border border-white/30 flex items-center justify-center hover:bg-background hover:text-foreground text-white transition-all bg-black/20 backdrop-blur-sm"
                 >
                    <ArrowLeft size={18} strokeWidth={2} className="md:w-5 md:h-5" />
                 </button>
                 <button 
                   onClick={handleNext}
-                  className="h-10 w-10 cursor-pointer md:h-12 md:w-12 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black text-white transition-all bg-black/20 backdrop-blur-sm"
+                  className="h-10 w-10 cursor-pointer md:h-12 md:w-12 rounded-full border border-white/30 flex items-center justify-center hover:bg-background hover:text-foreground text-white transition-all bg-black/20 backdrop-blur-sm"
                 >
                    <ArrowRight size={18} strokeWidth={2} className="md:w-5 md:h-5" />
                 </button>

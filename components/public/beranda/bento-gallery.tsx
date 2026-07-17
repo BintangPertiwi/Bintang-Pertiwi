@@ -80,7 +80,7 @@ export function BentoGallery({ items }: BentoGalleryProps) {
   };
 
   if (!items || items.length === 0) {
-    return <div className="text-center py-20 text-slate-500">Belum ada galeri.</div>;
+    return <div className="text-center py-20 text-muted-foreground">Belum ada galeri.</div>;
   }
 
   const getBentoClasses = (index: number) => {
@@ -114,7 +114,7 @@ export function BentoGallery({ items }: BentoGalleryProps) {
               key={`${item.id}-${index}`}
               direction="none"
               delay={0.05 * (index % 7)}
-              className={`relative bg-slate-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 ${getBentoClasses(index)}`}
+              className={`relative bg-muted overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 ${getBentoClasses(index)}`}
             >
               <div 
                 className="absolute inset-0 cursor-pointer group"

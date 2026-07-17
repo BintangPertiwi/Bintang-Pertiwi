@@ -42,7 +42,7 @@ export function PaginatedGallery({ items }: PaginatedGalleryProps) {
       <BentoGallery items={visibleItems} />
       
       {hasMore && (
-        <div ref={observerTarget} className="mt-2 mb-20 flex justify-center w-full py-8 text-slate-400">
+        <div ref={observerTarget} className="mt-2 mb-20 flex justify-center w-full py-8 text-muted-foreground">
           <Loader2 className="h-6 w-6 animate-spin opacity-50" />
         </div>
       )}

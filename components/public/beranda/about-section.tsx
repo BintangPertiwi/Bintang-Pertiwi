@@ -83,11 +83,11 @@ export function AboutSection({
   };
 
   return (
-    <section id="profil" className="relative bg-white py-24 md:py-32 overflow-hidden">
+    <section id="profil" className="relative bg-background py-24 md:py-32 overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "radial-gradient(circle, #cbd5e1 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, var(--pattern-dot) 1px, transparent 1px)",
           backgroundSize: "20px 20px",
           maskImage: "radial-gradient(ellipse at center, black 20%, transparent 70%)",
           WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, transparent 70%)",
@@ -97,7 +97,7 @@ export function AboutSection({
         
         <FadeIn direction="up" className="mb-10 md:mb-14 flex flex-col md:flex-row justify-between items-start md:items-end">
           <div className="inline-flex flex-col gap-3">
-            <h2 className="text-slate-800 text-sm md:text-base font-bold tracking-[0.3em] uppercase">
+            <h2 className="text-foreground text-sm md:text-base font-bold tracking-[0.3em] uppercase">
               Tentang Kami
             </h2>
             <div className="w-12 md:w-16 h-0.5 md:h-1 bg-primary rounded-full"></div>
@@ -117,7 +117,7 @@ export function AboutSection({
                 <motion.p
                   key={index}
                   variants={paragraphVariants}
-                  className="text-xl md:text-2xl lg:text-3xl leading-relaxed font-medium text-slate-800 whitespace-pre-line"
+                  className="text-xl md:text-2xl lg:text-3xl leading-relaxed font-medium text-foreground whitespace-pre-line"
                 >
                   {para}
                 </motion.p>
@@ -125,39 +125,39 @@ export function AboutSection({
             </motion.div>
           </div>
 
-          <FadeIn direction="up" delay={0.4} className="lg:col-span-4 flex flex-col gap-6 lg:gap-10 lg:border-l lg:border-slate-200 lg:pl-16">
-            <div className="flex flex-col border-y border-slate-200 py-6 lg:border-none lg:py-0">
+          <FadeIn direction="up" delay={0.4} className="lg:col-span-4 flex flex-col gap-6 lg:gap-10 lg:border-l lg:border-border lg:pl-16">
+            <div className="flex flex-col border-y border-border py-6 lg:border-none lg:py-0">
               <div className="text-3xl md:text-5xl font-bold text-primary mb-2 break-words">
                 <Counter to={nilaiEkonomi} prefix="Rp " />
               </div>
-              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Nilai Ekonomi yang Dihasilkan</div>
+              <div className="text-sm md:text-base font-medium text-muted-foreground uppercase tracking-wide">Nilai Ekonomi yang Dihasilkan</div>
             </div>
 
-            <div className="w-16 h-[1px] bg-slate-200 hidden lg:block"></div>
+            <div className="w-16 h-[1px] bg-border hidden lg:block"></div>
 
-            <div className="flex flex-col border-y border-slate-200 py-6 lg:border-none lg:py-0">
+            <div className="flex flex-col border-y border-border py-6 lg:border-none lg:py-0">
               <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
                 <Counter to={mitraBinaan} suffix="+" />
               </div>
-              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Mitra Kelompok Binaan</div>
+              <div className="text-sm md:text-base font-medium text-muted-foreground uppercase tracking-wide">Mitra Kelompok Binaan</div>
             </div>
 
-            <div className="w-16 h-[1px] bg-slate-200 hidden lg:block"></div>
+            <div className="w-16 h-[1px] bg-border hidden lg:block"></div>
 
-            <div className="flex flex-col border-y border-slate-200 py-6 lg:border-none lg:py-0">
+            <div className="flex flex-col border-y border-border py-6 lg:border-none lg:py-0">
               <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
                 <Counter to={penerimaLangsung} suffix="+" />
               </div>
-              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Penerima Manfaat Langsung</div>
+              <div className="text-sm md:text-base font-medium text-muted-foreground uppercase tracking-wide">Penerima Manfaat Langsung</div>
             </div>
 
-            <div className="w-16 h-[1px] bg-slate-200 hidden lg:block"></div>
+            <div className="w-16 h-[1px] bg-border hidden lg:block"></div>
 
-            <div className="flex flex-col border-y border-slate-200 py-6 lg:border-none lg:py-0">
+            <div className="flex flex-col border-y border-border py-6 lg:border-none lg:py-0">
               <div className="text-4xl md:text-6xl font-bold text-primary mb-2">
                 <Counter to={penerimaTidakLangsung} suffix="+" />
               </div>
-              <div className="text-sm md:text-base font-medium text-slate-500 uppercase tracking-wide">Penerima Manfaat Tidak Langsung</div>
+              <div className="text-sm md:text-base font-medium text-muted-foreground uppercase tracking-wide">Penerima Manfaat Tidak Langsung</div>
             </div>
           </FadeIn>
 

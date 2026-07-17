@@ -110,7 +110,7 @@ export function BeritaDetail({ berita }: BeritaDetailProps) {
   };
 
   return (
-    <div className="w-full bg-white min-h-screen">
+    <div className="w-full bg-background min-h-screen">
       <div className="relative w-full min-h-[60vh] md:min-h-[70vh] flex items-end pt-28 md:pt-32">
         <div className="absolute inset-0 z-0 bg-slate-900">
           <Skeleton className="absolute inset-0 w-full h-full rounded-none" />
@@ -124,21 +124,21 @@ export function BeritaDetail({ berita }: BeritaDetailProps) {
           <div className="absolute inset-0 z-20 bg-black/40" />
         </div>
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-6 pb-12 md:pb-20">
-          <Link href="/berita" className="inline-flex items-center text-slate-300 hover:text-white transition-colors mb-6 md:mb-10 text-sm font-medium">
+          <Link href="/berita" className="inline-flex items-center text-muted-foreground hover:text-white transition-colors mb-6 md:mb-10 text-sm font-medium">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Kembali ke Berita
           </Link>
           
           <FadeIn direction="up">
             <div className="flex items-center gap-4 mb-6">
-              <span className="px-4 py-1.5 bg-primary text-slate-900 text-sm font-bold uppercase tracking-wider">
+              <span className="px-4 py-1.5 bg-primary text-foreground text-sm font-bold uppercase tracking-wider">
                 {berita.category}
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 max-w-5xl">
               {berita.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-6 text-slate-300 text-sm font-medium">
+            <div className="flex flex-wrap items-center gap-6 text-muted-foreground text-sm font-medium">
               <span className="flex items-center">
                 <Calendar className="w-4 h-4 mr-2 text-primary" />
                 {berita.date}
@@ -159,7 +159,7 @@ export function BeritaDetail({ berita }: BeritaDetailProps) {
           {/* Left Sidebar (Table of Contents) - Sticky on Desktop */}
           <div className="w-full lg:w-[25%] order-1 lg:sticky lg:top-32 self-start">
             <div>
-              <h3 className="text-lg font-bold text-slate-900 mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">
+              <h3 className="text-lg font-bold text-foreground mb-6 uppercase tracking-wider pb-2 border-b-4 border-primary inline-block">
                 Daftar Isi
               </h3>
               {headings.length > 0 ? (
@@ -167,7 +167,7 @@ export function BeritaDetail({ berita }: BeritaDetailProps) {
                   {headings.map((heading) => (
                     <li 
                       key={heading.id} 
-                      className={`transition-colors ${heading.level === 3 ? "pl-4" : ""} ${activeId === heading.id ? "border-l-2 border-primary pl-3 text-primary font-bold" : "border-l-2 border-transparent text-slate-600 hover:text-primary"}`}
+                      className={`transition-colors ${heading.level === 3 ? "pl-4" : ""} ${activeId === heading.id ? "border-l-2 border-primary pl-3 text-primary font-bold" : "border-l-2 border-transparent text-muted-foreground hover:text-primary"}`}
                     >
                       <a 
                         href={`#${heading.id}`}
@@ -180,7 +180,7 @@ export function BeritaDetail({ berita }: BeritaDetailProps) {
                   ))}
                 </ul>
               ) : (
-                <p className="text-slate-500 text-sm italic">Tidak ada daftar isi.</p>
+                <p className="text-muted-foreground text-sm italic">Tidak ada daftar isi.</p>
               )}
             </div>
 
@@ -200,14 +200,14 @@ export function BeritaDetail({ berita }: BeritaDetailProps) {
             <article 
               id="berita-content"
               className="prose prose-lg prose-slate max-w-none 
-                         prose-headings:font-bold prose-headings:text-slate-900 
-                         prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-6 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-100
+                         prose-headings:font-bold prose-headings:text-foreground 
+                         prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-6 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border
                          prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                         prose-p:text-slate-700 prose-p:leading-relaxed prose-p:mb-6
+                         prose-p:text-foreground prose-p:leading-relaxed prose-p:mb-6
                          prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-                         prose-img:my-8 prose-img:border prose-img:border-slate-200
+                         prose-img:my-8 prose-img:border prose-img:border-border
                          prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-li:mb-2
-                         prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-slate-600"
+                         prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-muted-foreground"
               dangerouslySetInnerHTML={{ __html: berita.content }}
             />
           </div>

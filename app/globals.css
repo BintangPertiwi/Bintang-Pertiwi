@@ -54,6 +54,7 @@
 
 :root {
   --background: #FFFFFF;
+  --pattern-dot: #cbd5e1;
   --foreground: #0F172A;
   --card: #FFFFFF;
   --card-foreground: #0F172A;
@@ -89,6 +90,7 @@
 
 .dark {
   --background: oklch(0.145 0 0);
+  --pattern-dot: rgba(255, 255, 255, 0.08);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);

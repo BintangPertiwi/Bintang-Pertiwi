@@ -57,7 +57,7 @@ export default function LoginPage() {
       <div
         className="hidden md:block absolute inset-0 pointer-events-none opacity-40"
         style={{
-          backgroundImage: "linear-gradient(to right, #cbd5e1 1px, transparent 1px), linear-gradient(to bottom, #cbd5e1 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(to right, var(--pattern-dot) 1px, transparent 1px), linear-gradient(to bottom, var(--pattern-dot) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
           maskImage: "radial-gradient(ellipse at center, black 10%, transparent 70%)",
           WebkitMaskImage: "radial-gradient(ellipse at center, black 10%, transparent 70%)",
