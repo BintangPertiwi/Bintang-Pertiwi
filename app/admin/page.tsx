@@ -48,8 +48,8 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-8 pb-10 max-w-5xl">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-        <p className="text-gray-500 mt-2">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
+        <p className="text-muted-foreground mt-2">
           {isSuperAdmin
             ? "Pusat kontrol Sistem Informasi Geografis Bintang Pertiwi."
             : `Selamat datang, ${session?.username ?? "Kontributor"}. Kelola produk UMKM Anda dari sini.`}
@@ -149,7 +149,7 @@ export default async function AdminDashboardPage() {
                   <AccordionTrigger className="text-lg font-bold hover:no-underline">
                     1. Tips Kualitas & Ukuran Gambar Galeri
                   </AccordionTrigger>
-                  <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
+                  <AccordionContent className="pt-4 pb-6 text-muted-foreground leading-relaxed text-base">
                     Gunakan gambar berorientasi <i>landscape</i> (mendatar, bukan potret berdiri) agar proporsional di kartu halaman muka. Kompres ukuran gambar Anda di bawah <b>2MB</b> (rekomendasi: format WebP atau JPG) agar halaman situs tetap memuat secepat kilat untuk warga dengan koneksi internet terbatas.
                   </AccordionContent>
                 </AccordionItem>
@@ -160,7 +160,7 @@ export default async function AdminDashboardPage() {
                   <AccordionTrigger className="text-lg font-bold hover:no-underline">
                     2. Aturan Penulisan Berita
                   </AccordionTrigger>
-                  <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
+                  <AccordionContent className="pt-4 pb-6 text-muted-foreground leading-relaxed text-base">
                     Kolom ringkasan digunakan sebagai teks pratinjau (preview) di halaman muka. Tulislah maksimal <b>2 hingga 3 kalimat padat</b> yang mengundang rasa penasaran pembaca, jangan memasukkan seluruh paragraf pertama ke dalamnya. Saat menulis isi, manfaatkan fitur <i>Bold</i> dan <i>Italic</i> untuk menekankan informasi penting.
                   </AccordionContent>
                 </AccordionItem>
@@ -170,7 +170,7 @@ export default async function AdminDashboardPage() {
                 <AccordionTrigger className="text-lg font-bold hover:no-underline">
                   {isSuperAdmin ? "3. " : "1. "}Mengelola Produk UMKM
                 </AccordionTrigger>
-                <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
+                <AccordionContent className="pt-4 pb-6 text-muted-foreground leading-relaxed text-base">
                   Untuk menambah, mengubah, atau menghapus produk yang tampil di katalog publik, buka menu <b>Produk</b> di panel samping (sidebar). Unggah minimal satu gambar (gambar pertama menjadi <i>thumbnail</i>), lalu isi nama, harga, kategori, dan ketersediaan stok. Gambar otomatis dikompres sebelum diunggah agar hemat penyimpanan.
                   {!isSuperAdmin && (
                     <span className="block mt-2">
@@ -185,7 +185,7 @@ export default async function AdminDashboardPage() {
                   <AccordionTrigger className="text-lg font-bold hover:no-underline">
                     4. Mengatur Informasi Web & Teks Footer
                   </AccordionTrigger>
-                  <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
+                  <AccordionContent className="pt-4 pb-6 text-muted-foreground leading-relaxed text-base">
                     Apabila Anda ingin mengubah teks sambutan utama di beranda, informasi kontak (email/telepon/alamat) yang berada di <b>bagian paling bawah website (Footer)</b>, serta tautan sosial media, silakan buka menu <b>Informasi Web</b> di panel samping. Perubahan ini akan langsung memperbarui area *footer* di seluruh halaman situs.
                   </AccordionContent>
                 </AccordionItem>
@@ -195,7 +195,7 @@ export default async function AdminDashboardPage() {
                 <AccordionTrigger className="text-lg font-bold hover:no-underline">
                   {isSuperAdmin ? "5. " : "2. "}Mengubah Password & Cara Logout
                 </AccordionTrigger>
-                <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
+                <AccordionContent className="pt-4 pb-6 text-muted-foreground leading-relaxed text-base">
                   Untuk <b>mengubah password</b> atau <b>keluar dari sistem (Logout)</b>, perhatikan bagian <b>pojok kanan atas layar Anda</b>. Klik pada ikon profil atau nama <b>Admin</b> untuk memunculkan menu tersembunyi. 
                   <br /><br />
                   <ul className="list-disc pl-5 space-y-1">
@@ -210,7 +210,7 @@ export default async function AdminDashboardPage() {
                   <AccordionTrigger className="text-lg font-bold hover:no-underline text-red-700">
                     6. Manajemen Penyimpanan
                   </AccordionTrigger>
-                  <AccordionContent className="pt-4 pb-6 text-slate-600 leading-relaxed text-base">
+                  <AccordionContent className="pt-4 pb-6 text-muted-foreground leading-relaxed text-base">
                     <p className="mb-4">
                       Alat pembersih ini berguna untuk menghapus sisa-sisa gambar sampah (yatim piatu) di Database akibat peramban tertutup sebelum artikel sempat disimpan. Hanya gambar yang usianya lebih dari 24 jam yang akan dipindai dan dibersihkan dari Database.
                     </p>

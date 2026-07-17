@@ -13,7 +13,7 @@ import * as React from "react"
 
 function StatusBadge({ status }: { status: string }) {
   if (status === "Draf") return <Badge variant="secondary" className="text-orange-800 border-orange-800">Draf</Badge>
-  if (status === "Arsip") return <Badge variant="secondary" className="text-slate-800 border-slate-800">Arsip</Badge>
+  if (status === "Arsip") return <Badge variant="secondary" className="text-foreground border-border">Arsip</Badge>
   return <Badge variant="default" className="text-white border-primary">Publik</Badge>
 }
 

@@ -52,7 +52,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-dvh flex items-center justify-center bg-white md:bg-slate-50 md:p-6 overflow-hidden">
+    <div className="relative min-h-dvh flex items-center justify-center bg-background md:bg-muted md:p-6 overflow-hidden">
       {/* Background Pattern Grid for Desktop */}
       <div
         className="hidden md:block absolute inset-0 pointer-events-none opacity-40"
@@ -65,7 +65,7 @@ export default function LoginPage() {
       />
 
       {/* Main Container */}
-      <div className="w-full h-full md:h-auto min-h-dvh md:min-h-[550px] md:max-w-4xl bg-white md:rounded-2xl md:shadow-xl flex flex-col md:flex-row overflow-hidden relative z-10 border border-slate-100">
+      <div className="w-full h-full md:h-auto min-h-dvh md:min-h-[550px] md:max-w-4xl bg-card md:rounded-2xl md:shadow-xl flex flex-col md:flex-row overflow-hidden relative z-10 border border-border">
         
         {/* Left Side: Branding / Illustration (Hidden on Mobile) */}
         <div className="hidden md:flex md:w-[45%] bg-primary relative items-center justify-center p-12 overflow-hidden">
@@ -83,9 +83,9 @@ export default function LoginPage() {
         </div>
 
         {/* Right Side: Login Form */}
-        <div className="w-full md:w-[55%] p-8 sm:p-12 lg:p-16 flex flex-col justify-center bg-white flex-1">
+        <div className="w-full md:w-[55%] p-8 sm:p-12 lg:p-16 flex flex-col justify-center bg-card flex-1">
           <div className="w-full max-w-sm mx-auto">
-            <Link href="/" className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors mb-8">
+            <Link href="/" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-8">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Kembali ke Beranda
             </Link>
@@ -100,19 +100,19 @@ export default function LoginPage() {
                 </div>
               </div>
               
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Login Admin</h2>
-              <p className="text-slate-500 text-sm">Masuk untuk mengelola konten website</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">Login Admin</h2>
+              <p className="text-muted-foreground text-sm">Masuk untuk mengelola konten website</p>
             </div>
 
             {error && (
-              <div className="bg-red-50 text-red-600 p-3 mb-6 rounded-lg text-sm text-center border border-red-100">
+              <div className="bg-red-50 text-red-600 border border-red-100 dark:bg-red-950/40 dark:text-red-400 dark:border-red-900/50 p-3 mb-6 rounded-lg text-sm text-center">
                 {error}
               </div>
             )}
 
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Username</Label>
+                <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em]">Username</Label>
                 <Input
                   type="text"
                   value={username}
@@ -123,7 +123,7 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Password</Label>
+                <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em]">Password</Label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
@@ -135,7 +135,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none"
+                    className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
                     aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}

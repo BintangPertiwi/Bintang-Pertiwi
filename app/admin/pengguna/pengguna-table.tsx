@@ -13,7 +13,7 @@ function RoleBadge({ role }: { role: string }) {
   if (role === "super_admin") {
     return <Badge variant="secondary" className="text-primary border-primary/20 bg-primary/10">Super Admin</Badge>;
   }
-  return <Badge variant="outline" className="text-slate-600 border-slate-300">Kontributor</Badge>;
+  return <Badge variant="outline" className="text-muted-foreground border-border">Kontributor</Badge>;
 }
 
 interface PenggunaTableProps {
@@ -40,7 +40,7 @@ export function PenggunaTable({ data, emptyState, currentUserId }: PenggunaTable
       accessorKey: "username",
       header: "Username",
       cell: ({ row }) => (
-        <span className="text-slate-600">
+        <span className="text-muted-foreground">
           {row.original.username}
         </span>
       ),
@@ -54,7 +54,7 @@ export function PenggunaTable({ data, emptyState, currentUserId }: PenggunaTable
       accessorKey: "wa_number",
       header: "No. WhatsApp",
       cell: ({ row }) => (
-        <span className="text-slate-600">
+        <span className="text-muted-foreground">
           {row.original.wa_number || "-"}
         </span>
       ),

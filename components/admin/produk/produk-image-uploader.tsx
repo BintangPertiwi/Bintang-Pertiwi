@@ -43,7 +43,7 @@ export function ProdukImageUploader({
         {images.map((img, index) => (
           <div
             key={img.key}
-            className="relative aspect-square rounded-md overflow-hidden border border-slate-200 bg-slate-50 group"
+            className="relative aspect-square rounded-md overflow-hidden border border-border bg-muted group"
           >
             <Image
               src={img.previewUrl}
@@ -76,14 +76,14 @@ export function ProdukImageUploader({
               "flex aspect-square flex-col items-center justify-center rounded-md border border-dashed cursor-pointer transition-all text-center p-3",
               isDragging
                 ? "border-primary bg-primary/5"
-                : "border-slate-300 bg-transparent hover:border-slate-400/80 hover:bg-slate-50"
+                : "border-border bg-transparent hover:border-slate-400/80 hover:bg-muted"
             )}
             onDragOver={onDragOver}
             onDragLeave={onDragLeave}
             onDrop={onDrop}
           >
-            <ImagePlus className="h-6 w-6 text-slate-500 mb-2" />
-            <span className="text-[13px] text-slate-500">Tambah / Geser gambar</span>
+            <ImagePlus className="h-6 w-6 text-muted-foreground mb-2" />
+            <span className="text-[13px] text-muted-foreground">Tambah / Geser gambar</span>
             <input
               id="produk-image-input"
               type="file"

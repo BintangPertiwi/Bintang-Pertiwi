@@ -138,7 +138,7 @@ export function RichTextEditor({ value, onChange, mediaAssets = [], setMediaAsse
   };
 
   return (
-    <div className="flex flex-col rounded-md border bg-white shadow-sm overflow-hidden focus-within:ring-1 focus-within:ring-ring focus-within:border-primary transition-all">
+    <div className="flex flex-col rounded-md border bg-card shadow-sm overflow-hidden focus-within:ring-1 focus-within:ring-ring focus-within:border-primary transition-all">
       <div className="flex flex-wrap items-center gap-1 border-b bg-muted/40 p-2">
         <Toggle
           size="sm"
@@ -234,17 +234,17 @@ export function RichTextEditor({ value, onChange, mediaAssets = [], setMediaAsse
               </TabsList>
               
               <TabsContent value="upload" className="flex-1 mt-4">
-                <div className="flex flex-col items-center justify-center min-h-[250px] h-full border-2 border-dashed border-slate-200 rounded-md bg-slate-50">
+                <div className="flex flex-col items-center justify-center min-h-[250px] h-full border-2 border-dashed border-border rounded-md bg-muted">
                   {isUploading ? (
-                    <div className="flex flex-col items-center text-slate-500">
+                    <div className="flex flex-col items-center text-muted-foreground">
                       <Loader2 className="w-8 h-8 animate-spin mb-4" />
                       <p>Mengunggah gambar...</p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-center">
-                      <UploadCloud className="w-12 h-12 text-slate-300 mb-4" />
-                      <p className="text-sm text-slate-600 font-medium text-center px-4">Geser & lepas file atau klik tombol di bawah</p>
-                      <p className="text-xs text-slate-500 mt-1 mb-6 text-center px-4">Maksimal 5 gambar per berita ({5 - mediaAssets.length} tersisa).</p>
+                      <UploadCloud className="w-12 h-12 text-muted-foreground mb-4" />
+                      <p className="text-sm text-muted-foreground font-medium text-center px-4">Geser & lepas file atau klik tombol di bawah</p>
+                      <p className="text-xs text-muted-foreground mt-1 mb-6 text-center px-4">Maksimal 5 gambar per berita ({5 - mediaAssets.length} tersisa).</p>
                       <label className={`cursor-pointer bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-primary/90 transition-colors ${mediaAssets.length >= 5 ? "opacity-50 pointer-events-none" : ""}`}>
                         Pilih Gambar Baru
                         <Input 
@@ -262,8 +262,8 @@ export function RichTextEditor({ value, onChange, mediaAssets = [], setMediaAsse
               
               <TabsContent value="media" className="flex-1 mt-4 overflow-y-auto max-h-[350px]">
                 {mediaAssets.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-[300px] text-slate-500">
-                    <FileImage className="w-12 h-12 text-slate-300 mb-4" />
+                  <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground">
+                    <FileImage className="w-12 h-12 text-muted-foreground mb-4" />
                     <p>Belum ada media yang diunggah.</p>
                   </div>
                 ) : (
@@ -271,7 +271,7 @@ export function RichTextEditor({ value, onChange, mediaAssets = [], setMediaAsse
                     {mediaAssets.map((url, idx) => {
                       const isUsed = currentHTML.includes(url);
                       return (
-                        <div key={idx} className="relative group border rounded-md overflow-hidden bg-slate-100 aspect-square">
+                        <div key={idx} className="relative group border rounded-md overflow-hidden bg-muted aspect-square">
                           <Image src={url} alt={`Media ${idx}`} fill sizes="120px" className="object-cover" />
                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                             <Button size="sm" variant="secondary" onClick={() => {
@@ -367,21 +367,21 @@ export function RichTextEditor({ value, onChange, mediaAssets = [], setMediaAsse
 
       {editor && (
         <BubbleMenu editor={editor} options={BUBBLE_MENU_OPTIONS}>
-          <div className="flex items-center gap-1 bg-white border shadow-md rounded-md p-1 border-slate-200">
-            <Toggle size="sm" pressed={editor.isActive("bold")} onPressedChange={() => editor.chain().focus().toggleBold().run()} className="h-8 px-2 data-[state=on]:bg-slate-100">
+          <div className="flex items-center gap-1 bg-card border shadow-md rounded-md p-1 border-border">
+            <Toggle size="sm" pressed={editor.isActive("bold")} onPressedChange={() => editor.chain().focus().toggleBold().run()} className="h-8 px-2 data-[state=on]:bg-muted">
               <Bold className="h-4 w-4" />
             </Toggle>
-            <Toggle size="sm" pressed={editor.isActive("italic")} onPressedChange={() => editor.chain().focus().toggleItalic().run()} className="h-8 px-2 data-[state=on]:bg-slate-100">
+            <Toggle size="sm" pressed={editor.isActive("italic")} onPressedChange={() => editor.chain().focus().toggleItalic().run()} className="h-8 px-2 data-[state=on]:bg-muted">
               <Italic className="h-4 w-4" />
             </Toggle>
-            <Toggle size="sm" pressed={editor.isActive("strike")} onPressedChange={() => editor.chain().focus().toggleStrike().run()} className="h-8 px-2 data-[state=on]:bg-slate-100">
+            <Toggle size="sm" pressed={editor.isActive("strike")} onPressedChange={() => editor.chain().focus().toggleStrike().run()} className="h-8 px-2 data-[state=on]:bg-muted">
               <Strikethrough className="h-4 w-4" />
             </Toggle>
-            <div className="w-px h-4 bg-slate-200 mx-1" />
-            <Toggle size="sm" pressed={editor.isActive("heading", { level: 2 })} onPressedChange={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className="h-8 px-2 data-[state=on]:bg-slate-100">
+            <div className="w-px h-4 bg-accent mx-1" />
+            <Toggle size="sm" pressed={editor.isActive("heading", { level: 2 })} onPressedChange={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className="h-8 px-2 data-[state=on]:bg-muted">
               <Heading2 className="h-4 w-4" />
             </Toggle>
-            <Toggle size="sm" pressed={editor.isActive("heading", { level: 3 })} onPressedChange={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className="h-8 px-2 data-[state=on]:bg-slate-100">
+            <Toggle size="sm" pressed={editor.isActive("heading", { level: 3 })} onPressedChange={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className="h-8 px-2 data-[state=on]:bg-muted">
               <Heading3 className="h-4 w-4" />
             </Toggle>
           </div>
@@ -390,7 +390,7 @@ export function RichTextEditor({ value, onChange, mediaAssets = [], setMediaAsse
 
       {editor && (
         <FloatingMenu editor={editor} options={FLOATING_MENU_OPTIONS}>
-          <div className="flex flex-wrap items-center gap-1 bg-white border shadow-md rounded-md p-1 border-slate-200">
+          <div className="flex flex-wrap items-center gap-1 bg-card border shadow-md rounded-md p-1 border-border">
             <Toggle size="sm" pressed={editor.isActive("bold")} onPressedChange={() => editor.chain().focus().toggleBold().run()} className="h-8 px-2" title="Bold">
               <Bold className="h-4 w-4" />
             </Toggle>
@@ -400,7 +400,7 @@ export function RichTextEditor({ value, onChange, mediaAssets = [], setMediaAsse
             <Toggle size="sm" pressed={editor.isActive("strike")} onPressedChange={() => editor.chain().focus().toggleStrike().run()} className="h-8 px-2" title="Strikethrough">
               <Strikethrough className="h-4 w-4" />
             </Toggle>
-            <div className="w-px h-4 bg-slate-200 mx-1" />
+            <div className="w-px h-4 bg-accent mx-1" />
             <Toggle size="sm" pressed={editor.isActive("heading", { level: 2 })} onPressedChange={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className="h-8 px-2" title="Heading 2">
               <Heading2 className="h-4 w-4" />
             </Toggle>
@@ -413,8 +413,8 @@ export function RichTextEditor({ value, onChange, mediaAssets = [], setMediaAsse
             <Toggle size="sm" pressed={editor.isActive("orderedList")} onPressedChange={() => editor.chain().focus().toggleOrderedList().run()} className="h-8 px-2" title="Ordered List">
               <ListOrdered className="h-4 w-4" />
             </Toggle>
-            <div className="w-px h-4 bg-slate-200 mx-1" />
-            <Button size="sm" variant="ghost" className="h-8 px-2 hover:bg-slate-100" onClick={(e) => { e.preventDefault(); setIsMediaModalOpen(true); }} title="Sisipkan Gambar">
+            <div className="w-px h-4 bg-accent mx-1" />
+            <Button size="sm" variant="ghost" className="h-8 px-2 hover:bg-muted" onClick={(e) => { e.preventDefault(); setIsMediaModalOpen(true); }} title="Sisipkan Gambar">
               <ImageIcon className="h-4 w-4" />
             </Button>
           </div>

@@ -46,7 +46,7 @@ export const columns: ColumnDef<ProdukRow>[] = [
     accessorKey: "kategori",
     header: "Kategori",
     cell: ({ row }) => (
-      <Badge variant="outline" className="font-medium text-foreground bg-slate-50">
+      <Badge variant="outline" className="font-medium text-foreground bg-muted">
         {row.original.kategori || "-"}
       </Badge>
     ),

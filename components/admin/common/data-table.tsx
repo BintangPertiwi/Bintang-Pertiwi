@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="flex flex-col w-full bg-white">
+    <div className="flex flex-col w-full bg-card">
       <div className="overflow-auto">
         <Table>
           <TableHeader>
@@ -61,7 +61,7 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id} className="hover:bg-transparent border-b-2">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="font-semibold text-slate-800">
+                    <TableHead key={header.id} className="font-semibold text-foreground">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-b transition-colors hover:bg-slate-50/50"
+                  className="border-b transition-colors hover:bg-muted/50"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-3">

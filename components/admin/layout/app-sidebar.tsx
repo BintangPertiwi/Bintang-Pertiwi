@@ -115,7 +115,7 @@ export function AppSidebar({ role }: { role: string }) {
                 </div>
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
-                <span className="font-bold text-slate-900 tracking-tight text-lg">BINTANG PERTIWI</span>
+                <span className="font-bold text-foreground tracking-tight text-lg">BINTANG PERTIWI</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -93,7 +93,7 @@ export function GaleriFormFields({
                   "flex flex-col items-center justify-center w-full h-40 border border-dashed rounded-md cursor-pointer overflow-hidden transition-all relative",
                   isDragging
                     ? "border-primary bg-primary/5"
-                    : "border-slate-300 bg-transparent hover:border-slate-400/80 hover:bg-slate-50",
+                    : "border-border bg-transparent hover:border-slate-400/80 hover:bg-muted",
                 )}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -118,10 +118,10 @@ export function GaleriFormFields({
                   </>
                 ) : (
                   <div className="flex flex-col items-center justify-center p-4 text-center z-10 relative">
-                    <div className="flex gap-4 items-center mb-3 text-slate-500">
+                    <div className="flex gap-4 items-center mb-3 text-muted-foreground">
                       <ImageIcon className="w-5 h-5" />
                     </div>
-                    <p className="text-[13px] text-slate-500">
+                    <p className="text-[13px] text-muted-foreground">
                       Geser & Lepas berkas disini
                     </p>
                   </div>

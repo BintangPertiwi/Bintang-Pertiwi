@@ -34,7 +34,7 @@ export function UserNav() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="ghost" className="flex items-center gap-2 rounded-md pl-1 pr-3 py-1 h-auto border border-transparent hover:border-slate-200" />}>
+      <DropdownMenuTrigger render={<Button variant="ghost" className="flex items-center gap-2 rounded-md pl-1 pr-3 py-1 h-auto border border-transparent hover:border-border" />}>
         <Avatar className="h-8 w-8">
           <AvatarFallback className="bg-primary text-white flex items-center justify-center">
             <User className="h-4 w-4" />
@@ -48,7 +48,7 @@ export function UserNav() {
         <DropdownMenuGroup>
           <DropdownMenuLabel className="font-normal p-2">
             <div className="flex flex-col space-y-1.5">
-              <p className="text-sm font-bold leading-none text-slate-800">Admin</p>
+              <p className="text-sm font-bold leading-none text-foreground">Admin</p>
             </div>
           </DropdownMenuLabel>
         </DropdownMenuGroup>
@@ -60,7 +60,7 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:bg-red-50 focus:text-red-600 cursor-pointer">
+        <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:bg-red-50 focus:text-red-600 dark:text-red-400 dark:focus:bg-red-950/40 dark:focus:text-red-400 cursor-pointer">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Keluar</span>
         </DropdownMenuItem>

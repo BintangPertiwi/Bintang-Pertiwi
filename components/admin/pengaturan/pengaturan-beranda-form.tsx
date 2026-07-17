@@ -73,13 +73,13 @@ export function PengaturanBerandaForm({
           </AccordionTrigger>
           <AccordionContent className="pt-4 pb-6 space-y-8">
             {slides.map((slide, index) => (
-              <div key={slide.id} className="relative flex flex-col gap-6 p-6 border rounded-lg bg-slate-50/50">
+              <div key={slide.id} className="relative flex flex-col gap-6 p-6 border rounded-lg bg-muted/50">
                 <div className="flex justify-between items-center mb-2">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shadow-sm">
                       {index + 1}
                     </div>
-                    <h4 className="font-semibold text-slate-700">Pengaturan Slide</h4>
+                    <h4 className="font-semibold text-foreground">Pengaturan Slide</h4>
                   </div>
                   <Button 
                     type="button" 
@@ -103,7 +103,7 @@ export function PengaturanBerandaForm({
                         className={`relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-md cursor-pointer overflow-hidden transition-all ${
                           draggingSlideId === slide.id 
                             ? "border-primary bg-primary/5" 
-                            : "border-slate-300 bg-white hover:border-slate-400/80 hover:bg-slate-50"
+                            : "border-border bg-card hover:border-slate-400/80 hover:bg-muted"
                         }`}
                         onDragOver={(e) => handleDragOver(e, slide.id)}
                         onDragLeave={handleDragLeave}
@@ -132,10 +132,10 @@ export function PengaturanBerandaForm({
                           </>
                         ) : (
                           <div className="flex flex-col items-center justify-center p-4 z-10 relative text-center">
-                            <div className="flex gap-4 items-center mb-3 text-slate-500">
+                            <div className="flex gap-4 items-center mb-3 text-muted-foreground">
                               <ImagePlus className="w-8 h-8" />
                             </div>
-                            <p className="text-sm text-slate-500 mb-1">Geser & Lepas gambar banner ke sini</p>
+                            <p className="text-sm text-muted-foreground mb-1">Geser & Lepas gambar banner ke sini</p>
                             <p className="text-xs text-muted-foreground">Rekomendasi ukuran: 1920x1080px (Landscape)</p>
                           </div>
                         )}
@@ -288,21 +288,21 @@ export function PengaturanBerandaForm({
                     <label 
                       key={galeri.id}
                       className={`relative flex flex-col border-2 cursor-pointer overflow-hidden transition-all ${
-                        isSelected ? "border-primary ring-2 ring-primary/20" : "border-transparent hover:border-slate-300"
+                        isSelected ? "border-primary ring-2 ring-primary/20" : "border-transparent hover:border-border"
                       }`}
                     >
-                      <div className="relative aspect-video bg-slate-100 border-b flex shrink-0 items-center justify-center">
+                      <div className="relative aspect-video bg-muted border-b flex shrink-0 items-center justify-center">
                         {galeri.url_foto ? (
                           <Image src={galeri.url_foto} alt={galeri.judul || "Galeri"} fill className="object-cover" sizes="(max-width: 768px) 50vw, 20vw" priority={true} />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-muted-foreground"><ImagePlus className="w-8 h-8 opacity-40" /></div>
                         )}
                         <div className="absolute top-2 left-2 z-10">
-                          <span className="font-semibold text-[9px] uppercase tracking-wider bg-white/95 backdrop-blur-sm text-slate-700 rounded-full px-2 py-0.5 shadow-sm border">
+                          <span className="font-semibold text-[9px] uppercase tracking-wider bg-card/95 backdrop-blur-sm text-foreground rounded-full px-2 py-0.5 shadow-sm border">
                             {galeri.kategori}
                           </span>
                         </div>
-                        <div className="absolute top-2 right-2 bg-white rounded-md shadow-sm z-10">
+                        <div className="absolute top-2 right-2 bg-card rounded-md shadow-sm z-10">
                           <Checkbox 
                             checked={isSelected}
                             onCheckedChange={() => handleToggleGaleri(galeri.id)}
@@ -310,10 +310,10 @@ export function PengaturanBerandaForm({
                           />
                         </div>
                       </div>
-                      <div className="p-3 bg-white flex flex-col flex-1 justify-start">
-                        <p className="text-[13px] font-semibold line-clamp-2 leading-snug text-slate-800">{galeri.judul || "Tanpa Judul"}</p>
+                      <div className="p-3 bg-card flex flex-col flex-1 justify-start">
+                        <p className="text-[13px] font-semibold line-clamp-2 leading-snug text-foreground">{galeri.judul || "Tanpa Judul"}</p>
                         {galeri.deskripsi && (
-                          <p className="text-[10px] text-slate-500 line-clamp-1">{galeri.deskripsi}</p>
+                          <p className="text-[10px] text-muted-foreground line-clamp-1">{galeri.deskripsi}</p>
                         )}
                       </div>
                     </label>
@@ -321,7 +321,7 @@ export function PengaturanBerandaForm({
                 })}
               </div>
             ) : (
-              <div className="text-center p-8 border rounded-lg bg-slate-50 text-slate-500">
+              <div className="text-center p-8 border rounded-lg bg-muted text-muted-foreground">
                 Belum ada data galeri. Silakan tambahkan galeri terlebih dahulu.
               </div>
             )}

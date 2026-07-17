@@ -32,7 +32,7 @@ export const columns: ColumnDef<GaleriRow>[] = [
     accessorKey: "kategori",
     header: "Kategori",
     cell: ({ row }) => (
-      <Badge variant="outline" className="font-medium text-foreground bg-slate-50">
+      <Badge variant="outline" className="font-medium text-foreground bg-muted">
         {row.original.kategori}
       </Badge>
     ),

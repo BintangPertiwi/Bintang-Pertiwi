@@ -6,6 +6,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import { Suspense } from "react";
 
 import { UserNav } from "@/components/admin/layout/user-nav";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { getSession } from "@/lib/auth";
 
 async function AdminShell({ children }: { children: React.ReactNode }) {
@@ -16,17 +17,18 @@ async function AdminShell({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <AppSidebar role={role} />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center justify-between px-4 bg-white sticky top-0 z-50 border-b border-slate-200 shadow-sm">
+        <header className="flex h-16 shrink-0 items-center justify-between px-4 bg-background sticky top-0 z-50 border-b border-border shadow-sm">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <DynamicBreadcrumb />
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
             <UserNav />
           </div>
         </header>
-        <main className="flex-1 p-4 tablet:p-6 desktop:p-8 bg-white">
+        <main className="flex-1 p-4 tablet:p-6 desktop:p-8 bg-background">
           {children}
         </main>
       </SidebarInset>
