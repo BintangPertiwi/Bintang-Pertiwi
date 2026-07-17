@@ -145,9 +145,9 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
               <div className="grid grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
                 {visibleItems.map((item, index) => (
                   <FadeIn key={item.id} direction="up" delay={Math.min((index % LOAD_STEP) * 0.05, 0.2)}>
-                    <Link href={`/produk-umkm/${item.slug}`} className="group block bg-background border border-border rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 relative">
+                    <Link href={`/produk-umkm/${item.slug}`} className="group flex flex-col h-full bg-background border border-border rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 relative">
                       {/* Image Area */}
-                      <div className="aspect-square sm:aspect-[4/3] w-full relative bg-muted overflow-hidden">
+                      <div className="aspect-square sm:aspect-[4/3] w-full shrink-0 relative bg-muted overflow-hidden">
                         <Image
                           src={item.gambar_urls[0]}
                           alt={item.nama}
@@ -172,34 +172,36 @@ export function ProdukLayout({ products, categories }: ProdukLayoutProps) {
                       </div>
 
                       {/* Content Area */}
-                      <div className="p-3 sm:p-5 flex flex-col h-[130px] sm:h-[180px]">
-                        <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+                      <div className="p-3 sm:p-5 flex flex-col flex-1">
+                        <div className="flex items-center justify-between mb-1.5 sm:mb-2 min-w-0">
                           <span className="text-muted-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-wider truncate mr-1">
                             {item.kategori}
                           </span>
                         </div>
 
-                        <h3 className="text-[13px] sm:text-lg font-bold text-foreground leading-snug mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                        <h3 className="text-[13px] sm:text-lg font-bold text-foreground leading-snug mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                           {item.nama}
                         </h3>
 
-                        <div className="mt-auto pt-2 sm:pt-4 flex items-end justify-between">
-                          <div className="flex flex-col">
+                        <div className="mt-auto pt-2 sm:pt-4 flex items-center justify-between gap-2">
+                          <div className="flex flex-col min-w-0 w-full">
                             {item.harga_coret && (
-                              <span className="text-muted-foreground text-[10px] sm:text-sm line-through decoration-slate-300 mb-0.5 sm:mb-0">
+                              <span className="text-muted-foreground text-[10px] sm:text-sm line-through decoration-slate-300 mb-0.5 truncate w-full">
                                 Rp {item.harga_coret.toLocaleString("id-ID")}
                               </span>
                             )}
-                            <span className="text-sm sm:text-xl font-bold text-foreground leading-none sm:leading-normal">
+                            <div className="text-sm sm:text-lg font-bold text-foreground truncate w-full">
                               Rp {item.harga.toLocaleString("id-ID")}
                               {item.satuan && (
-                                <span className="text-[10px] sm:text-xs font-medium text-muted-foreground"> / {item.satuan}</span>
+                                <span className="text-[10px] sm:text-xs font-medium text-muted-foreground ml-1">
+                                  / {item.satuan}
+                                </span>
                               )}
-                            </span>
+                            </div>
                           </div>
 
-                          <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-colors shrink-0 shadow-sm">
-                            <MessageCircle className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground group-hover:text-white transition-colors" />
+                          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-colors shrink-0 shadow-sm">
+                            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground group-hover:text-white transition-colors" />
                           </div>
                         </div>
                       </div>
