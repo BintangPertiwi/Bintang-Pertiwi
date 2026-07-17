@@ -1,6 +1,9 @@
 import { db } from "../index";
 import { adminAuth } from "../schema";
-import { eq } from "drizzle-orm";
+import { eq, like, or, desc, and } from "drizzle-orm";
+import type { UserRole } from "@/lib/auth";
+import type { PaginatedResult } from "@/types";
+import { paginateItems } from "@/lib/listing";
 
 export interface AdminUserSummary {
   id: number;
@@ -66,4 +69,59 @@ export async function createUser(data: {
 export async function deleteUserById(id: number): Promise<boolean> {
   const result = await db.delete(adminAuth).where(eq(adminAuth.id, id));
   return result.rowsAffected > 0;
+}
+
+/**
+ * Mendapatkan daftar pengguna dengan paginasi, pencarian, dan filter.
+ */
+export async function getUserListing({
+  q = "",
+  filter = "all", // "all", "super_admin", "kontributor"
+  page = 1,
+  limit = 10,
+}: {
+  q?: string;
+  filter?: string;
+  page?: number;
+  limit?: number;
+}): Promise<
+  PaginatedResult<typeof adminAuth.$inferSelect> & {
+    roles: string[];
+  }
+> {
+  const conditionFilters = [];
+
+  if (q) {
+    conditionFilters.push(
+      or(
+        like(adminAuth.username, `%${q}%`),
+        like(adminAuth.nama, `%${q}%`)
+      )
+    );
+  }
+
+  if (filter !== "all") {
+    conditionFilters.push(eq(adminAuth.role, filter as UserRole));
+  }
+
+  const whereCondition = conditionFilters.length > 0 ? and(...conditionFilters) : undefined;
+
+  const users = await db
+    .select()
+    .from(adminAuth)
+    .where(whereCondition)
+    .orderBy(desc(adminAuth.id));
+
+  // Omit password from result
+  const safeUsers = users.map((user) => {
+    const { password, ...rest } = user;
+    return rest as typeof adminAuth.$inferSelect;
+  });
+
+  const roles = ["super_admin", "kontributor"];
+
+  return {
+    ...paginateItems(safeUsers, page, limit),
+    roles,
+  };
 }
