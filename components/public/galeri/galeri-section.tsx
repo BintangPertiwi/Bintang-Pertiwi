@@ -147,15 +147,15 @@ export function GaleriSection({ initialSlides }: GaleriSectionProps) {
                     : "opacity-0 mt-8 pointer-events-none"
                 }`}
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <p className="text-sm md:text-base font-medium text-white/90 uppercase tracking-widest">
+                <div className="flex items-center gap-3 mb-3 md:mb-4 w-full">
+                  <p className="text-xs md:text-sm font-medium text-white/90 uppercase tracking-widest truncate">
                     {slide.subtitle}
                   </p>
                 </div>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-6 leading-[1.1] drop-shadow-lg">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tighter mb-4 md:mb-6 leading-[1.1] drop-shadow-lg line-clamp-3 md:line-clamp-4">
                   {slide.title}
                 </h2>
-                <p className="text-base lg:text-lg text-white/80 max-w-md leading-relaxed">
+                <p className="text-sm md:text-base lg:text-lg text-white/80 max-w-md leading-relaxed line-clamp-3 md:line-clamp-4">
                   {slide.description}
                 </p>
               </div>

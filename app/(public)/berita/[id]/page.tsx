@@ -3,6 +3,7 @@ import { BeritaDetail } from "@/components/public/berita/berita-detail";
 import { getPublicBeritaById, getBeritaList } from "@/lib/db/queries";
 import { notFound } from "next/navigation";
 import { stripHtml } from "@/lib/listing";
+import { formatDate } from "@/lib/utils";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -42,7 +43,7 @@ export default async function BeritaDetailPage({ params }: { params: Promise<{ i
   const detail = {
     id: beritaData.id,
     title: beritaData.judul,
-    date: beritaData.tanggal,
+    date: formatDate(beritaData.tanggal),
     image: beritaData.url_foto || "/images/placeholder.jpg",
     category: beritaData.kategori || "Umum",
     content: beritaData.isi_berita,
