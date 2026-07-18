@@ -107,7 +107,7 @@ export function DokumenLayout({
               key={dok.id}
               type="button"
               onClick={() => setPreviewDoc(dok)}
-              className="group flex flex-col text-left bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg hover:border-primary/40 transition-all"
+              className="group flex flex-col text-left cursor-pointer bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg hover:border-primary/40 transition-all"
             >
               <div className="relative flex items-center justify-center h-32 bg-muted/40">
                 <FileTypeIcon tipe={dok.tipe_file} className="h-14 w-14 transition-transform group-hover:scale-110" />
@@ -136,7 +136,7 @@ export function DokumenLayout({
               key={dok.id}
               type="button"
               onClick={() => setPreviewDoc(dok)}
-              className="flex items-center gap-4 p-4 text-left bg-card hover:bg-muted/50 transition-colors"
+              className="flex items-center gap-4 p-4 text-left cursor-pointer bg-card hover:bg-muted/50 transition-colors"
             >
               <FileTypeIcon tipe={dok.tipe_file} className="h-8 w-8 shrink-0" />
               <div className="flex-1 min-w-0">
