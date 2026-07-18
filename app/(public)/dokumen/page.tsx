@@ -1,6 +1,6 @@
 import { PageHeader } from "@/components/public/common/page-header";
 import { DokumenLayout } from "@/components/public/dokumen/dokumen-layout";
-import { getDokumenList } from "@/lib/db/queries";
+import { getDokumenList, getGlobalConfig } from "@/lib/db/queries";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,13 +11,17 @@ export const metadata: Metadata = {
 
 export default async function DokumenPage() {
   const documents = await getDokumenList();
+  const globalConfig = await getGlobalConfig();
   const categories = Array.from(new Set(documents.map((d) => d.kategori).filter(Boolean)));
+
+  const headerTitle = globalConfig["dokumen_header_title"] || "Dokumen";
+  const headerDesc = globalConfig["dokumen_header_desc"] || "Kumpulan dokumen resmi, kebijakan, formulir, dan laporan. Cari, lihat pratinjau, atau unduh dokumen yang Anda butuhkan.";
 
   return (
     <main className="w-full bg-background min-h-screen pb-20">
       <PageHeader
-        title="Dokumen"
-        description="Kumpulan dokumen resmi, kebijakan, formulir, dan laporan. Cari, lihat pratinjau, atau unduh dokumen yang Anda butuhkan."
+        title={headerTitle}
+        description={headerDesc}
       />
       <DokumenLayout documents={documents} categories={categories} />
     </main>

@@ -68,6 +68,8 @@ const menuGroups: SidebarGroupDef[] = [
       { title: "Pengaturan Beranda", icon: PanelTop, href: "/admin/pengaturan-beranda", superAdminOnly: true },
       { title: "Pengaturan Berita", icon: PanelTop, href: "/admin/pengaturan-berita", superAdminOnly: true },
       { title: "Pengaturan Galeri", icon: PanelTop, href: "/admin/pengaturan-galeri", superAdminOnly: true },
+      { title: "Pengaturan Dokumen", icon: PanelTop, href: "/admin/pengaturan-dokumen", superAdminOnly: true },
+      { title: "Pengaturan Kontak", icon: PanelTop, href: "/admin/pengaturan-kontak", superAdminOnly: true },
     ],
   },
   {

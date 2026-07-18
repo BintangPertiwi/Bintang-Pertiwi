@@ -20,11 +20,14 @@ export default async function KontakPage() {
   const email = globalConfig["info_email"] || "";
   const telepon = globalConfig["info_telepon"] || "";
 
+  const headerTitle = globalConfig["kontak_header_title"] || "Hubungi Kami";
+  const headerDesc = globalConfig["kontak_header_desc"] || "Punya pertanyaan, masukan, atau ingin bekerja sama? Sampaikan langsung ke kontak person kami melalui WhatsApp.";
+
   return (
     <main className="w-full bg-background min-h-screen pb-20">
       <PageHeader
-        title="Hubungi Kami"
-        description="Punya pertanyaan, masukan, atau ingin bekerja sama? Sampaikan langsung ke kontak person kami melalui WhatsApp."
+        title={headerTitle}
+        description={headerDesc}
       />
 
       <div className="w-full max-w-7xl mx-auto px-6 mt-12 md:mt-20">
