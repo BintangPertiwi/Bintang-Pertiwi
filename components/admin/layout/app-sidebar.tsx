@@ -3,6 +3,7 @@
 import {
   BadgeInfo,
   Contact,
+  FileText,
   Home,
   Image as ImageIcon,
   LogOut,
@@ -56,6 +57,7 @@ const menuGroups: SidebarGroupDef[] = [
       { title: "Produk", icon: ShoppingBag, href: "/admin/produk" },
       { title: "Berita", icon: Newspaper, href: "/admin/berita", superAdminOnly: true },
       { title: "Galeri", icon: ImageIcon, href: "/admin/galeri", superAdminOnly: true },
+      { title: "Dokumen", icon: FileText, href: "/admin/dokumen", superAdminOnly: true },
       { title: "Informasi Web", icon: BadgeInfo, href: "/admin/informasi-web", superAdminOnly: true },
       { title: "Kontak Person", icon: Contact, href: "/admin/kontak-person", superAdminOnly: true },
     ],
@@ -66,6 +68,8 @@ const menuGroups: SidebarGroupDef[] = [
       { title: "Pengaturan Beranda", icon: PanelTop, href: "/admin/pengaturan-beranda", superAdminOnly: true },
       { title: "Pengaturan Berita", icon: PanelTop, href: "/admin/pengaturan-berita", superAdminOnly: true },
       { title: "Pengaturan Galeri", icon: PanelTop, href: "/admin/pengaturan-galeri", superAdminOnly: true },
+      { title: "Pengaturan Dokumen", icon: PanelTop, href: "/admin/pengaturan-dokumen", superAdminOnly: true },
+      { title: "Pengaturan Kontak", icon: PanelTop, href: "/admin/pengaturan-kontak", superAdminOnly: true },
     ],
   },
   {

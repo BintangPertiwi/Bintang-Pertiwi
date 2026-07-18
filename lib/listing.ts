@@ -7,6 +7,7 @@ export const DEFAULT_PAGE_LIMITS = {
   galeri: 12,
   produk: 12,
   pengguna: 10,
+  dokumen: 12,
 } as const;
 
 export function stripHtml(html: string): string {

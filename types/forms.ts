@@ -37,6 +37,15 @@ export const galeriSchema = z.object({
 
 export type GaleriFormValues = z.infer<typeof galeriSchema>;
 
+export const dokumenSchema = z.object({
+  judul: z.string().min(3, { message: "Judul dokumen minimal 3 karakter." }).max(120, { message: "Judul maksimal 120 karakter." }),
+  kategori: z.string().min(1, { message: "Kategori wajib dipilih atau diisi." }),
+  deskripsi: z.string().max(300, { message: "Deskripsi maksimal 300 karakter." }).optional(),
+  file: z.any().optional(),
+});
+
+export type DokumenFormValues = z.infer<typeof dokumenSchema>;
+
 export const produkSchema = z
   .object({
     nama: z.string().min(3, { message: "Nama produk minimal 3 karakter." }).max(120, { message: "Nama maksimal 120 karakter." }),
