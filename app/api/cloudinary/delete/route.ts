@@ -5,6 +5,7 @@ import { isMediaUrlReferenced } from "@/lib/db/queries";
 
 interface DeleteCloudinaryBody {
   secure_url?: string;
+  resource_type?: string; // "image" (default) | "raw" (dokumen Office)
 }
 
 export async function POST(request: Request) {
@@ -18,6 +19,7 @@ export async function POST(request: Request) {
 
     const body = (await request.json()) as DeleteCloudinaryBody;
     const secureUrl = body.secure_url?.trim();
+    const resourceType = body.resource_type === "raw" ? "raw" : "image";
 
     if (!secureUrl) {
       return NextResponse.json(
@@ -37,7 +39,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const deleted = await deleteFromCloudinary(secureUrl);
+    const deleted = await deleteFromCloudinary(secureUrl, resourceType);
     if (!deleted) {
       return NextResponse.json(
         { success: false, message: "Gagal menghapus gambar dari Cloudinary." },

@@ -12,6 +12,7 @@ const navItems = [
   { label: "Produk UMKM", href: "/produk-umkm" },
   { label: "Berita", href: "/berita" },
   { label: "Galeri", href: "/galeri" },
+  { label: "Dokumen", href: "/dokumen" },
   { label: "Kontak", href: "/kontak" },
 ];
 

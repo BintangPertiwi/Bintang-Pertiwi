@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import "server-only";
 
-export async function deleteFromCloudinary(secureUrl: string): Promise<boolean> {
+export async function deleteFromCloudinary(secureUrl: string, resourceType: string = "image"): Promise<boolean> {
   if (!secureUrl || !secureUrl.includes("cloudinary.com")) return false;
 
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -20,9 +20,14 @@ export async function deleteFromCloudinary(secureUrl: string): Promise<boolean> 
     const afterUpload = secureUrl.substring(uploadIndex + 8);
     const versionMatch = afterUpload.match(/^v\d+\//);
     const pathWithoutVersion = versionMatch ? afterUpload.substring(versionMatch[0].length) : afterUpload;
-    
-    const lastDotIndex = pathWithoutVersion.lastIndexOf(".");
-    const publicId = lastDotIndex !== -1 ? pathWithoutVersion.substring(0, lastDotIndex) : pathWithoutVersion;
+
+    // Untuk resource "raw" (dokumen Office), ekstensi adalah bagian dari public_id
+    // sehingga TIDAK boleh dipangkas. Untuk "image", ekstensi dibuang seperti biasa.
+    let publicId = pathWithoutVersion;
+    if (resourceType !== "raw") {
+      const lastDotIndex = pathWithoutVersion.lastIndexOf(".");
+      publicId = lastDotIndex !== -1 ? pathWithoutVersion.substring(0, lastDotIndex) : pathWithoutVersion;
+    }
 
     const timestamp = Math.round(new Date().getTime() / 1000).toString();
     const stringToSign = `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
@@ -34,7 +39,7 @@ export async function deleteFromCloudinary(secureUrl: string): Promise<boolean> 
     formData.append("timestamp", timestamp);
     formData.append("signature", signature);
 
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`, {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/destroy`, {
       method: "POST",
       body: formData,
     });

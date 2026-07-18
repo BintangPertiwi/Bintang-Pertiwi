@@ -3,6 +3,7 @@
 import {
   BadgeInfo,
   Contact,
+  FileText,
   Home,
   Image as ImageIcon,
   LogOut,
@@ -56,6 +57,7 @@ const menuGroups: SidebarGroupDef[] = [
       { title: "Produk", icon: ShoppingBag, href: "/admin/produk" },
       { title: "Berita", icon: Newspaper, href: "/admin/berita", superAdminOnly: true },
       { title: "Galeri", icon: ImageIcon, href: "/admin/galeri", superAdminOnly: true },
+      { title: "Dokumen", icon: FileText, href: "/admin/dokumen", superAdminOnly: true },
       { title: "Informasi Web", icon: BadgeInfo, href: "/admin/informasi-web", superAdminOnly: true },
       { title: "Kontak Person", icon: Contact, href: "/admin/kontak-person", superAdminOnly: true },
     ],

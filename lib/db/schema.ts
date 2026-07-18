@@ -61,6 +61,18 @@ export const globalConfig = sqliteTable("global_config", {
   value: text("value").default(""),
 });
 
+export const dokumen = sqliteTable("dokumen", {
+  id: text("id").primaryKey(),
+  judul: text("judul").notNull().default(""),
+  deskripsi: text("deskripsi").default(""),
+  kategori: text("kategori").default(""),
+  url_file: text("url_file").notNull(),
+  tipe_file: text("tipe_file").default(""),
+  resource_type: text("resource_type").default("raw"),
+  tanggal: text("tanggal").notNull(),
+  created_at: text("created_at").default(sql`(datetime('now'))`),
+});
+
 export const perangkatDusun = sqliteTable("perangkat_dusun", {
   id: text("id").primaryKey(),
   urutan: integer("urutan").notNull(),

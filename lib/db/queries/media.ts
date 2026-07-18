@@ -1,5 +1,5 @@
 import { db } from "../index";
-import { beritaDusun, galeriDusun, globalConfig, produkUmkm } from "../schema";
+import { beritaDusun, dokumen, galeriDusun, globalConfig, produkUmkm } from "../schema";
 import { eq, like, or } from "drizzle-orm";
 
 /**
@@ -38,6 +38,13 @@ export async function isMediaUrlReferenced(url: string): Promise<boolean> {
     .where(like(globalConfig.value, term))
     .limit(1);
   if (config.length > 0) return true;
+
+  const dok = await db
+    .select({ id: dokumen.id })
+    .from(dokumen)
+    .where(eq(dokumen.url_file, url))
+    .limit(1);
+  if (dok.length > 0) return true;
 
   return false;
 }

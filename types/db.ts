@@ -19,6 +19,18 @@ export interface GaleriRow {
   url_foto: string;
 }
 
+export interface DokumenRow {
+  id: string;
+  judul: string;
+  deskripsi: string;
+  kategori: string;
+  url_file: string;
+  tipe_file: string;
+  resource_type: string;
+  tanggal: string;
+  created_at?: string;
+}
+
 export type StokStatus = "Tersedia" | "Habis";
 
 export interface ProdukRow {
