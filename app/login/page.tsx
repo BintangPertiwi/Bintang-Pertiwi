@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -74,10 +75,8 @@ export default function LoginPage() {
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full blur-2xl translate-y-1/3 -translate-x-1/3"></div>
           
           <div className="relative z-10 flex flex-col items-center text-center text-white">
-            <div className="grid grid-cols-2 gap-1 mb-6">
-              <span className="w-4 h-4 bg-white rounded-full"></span>
-              <span className="w-4 h-4 bg-white/70 rounded-full"></span>
-              <span className="w-4 h-4 bg-white/50 rounded-full col-span-2 mx-auto"></span>
+            <div className="mb-6">
+              <Image src="/icon.png" alt="Logo" width={64} height={64} className="rounded-full shadow-lg" />
             </div>
           </div>
         </div>
@@ -92,12 +91,8 @@ export default function LoginPage() {
             
             <div className="mb-10 text-center md:text-left">
               {/* Mobile Branding (Only visible on mobile) */}
-              <div className="flex md:hidden items-center justify-center gap-1.5 mb-8">
-                <div className="grid grid-cols-2 gap-0.5">
-                  <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
-                  <span className="w-2.5 h-2.5 bg-primary/70 rounded-full"></span>
-                  <span className="w-2.5 h-2.5 bg-primary/50 rounded-full col-span-2 mx-auto"></span>
-                </div>
+              <div className="flex md:hidden items-center justify-center gap-2 mb-8">
+                <Image src="/icon.png" alt="Logo" width={32} height={32} className="rounded-full" />
               </div>
               
               <h2 className="text-2xl font-bold text-foreground mb-2">Login Admin</h2>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { CopyrightYear } from "./copyright-year";
 import { getGlobalConfig } from "@/lib/db/queries";
@@ -30,12 +31,8 @@ export async function Footer() {
           
           {/* Brand/Typography */}
           <div className="lg:col-span-5 lg:pr-12">
-            <Link href="/" className="flex items-center gap-1.5 mb-4">
-              <div className="grid grid-cols-2 gap-0.5">
-                <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
-                <span className="w-2.5 h-2.5 bg-primary/70 rounded-full"></span>
-                <span className="w-2.5 h-2.5 bg-primary/50 rounded-full col-span-2 mx-auto"></span>
-              </div>
+            <Link href="/" className="flex items-center gap-2 mb-4">
+              <Image src="/icon.png" alt="Logo" width={28} height={28} className="rounded-full" />
               <span className="text-xl font-bold tracking-tight text-foreground">BINTANG PERTIWI</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">

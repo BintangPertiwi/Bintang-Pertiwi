@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LogIn, Menu, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -82,10 +83,11 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link
             href="/"
-            className={`font-bold text-xl transition-colors duration-300 ${
+            className={`flex items-center gap-2 font-bold text-xl transition-colors duration-300 ${
               isSolid ? "text-foreground" : "text-white"
             }`}
           >
+            <Image src="/icon.png" alt="Logo" width={32} height={32} className="rounded-full" />
             Bintang Pertiwi
           </Link>
 
@@ -150,8 +152,9 @@ export function Navbar() {
           <Link
             href="/"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="font-bold text-xl text-foreground"
+            className="flex items-center gap-2 font-bold text-xl text-foreground"
           >
+            <Image src="/icon.png" alt="Logo" width={28} height={28} className="rounded-full" />
             Bintang Pertiwi
           </Link>
           <Button

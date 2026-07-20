@@ -14,6 +14,7 @@ import {
   Users
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 import { toast } from "sonner";
@@ -112,11 +113,7 @@ export function AppSidebar({ role }: { role: string }) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" render={<Link href="/admin" onClick={() => setOpenMobile(false)} />}>
               <div className="flex aspect-square size-8 items-center justify-center bg-transparent">
-                <div className="grid grid-cols-2 gap-0.5">
-                  <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
-                  <span className="w-2.5 h-2.5 bg-primary/70 rounded-full"></span>
-                  <span className="w-2.5 h-2.5 bg-primary/50 rounded-full col-span-2 mx-auto"></span>
-                </div>
+                <Image src="/icon.png" alt="Logo" width={32} height={32} className="rounded-full" />
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
                 <span className="font-bold text-foreground tracking-tight text-lg">BINTANG PERTIWI</span>
