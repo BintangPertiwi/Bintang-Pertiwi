@@ -13,9 +13,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
+  const title = `${product.nama} — Bintang Pertiwi`;
+  const description = product.deskripsi_singkat;
+  const images = product.gambar_urls.length > 0 ? [product.gambar_urls[0]] : [];
+
   return {
-    title: `${product.nama} — Bintang Pertiwi`,
-    description: product.deskripsi_singkat,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images,
+    }
   };
 }
 

@@ -15,9 +15,25 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     };
   }
 
+  const title = `${berita.judul} — Bintang Pertiwi`;
+  const description = stripHtml(berita.ringkasan || berita.isi_berita).substring(0, 150) + "...";
+  const images = berita.url_foto ? [berita.url_foto] : [];
+
   return {
-    title: `${berita.judul} — SIG-Bintang Pertiwi`,
-    description: stripHtml(berita.ringkasan || berita.isi_berita).substring(0, 150) + "...",
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images,
+    }
   };
 }
 

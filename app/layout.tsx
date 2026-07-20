@@ -13,6 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bintangpertiwi.com"),
   title: "Sistem Informasi Geografis Bintang Pertiwi",
   description: "Web profil dan sistem informasi geografis Bintang Pertiwi",
   manifest: "/manifest.json",
@@ -21,6 +22,28 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "Bintang Pertiwi",
   },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://bintangpertiwi.com",
+    title: "Sistem Informasi Geografis Bintang Pertiwi",
+    description: "Web profil dan sistem informasi geografis Bintang Pertiwi",
+    siteName: "Bintang Pertiwi",
+    images: [
+      {
+        url: "/icon.png",
+        width: 512,
+        height: 512,
+        alt: "Logo Bintang Pertiwi",
+      }
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sistem Informasi Geografis Bintang Pertiwi",
+    description: "Web profil dan sistem informasi geografis Bintang Pertiwi",
+    images: ["/icon.png"],
+  }
 };
 
 export const viewport: Viewport = {
