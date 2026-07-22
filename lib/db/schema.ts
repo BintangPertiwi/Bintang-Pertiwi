@@ -80,3 +80,15 @@ export const perangkatDusun = sqliteTable("perangkat_dusun", {
   jabatan: text("jabatan").notNull(),
   url_foto: text("url_foto").default(""),
 });
+
+export const jurnalPenjualan = sqliteTable("jurnal_penjualan", {
+  id: text("id").primaryKey(),
+  tanggal: text("tanggal").notNull(),
+  nama_item: text("nama_item").notNull(),
+  jumlah_terjual: integer("jumlah_terjual").notNull().default(0),
+  total_pendapatan: integer("total_pendapatan").notNull().default(0),
+  keterangan: text("keterangan").default(""),
+  created_by: integer("created_by").notNull().references(() => adminAuth.id),
+  created_at: text("created_at").default(sql`(datetime('now'))`),
+  updated_at: text("updated_at").default(sql`(datetime('now'))`),
+});

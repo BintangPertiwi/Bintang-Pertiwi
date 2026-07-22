@@ -62,3 +62,14 @@ export interface PerangkatRow {
   jabatan: string;
   url_foto: string;
 }
+
+export interface JurnalRow {
+  id: string;
+  tanggal: string;
+  nama_item: string;
+  jumlah_terjual: number;
+  total_pendapatan: number;
+  keterangan: string;
+  created_by: number;
+  created_at?: string;
+}

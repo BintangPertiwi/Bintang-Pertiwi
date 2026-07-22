@@ -3,7 +3,7 @@ import { PengaturanGaleriForm } from "@/components/admin/pengaturan/pengaturan-g
 import { getGlobalConfig } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Pengaturan Galeri — SIG-Bintang Pertiwi",
+  title: "Pengaturan Galeri — Bintang Pertiwi",
 };
 
 export default async function PengaturanGaleriPage() {

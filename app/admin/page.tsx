@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getStorageUsage } from "@/lib/cloudinary";
 import { getSession } from "@/lib/auth";
 import { getTotalBerita, getTotalGaleri } from "@/lib/db/queries";
+import { getJurnalChartData } from "@/lib/db/queries/jurnal";
+import { JurnalChart } from "@/app/admin/penjualan/jurnal-chart";
 import {
   BadgeInfo,
   Database,
@@ -21,10 +23,14 @@ export default async function AdminDashboardPage() {
   const session = await getSession();
   const isSuperAdmin = session?.role === "super_admin";
 
-  // Statistik & storage hanya relevan (dan hanya di-fetch) untuk Super Admin.
-  const [totalBerita, totalGaleri] = isSuperAdmin
-    ? await Promise.all([getTotalBerita(), getTotalGaleri()])
-    : [0, 0];
+  const ownerId = session?.role === "kontributor" ? session.id : undefined;
+
+  // Statistik & storage
+  const [totalBerita, totalGaleri, chartData] = await Promise.all([
+    isSuperAdmin ? getTotalBerita() : 0,
+    isSuperAdmin ? getTotalGaleri() : 0,
+    getJurnalChartData(ownerId)
+  ]);
 
   // Non-blocking: jangan biarkan Cloudinary timeout memblokir seluruh dashboard
   const storageBytes = isSuperAdmin
@@ -100,6 +106,19 @@ export default async function AdminDashboardPage() {
             </CardContent>
           </Card>
         </div>
+      )}
+
+      {/* Revenue Insight Chart */}
+      {chartData && chartData.length > 0 && (
+        <Card className="bg-transparent rounded-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-bold">Ringkasan Pendapatan</CardTitle>
+            <p className="text-sm text-muted-foreground">Distribusi pendapatan penjualan produk {isSuperAdmin ? "semua UMKM" : "Anda"}</p>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <JurnalChart data={chartData} />
+          </CardContent>
+        </Card>
       )}
 
       {/* Row 2: Quick Actions — berbeda per role */}

@@ -58,10 +58,13 @@ export function DataTable<TData, TValue>({
     }
   }, [sorting, pathname, router, searchParams])
 
+  const memoizedData = React.useMemo(() => data, [data])
+  const memoizedColumns = React.useMemo(() => columns, [columns])
+
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data,
-    columns,
+    data: memoizedData,
+    columns: memoizedColumns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

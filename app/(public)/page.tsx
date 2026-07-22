@@ -3,6 +3,7 @@ import { HeroBanner } from "@/components/public/beranda/hero-banner";
 import { NewsSection } from "@/components/public/beranda/news-section";
 import { GaleriSection } from "@/components/public/galeri/galeri-section";
 import { getGaleriList, getGlobalConfig, getRecentBerita } from "@/lib/db/queries";
+import { getJurnalChartData } from "@/lib/db/queries/jurnal";
 import { formatDate } from "@/lib/utils";
 
 export const metadata = {
@@ -11,9 +12,12 @@ export const metadata = {
 };
 
 export default async function BerandaPage() {
-  const globalConfig = await getGlobalConfig();
-  const galeriList = await getGaleriList();
-  const beritaList = await getRecentBerita(4);
+  const [globalConfig, galeriList, beritaList, jurnalChartData] = await Promise.all([
+    getGlobalConfig(),
+    getGaleriList(),
+    getRecentBerita(4),
+    getJurnalChartData(), // Fetch global aggregated revenue
+  ]);
   
   const selectedGaleriIdsStr = globalConfig["beranda_galeri_ids"];
   let selectedGaleri = galeriList;
@@ -92,6 +96,7 @@ export default async function BerandaPage() {
         mitraBinaan={mitraBinaan}
         penerimaLangsung={penerimaLangsung}
         penerimaTidakLangsung={penerimaTidakLangsung}
+        jurnalChartData={jurnalChartData}
       />
       {/* Galeri Section */}
       <GaleriSection initialSlides={galeriSlides} />
