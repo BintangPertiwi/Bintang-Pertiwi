@@ -1,5 +1,5 @@
 import type { GaleriRow } from "@/types";
-import { and, count, desc, eq, like, or } from "drizzle-orm";
+import { and, count, desc, asc, eq, like, or } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { db } from "../index";
 import { galeriDusun } from "../schema";
@@ -89,6 +89,8 @@ interface GaleriListingArgs {
   filter: string;
   page: number;
   limit: number;
+  sort?: string;
+  dir?: string;
 }
 
 export async function getGaleriListing(args: GaleriListingArgs) {
@@ -128,11 +130,25 @@ export async function getGaleriListing(args: GaleriListingArgs) {
   const totalPages = Math.ceil(totalItems / args.limit) || 1;
   const currentPage = Math.max(1, Math.min(args.page, totalPages));
 
+  let sortColumn;
+  if (args.sort) {
+    switch (args.sort) {
+      case "kategori": sortColumn = galeriDusun.kategori; break;
+      case "judul": sortColumn = galeriDusun.judul; break;
+      case "tanggal_upload": sortColumn = galeriDusun.tanggal_upload; break;
+      default: sortColumn = galeriDusun.created_at; break;
+    }
+  }
+
+  const orderByClause = sortColumn
+    ? args.dir === "asc" ? asc(sortColumn) : desc(sortColumn)
+    : desc(galeriDusun.created_at);
+
   const data = await db
     .select()
     .from(galeriDusun)
     .where(whereClause)
-    .orderBy(desc(galeriDusun.created_at))
+    .orderBy(orderByClause)
     .limit(args.limit)
     .offset((currentPage - 1) * args.limit);
 

@@ -1,5 +1,5 @@
 import type { BeritaRow } from "@/types";
-import { and, count, desc, eq, like, or } from "drizzle-orm";
+import { and, asc, count, desc, eq, like, or } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { db } from "../index";
 import { beritaDusun } from "../schema";
@@ -18,11 +18,6 @@ function mapBeritaRow(r: typeof beritaDusun.$inferSelect): BeritaRow {
   };
 }
 
-// Pola caching: hasil sukses di-cache "hours", tapi jika Turso error hasil
-// fallback di-cache "minutes" (conditional cacheLife) agar cache tidak ter-
-// "poison" berjam-jam dan self-heal cepat. Error tidak dilempar → prerender
-// build tetap aman. Pakai "minutes" (bukan "seconds"): profil "seconds"
-// diperlakukan Next sebagai data dinamis saat prerender di bawah cacheComponents.
 
 export async function getBeritaList(): Promise<BeritaRow[]> {
   "use cache";
@@ -45,9 +40,6 @@ export async function getBeritaById(id: string): Promise<BeritaRow | undefined> 
   return mapBeritaRow(result[0]);
 }
 
-// Versi cached khusus halaman publik detail berita. Dipisah dari getBeritaById
-// (yang sengaja uncached) karena route admin memakai getBeritaById untuk membaca
-// data terkini sebelum menghapus foto lama di Cloudinary.
 export async function getPublicBeritaById(id: string): Promise<BeritaRow | undefined> {
   "use cache";
   cacheTag("berita", `berita-${id}`);
@@ -141,6 +133,8 @@ interface BeritaListingArgs {
   status?: string;
   page: number;
   limit: number;
+  sort?: string;
+  dir?: string;
 }
 
 export async function getBeritaListing(args: BeritaListingArgs) {
@@ -193,11 +187,25 @@ export async function getBeritaListing(args: BeritaListingArgs) {
   const totalPages = Math.ceil(totalItems / args.limit) || 1;
   const currentPage = Math.max(1, Math.min(args.page, totalPages));
 
+  let sortColumn;
+  if (args.sort) {
+    switch (args.sort) {
+      case "judul": sortColumn = beritaDusun.judul; break;
+      case "status_publikasi": sortColumn = beritaDusun.status_publikasi; break;
+      case "tanggal": sortColumn = beritaDusun.tanggal; break;
+      default: sortColumn = beritaDusun.created_at; break;
+    }
+  }
+
+  const orderByClause = sortColumn
+    ? args.dir === "asc" ? asc(sortColumn) : desc(sortColumn)
+    : desc(beritaDusun.created_at);
+
   const data = await db
     .select()
     .from(beritaDusun)
     .where(whereClause)
-    .orderBy(desc(beritaDusun.created_at))
+    .orderBy(orderByClause)
     .limit(args.limit)
     .offset((currentPage - 1) * args.limit);
 

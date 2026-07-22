@@ -1,6 +1,6 @@
 import { db } from "../index";
 import { adminAuth } from "../schema";
-import { eq, like, or, desc, and } from "drizzle-orm";
+import { eq, like, or, desc, asc, and } from "drizzle-orm";
 import type { UserRole } from "@/lib/auth";
 import type { PaginatedResult } from "@/types";
 import { paginateItems } from "@/lib/listing";
@@ -79,11 +79,15 @@ export async function getUserListing({
   filter = "all", // "all", "super_admin", "kontributor"
   page = 1,
   limit = 10,
+  sort,
+  dir,
 }: {
   q?: string;
   filter?: string;
   page?: number;
   limit?: number;
+  sort?: string;
+  dir?: string;
 }): Promise<
   PaginatedResult<typeof adminAuth.$inferSelect> & {
     roles: string[];
@@ -106,11 +110,25 @@ export async function getUserListing({
 
   const whereCondition = conditionFilters.length > 0 ? and(...conditionFilters) : undefined;
 
+  let sortColumn;
+  if (sort) {
+    switch (sort) {
+      case "nama": sortColumn = adminAuth.nama; break;
+      case "username": sortColumn = adminAuth.username; break;
+      case "role": sortColumn = adminAuth.role; break;
+      default: sortColumn = adminAuth.id; break;
+    }
+  }
+
+  const orderByClause = sortColumn
+    ? dir === "asc" ? asc(sortColumn) : desc(sortColumn)
+    : desc(adminAuth.id);
+
   const users = await db
     .select()
     .from(adminAuth)
     .where(whereCondition)
-    .orderBy(desc(adminAuth.id));
+    .orderBy(orderByClause);
 
   // Omit password from result
   const safeUsers = users.map((user) => {

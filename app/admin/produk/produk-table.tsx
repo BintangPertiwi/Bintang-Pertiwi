@@ -9,6 +9,7 @@ import { ImageIcon, Pencil } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import { DeleteProdukButton } from "@/components/admin/produk/delete-produk-button"
 import { DataTable } from "@/components/admin/common/data-table"
+import { DataTableColumnHeader } from "@/components/admin/common/data-table-column-header"
 import { Badge } from "@/components/ui/badge"
 
 export const columns: ColumnDef<ProdukRow>[] = [
@@ -30,7 +31,9 @@ export const columns: ColumnDef<ProdukRow>[] = [
   },
   {
     accessorKey: "nama",
-    header: "Nama Produk",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Nama Produk" />
+    ),
     cell: ({ row }) => (
       <div className="flex flex-col gap-0.5">
         <span className="font-medium text-foreground text-sm line-clamp-1 max-w-[280px]">
@@ -53,7 +56,9 @@ export const columns: ColumnDef<ProdukRow>[] = [
   },
   {
     accessorKey: "harga",
-    header: "Harga",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Harga" />
+    ),
     cell: ({ row }) => (
       <div className="flex flex-col gap-0.5">
         <span className="font-semibold text-foreground text-sm">
@@ -72,7 +77,9 @@ export const columns: ColumnDef<ProdukRow>[] = [
   },
   {
     accessorKey: "stok",
-    header: "Stok",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Stok" />
+    ),
     cell: ({ row }) =>
       row.original.stok === "Tersedia" ? (
         <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 rounded-full">Tersedia</Badge>

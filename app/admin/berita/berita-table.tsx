@@ -2,6 +2,7 @@
 
 import { DeleteBeritaButton } from "@/components/admin/berita/delete-berita-button"
 import { DataTable } from "@/components/admin/common/data-table"
+import { DataTableColumnHeader } from "@/components/admin/common/data-table-column-header"
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import type { BeritaRow } from "@/types"
@@ -36,7 +37,9 @@ export const columns: ColumnDef<BeritaRow>[] = [
   },
   {
     accessorKey: "judul",
-    header: "Judul",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Judul" />
+    ),
     cell: ({ row }) => (
       <span className="font-medium text-foreground line-clamp-2 max-w-[250px]">
         {row.original.judul}
@@ -54,12 +57,16 @@ export const columns: ColumnDef<BeritaRow>[] = [
   },
   {
     accessorKey: "status_publikasi",
-    header: "Status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
     cell: ({ row }) => <StatusBadge status={row.original.status_publikasi || "Publik"} />
   },
   {
     accessorKey: "tanggal",
-    header: "Tanggal Publikasi",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tanggal Publikasi" />
+    ),
     cell: ({ row }) => (
       <div className="flex items-center gap-1.5 text-sm text-foreground">
         <CalendarDays className="h-3.5 w-3.5 text-muted-foreground" />

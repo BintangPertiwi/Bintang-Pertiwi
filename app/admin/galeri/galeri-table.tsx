@@ -9,6 +9,7 @@ import { ImageIcon, CalendarDays, Pencil } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import { DeleteGaleriButton } from "@/components/admin/galeri/delete-galeri-button"
 import { DataTable } from "@/components/admin/common/data-table"
+import { DataTableColumnHeader } from "@/components/admin/common/data-table-column-header"
 import { Badge } from "@/components/ui/badge"
 
 export const columns: ColumnDef<GaleriRow>[] = [
@@ -30,7 +31,9 @@ export const columns: ColumnDef<GaleriRow>[] = [
   },
   {
     accessorKey: "kategori",
-    header: "Kategori",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Kategori" />
+    ),
     cell: ({ row }) => (
       <Badge variant="outline" className="font-medium text-foreground bg-muted">
         {row.original.kategori}
@@ -39,7 +42,9 @@ export const columns: ColumnDef<GaleriRow>[] = [
   },
   {
     accessorKey: "judul",
-    header: "Judul & Deskripsi",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Judul & Deskripsi" />
+    ),
     cell: ({ row }) => (
       <div className="flex flex-col gap-0.5">
         <span className="font-medium text-foreground text-sm line-clamp-1 max-w-[300px]">
@@ -55,7 +60,9 @@ export const columns: ColumnDef<GaleriRow>[] = [
   },
   {
     accessorKey: "tanggal_upload",
-    header: "Tanggal Upload",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tanggal Upload" />
+    ),
     cell: ({ row }) => (
       <div className="flex items-center gap-1.5 text-sm text-foreground">
         <CalendarDays className="h-3.5 w-3.5 text-muted-foreground" />

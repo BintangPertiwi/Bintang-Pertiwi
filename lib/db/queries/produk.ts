@@ -1,5 +1,5 @@
 import type { ProdukRow, StokStatus } from "@/types";
-import { and, count, desc, eq, like, or } from "drizzle-orm";
+import { and, count, desc, asc, eq, like, or } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { db } from "../index";
 import { adminAuth, produkUmkm } from "../schema";
@@ -144,6 +144,8 @@ interface ProdukListingArgs {
   page: number;
   limit: number;
   ownerId?: number;
+  sort?: string;
+  dir?: string;
 }
 
 export async function getProdukListing(args: ProdukListingArgs) {
@@ -189,11 +191,25 @@ export async function getProdukListing(args: ProdukListingArgs) {
   const totalPages = Math.ceil(totalItems / args.limit) || 1;
   const currentPage = Math.max(1, Math.min(args.page, totalPages));
 
+  let sortColumn;
+  if (args.sort) {
+    switch (args.sort) {
+      case "nama": sortColumn = produkUmkm.nama; break;
+      case "harga": sortColumn = produkUmkm.harga; break;
+      case "stok": sortColumn = produkUmkm.stok; break;
+      default: sortColumn = produkUmkm.created_at; break;
+    }
+  }
+
+  const orderByClause = sortColumn
+    ? args.dir === "asc" ? asc(sortColumn) : desc(sortColumn)
+    : desc(produkUmkm.created_at);
+
   const data = await db
     .select()
     .from(produkUmkm)
     .where(whereClause)
-    .orderBy(desc(produkUmkm.created_at))
+    .orderBy(orderByClause)
     .limit(args.limit)
     .offset((currentPage - 1) * args.limit);
 

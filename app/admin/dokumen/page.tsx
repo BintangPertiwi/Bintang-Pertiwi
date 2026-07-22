@@ -24,6 +24,8 @@ export default async function AdminDokumenPage({ searchParams }: DokumenPageProp
   const resolvedSearchParams = (await searchParams) ?? {};
   const q = typeof resolvedSearchParams.q === "string" ? resolvedSearchParams.q : "";
   const filter = typeof resolvedSearchParams.filter === "string" ? resolvedSearchParams.filter : "all";
+  const sort = typeof resolvedSearchParams.sort === "string" ? resolvedSearchParams.sort : undefined;
+  const dir = typeof resolvedSearchParams.dir === "string" ? resolvedSearchParams.dir : undefined;
 
   const cookieStore = await cookies();
   const viewPref = cookieStore.get("admin_view_preference")?.value;
@@ -38,7 +40,7 @@ export default async function AdminDokumenPage({ searchParams }: DokumenPageProp
     DEFAULT_PAGE_LIMITS.dokumen
   );
 
-  const dokumenResult = await getDokumenListing({ q, filter, page, limit });
+  const dokumenResult = await getDokumenListing({ q, filter, page, limit, sort, dir });
 
   const emptyState = (
     <EmptyState
@@ -82,7 +84,7 @@ export default async function AdminDokumenPage({ searchParams }: DokumenPageProp
 
       <ListingPagination
         pathname="/admin/dokumen"
-        query={{ q, filter, page: dokumenResult.page, limit }}
+        query={{ q, filter, page: dokumenResult.page, limit, sort, dir }}
         page={dokumenResult.page}
         totalPages={dokumenResult.totalPages}
         totalItems={dokumenResult.totalItems}

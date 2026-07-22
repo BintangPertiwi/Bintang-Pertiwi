@@ -6,14 +6,12 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table"
 import * as React from "react"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
-import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
@@ -22,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -33,19 +30,44 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const sortParam = searchParams.get("sort")
+  const dirParam = searchParams.get("dir")
+
+  const [sorting, setSorting] = React.useState<SortingState>(
+    sortParam ? [{ id: sortParam, desc: dirParam === "desc" }] : []
+  )
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    if (sorting.length > 0) {
+      params.set("sort", sorting[0].id)
+      params.set("dir", sorting[0].desc ? "desc" : "asc")
+    } else {
+      params.delete("sort")
+      params.delete("dir")
+    }
+    
+    const newQueryString = params.toString()
+    if (newQueryString !== searchParams.toString()) {
+      router.push(`${pathname}?${newQueryString}`, { scroll: false })
+    }
+  }, [sorting, pathname, router, searchParams])
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    manualSorting: true,
+    manualPagination: true,
     state: {
       sorting,
       columnFilters,
@@ -98,33 +120,6 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
-      
-      {/* Pagination */}
-      <div className="flex items-center justify-between py-4 text-sm text-muted-foreground">
-        <div>
-          Menampilkan {table.getRowModel().rows.length} baris.
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="h-8 w-8 p-0 rounded-md"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            className="h-8 w-8 p-0 rounded-md"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
       </div>
     </div>
   )

@@ -5,6 +5,8 @@ export interface ListingQueryParams {
   page: number;
   limit: number;
   view?: string;
+  sort?: string;
+  dir?: string;
 }
 
 export interface PaginatedResult<T> {

@@ -29,6 +29,8 @@ export default async function AdminPenggunaPage({ searchParams }: PenggunaPagePr
   const resolvedSearchParams = (await searchParams) ?? {};
   const q = typeof resolvedSearchParams.q === "string" ? resolvedSearchParams.q : "";
   const filter = typeof resolvedSearchParams.filter === "string" ? resolvedSearchParams.filter : "all";
+  const sort = typeof resolvedSearchParams.sort === "string" ? resolvedSearchParams.sort : undefined;
+  const dir = typeof resolvedSearchParams.dir === "string" ? resolvedSearchParams.dir : undefined;
   
   const page = toPositiveInteger(
     typeof resolvedSearchParams.page === "string" ? resolvedSearchParams.page : undefined,
@@ -44,6 +46,8 @@ export default async function AdminPenggunaPage({ searchParams }: PenggunaPagePr
     filter,
     page,
     limit,
+    sort,
+    dir,
   });
 
   return (
@@ -87,7 +91,7 @@ export default async function AdminPenggunaPage({ searchParams }: PenggunaPagePr
 
       <ListingPagination
         pathname="/admin/pengguna"
-        query={{ q, filter, page: penggunaResult.page, limit }}
+        query={{ q, filter, page: penggunaResult.page, limit, sort, dir }}
         page={penggunaResult.page}
         totalPages={penggunaResult.totalPages}
         totalItems={penggunaResult.totalItems}

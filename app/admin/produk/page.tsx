@@ -25,6 +25,8 @@ export default async function AdminProdukPage({ searchParams }: ProdukPageProps)
   const resolvedSearchParams = (await searchParams) ?? {};
   const q = typeof resolvedSearchParams.q === "string" ? resolvedSearchParams.q : "";
   const filter = typeof resolvedSearchParams.filter === "string" ? resolvedSearchParams.filter : "all";
+  const sort = typeof resolvedSearchParams.sort === "string" ? resolvedSearchParams.sort : undefined;
+  const dir = typeof resolvedSearchParams.dir === "string" ? resolvedSearchParams.dir : undefined;
 
   const cookieStore = await cookies();
   const viewPref = cookieStore.get("admin_view_preference")?.value;
@@ -43,7 +45,7 @@ export default async function AdminProdukPage({ searchParams }: ProdukPageProps)
   const session = await getSession();
   const ownerId = session?.role === "kontributor" ? session.id : undefined;
 
-  const produkResult = await getProdukListing({ q, filter, page, limit, ownerId });
+  const produkResult = await getProdukListing({ q, filter, page, limit, ownerId, sort, dir });
 
   const emptyState = (
     <EmptyState
@@ -87,7 +89,7 @@ export default async function AdminProdukPage({ searchParams }: ProdukPageProps)
 
       <ListingPagination
         pathname="/admin/produk"
-        query={{ q, filter, page: produkResult.page, limit }}
+        query={{ q, filter, page: produkResult.page, limit, sort, dir }}
         page={produkResult.page}
         totalPages={produkResult.totalPages}
         totalItems={produkResult.totalItems}

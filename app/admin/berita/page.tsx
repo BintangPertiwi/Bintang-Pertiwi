@@ -24,6 +24,8 @@ export default async function BeritaPage({ searchParams }: BeritaPageProps) {
   const q = typeof resolvedSearchParams.q === "string" ? resolvedSearchParams.q : "";
   const filter = typeof resolvedSearchParams.filter === "string" ? resolvedSearchParams.filter : "all";
   const status = typeof resolvedSearchParams.status === "string" ? resolvedSearchParams.status : "all";
+  const sort = typeof resolvedSearchParams.sort === "string" ? resolvedSearchParams.sort : undefined;
+  const dir = typeof resolvedSearchParams.dir === "string" ? resolvedSearchParams.dir : undefined;
   
   const cookieStore = await cookies();
   const viewPref = cookieStore.get("admin_view_preference")?.value;
@@ -44,6 +46,8 @@ export default async function BeritaPage({ searchParams }: BeritaPageProps) {
     status,
     page,
     limit,
+    sort,
+    dir,
   });
 
   const emptyState = (
@@ -103,7 +107,7 @@ export default async function BeritaPage({ searchParams }: BeritaPageProps) {
 
       <ListingPagination
         pathname="/admin/berita"
-        query={{ q, filter, status, page: beritaResult.page, limit }}
+        query={{ q, filter, status, page: beritaResult.page, limit, sort, dir }}
         page={beritaResult.page}
         totalPages={beritaResult.totalPages}
         totalItems={beritaResult.totalItems}

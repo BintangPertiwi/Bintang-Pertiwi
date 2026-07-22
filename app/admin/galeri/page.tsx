@@ -24,6 +24,8 @@ export default async function AdminGaleriPage({ searchParams }: GaleriPageProps)
   const resolvedSearchParams = (await searchParams) ?? {};
   const q = typeof resolvedSearchParams.q === "string" ? resolvedSearchParams.q : "";
   const filter = typeof resolvedSearchParams.filter === "string" ? resolvedSearchParams.filter : "all";
+  const sort = typeof resolvedSearchParams.sort === "string" ? resolvedSearchParams.sort : undefined;
+  const dir = typeof resolvedSearchParams.dir === "string" ? resolvedSearchParams.dir : undefined;
   
   const cookieStore = await cookies();
   const viewPref = cookieStore.get("admin_view_preference")?.value;
@@ -43,6 +45,8 @@ export default async function AdminGaleriPage({ searchParams }: GaleriPageProps)
     filter,
     page,
     limit,
+    sort,
+    dir,
   });
 
   return (
@@ -98,7 +102,7 @@ export default async function AdminGaleriPage({ searchParams }: GaleriPageProps)
 
       <ListingPagination
         pathname="/admin/galeri"
-        query={{ q, filter, page: galeriResult.page, limit }}
+        query={{ q, filter, page: galeriResult.page, limit, sort, dir }}
         page={galeriResult.page}
         totalPages={galeriResult.totalPages}
         totalItems={galeriResult.totalItems}

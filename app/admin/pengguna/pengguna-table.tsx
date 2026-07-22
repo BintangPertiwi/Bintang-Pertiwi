@@ -2,6 +2,7 @@
 
 import { DeletePenggunaButton } from "@/components/admin/pengguna/delete-pengguna-button";
 import { DataTable } from "@/components/admin/common/data-table";
+import { DataTableColumnHeader } from "@/components/admin/common/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import { ColumnDef } from "@tanstack/react-table";
 import * as React from "react";
@@ -26,7 +27,9 @@ export function PenggunaTable({ data, emptyState, currentUserId }: PenggunaTable
   const columns: ColumnDef<PenggunaRow>[] = [
     {
       accessorKey: "nama",
-      header: "Nama Lengkap",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Nama Lengkap" />
+      ),
       cell: ({ row }) => (
         <span className="font-medium text-foreground">
           {row.original.nama || "-"}
@@ -38,7 +41,9 @@ export function PenggunaTable({ data, emptyState, currentUserId }: PenggunaTable
     },
     {
       accessorKey: "username",
-      header: "Username",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Username" />
+      ),
       cell: ({ row }) => (
         <span className="text-muted-foreground">
           {row.original.username}
@@ -47,7 +52,9 @@ export function PenggunaTable({ data, emptyState, currentUserId }: PenggunaTable
     },
     {
       accessorKey: "role",
-      header: "Peran",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Peran" />
+      ),
       cell: ({ row }) => <RoleBadge role={row.original.role} />
     },
     {

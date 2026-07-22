@@ -1,5 +1,5 @@
 import type { DokumenRow } from "@/types";
-import { and, count, desc, eq, like, or } from "drizzle-orm";
+import { and, count, desc, asc, eq, like, or } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { db } from "../index";
 import { dokumen } from "../schema";
@@ -77,6 +77,8 @@ interface DokumenListingArgs {
   filter: string;
   page: number;
   limit: number;
+  sort?: string;
+  dir?: string;
 }
 
 export async function getDokumenListing(args: DokumenListingArgs) {
@@ -116,11 +118,24 @@ export async function getDokumenListing(args: DokumenListingArgs) {
   const totalPages = Math.ceil(totalItems / args.limit) || 1;
   const currentPage = Math.max(1, Math.min(args.page, totalPages));
 
+  let sortColumn;
+  if (args.sort) {
+    switch (args.sort) {
+      case "judul": sortColumn = dokumen.judul; break;
+      case "tanggal": sortColumn = dokumen.tanggal; break;
+      default: sortColumn = dokumen.created_at; break;
+    }
+  }
+
+  const orderByClause = sortColumn
+    ? args.dir === "asc" ? asc(sortColumn) : desc(sortColumn)
+    : desc(dokumen.created_at);
+
   const data = await db
     .select()
     .from(dokumen)
     .where(whereClause)
-    .orderBy(desc(dokumen.created_at))
+    .orderBy(orderByClause)
     .limit(args.limit)
     .offset((currentPage - 1) * args.limit);
 
