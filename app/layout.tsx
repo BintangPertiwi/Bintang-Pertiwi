@@ -14,8 +14,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bintangpertiwi.com"),
-  title: "Sistem Informasi Geografis Bintang Pertiwi",
-  description: "Web profil dan sistem informasi geografis Bintang Pertiwi",
+  title: "Web Profil dan Sistem Informasi Program PPM Bintang Pertiwi Pertamina EP Sangatta.",
+  description: "Web Profil dan Sistem Informasi Program PPM Bintang Pertiwi Pertamina EP Sangatta.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "id_ID",
     url: "https://bintangpertiwi.com",
-    title: "Sistem Informasi Geografis Bintang Pertiwi",
-    description: "Web profil dan sistem informasi geografis Bintang Pertiwi",
+    title: "Web Profil dan Sistem Informasi Program PPM Bintang Pertiwi Pertamina EP Sangatta.",
+    description: "Web Profil dan Sistem Informasi Program PPM Bintang Pertiwi Pertamina EP Sangatta.",
     siteName: "Bintang Pertiwi",
     images: [
       {
@@ -40,8 +40,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sistem Informasi Geografis Bintang Pertiwi",
-    description: "Web profil dan sistem informasi geografis Bintang Pertiwi",
+    title: "Web Profil dan Sistem Informasi Program PPM Bintang Pertiwi Pertamina EP Sangatta.",
+    description: "Web Profil dan Sistem Informasi Program PPM Bintang Pertiwi Pertamina EP Sangatta.",
     images: ["/icon.png"],
   }
 };

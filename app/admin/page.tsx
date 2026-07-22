@@ -51,7 +51,7 @@ export default async function AdminDashboardPage() {
         <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
         <p className="text-muted-foreground mt-2">
           {isSuperAdmin
-            ? "Pusat kontrol Sistem Informasi Geografis Bintang Pertiwi."
+            ? "Pusat kontrol Web Profil dan Sistem Informasi Program PPM Bintang Pertiwi Pertamina EP Sangatta."
             : `Selamat datang, ${session?.username ?? "Kontributor"}. Kelola produk UMKM Anda dari sini.`}
         </p>
       </div>
