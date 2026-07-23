@@ -7,12 +7,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 interface RevenueCarouselProps {
-  data: { name: string; value: number }[];
+  slides: { title: string; data: { name: string; value: number }[] }[];
 }
 
 const COLORS = ['#0ea5e9', '#22c55e', '#f59e0b', '#f43f5e', '#8b5cf6', '#14b8a6', '#f97316'];
 
-export function RevenueCarousel({ data }: RevenueCarouselProps) {
+export function RevenueCarousel({ slides }: RevenueCarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000 })]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -30,15 +30,7 @@ export function RevenueCarousel({ data }: RevenueCarouselProps) {
     emblaApi.on('reInit', onSelect);
   }, [emblaApi, onSelect]);
 
-  if (!data || data.length === 0) return null;
-  
-  const slide1 = data.slice(0, 5);
-  const slide2 = data.length > 5 ? data.slice(5, 10) : [...data].reverse();
-
-  const slides = [
-    { title: "Top 5 Pendapatan UMKM", data: slide1 },
-    { title: "Produk Unggulan Lainnya", data: slide2 }
-  ];
+  if (!slides || slides.length === 0) return null;
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -90,7 +82,7 @@ export function RevenueCarousel({ data }: RevenueCarouselProps) {
         </div>
       </div>
       
-      {/* Navigation Buttons (Style matched with Galeri Section but adapted to light theme) */}
+      {/* Navigation Buttons */}
       <button 
         onClick={scrollPrev} 
         className="absolute -left-4 md:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-foreground/25 hover:bg-foreground hover:text-background text-foreground transition-all bg-background/40 backdrop-blur-sm z-10 cursor-pointer shadow-none"

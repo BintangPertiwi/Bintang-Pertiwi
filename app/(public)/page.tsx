@@ -86,7 +86,19 @@ export default async function BerandaPage() {
   const penerimaLangsung = parseStat(globalConfig["beranda_tentang_rt"]);
   const penerimaTidakLangsung = parseStat(globalConfig["beranda_tentang_penerima_tidak_langsung"]);
   const narasi = globalConfig["beranda_tentang_narasi"];
-  const revenueNarasi = globalConfig["beranda_revenue_narasi"];
+
+  const revenueBadge = globalConfig["beranda_revenue_badge"];
+  const revenueTitle = globalConfig["beranda_revenue_title"];
+  const revenueDesc = globalConfig["beranda_revenue_desc"] || globalConfig["beranda_revenue_narasi"];
+  
+  let parsedRevenueCharts = undefined;
+  if (globalConfig["beranda_revenue_charts"]) {
+    try {
+      parsedRevenueCharts = JSON.parse(globalConfig["beranda_revenue_charts"]);
+    } catch {
+      // ignore parse error
+    }
+  }
 
   return (
     <div className="flex flex-col w-full">
@@ -100,7 +112,13 @@ export default async function BerandaPage() {
         penerimaTidakLangsung={penerimaTidakLangsung}
       />
       {/* Revenue Section */}
-      <RevenueSection data={jurnalChartData.pieData} narasi={revenueNarasi} />
+      <RevenueSection 
+        badge={revenueBadge}
+        title={revenueTitle}
+        narasi={revenueDesc}
+        charts={parsedRevenueCharts}
+        fallbackData={jurnalChartData.pieData}
+      />
       {/* Galeri Section */}
       <GaleriSection initialSlides={galeriSlides} />
       {/* News Section */}
