@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getJurnalListing, appendJurnal } from "@/lib/db/queries/jurnal";
 import { revalidateTag } from "next/cache";
+import { getSession } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   try {
@@ -36,9 +37,17 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getSession();
+    if (!session) {
+      return NextResponse.json(
+        { error: "Sesi tidak valid, silakan login ulang." },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
 
-    if (!body.tanggal || !body.nama_item || body.jumlah_terjual === undefined || body.total_pendapatan === undefined || !body.created_by) {
+    if (!body.tanggal || !body.nama_item || body.jumlah_terjual === undefined || body.total_pendapatan === undefined) {
       return NextResponse.json(
         { error: "Data wajib tidak lengkap." },
         { status: 400 }
@@ -51,7 +60,7 @@ export async function POST(request: NextRequest) {
       jumlah_terjual: Number(body.jumlah_terjual),
       total_pendapatan: Number(body.total_pendapatan),
       keterangan: body.keterangan || "",
-      created_by: Number(body.created_by),
+      created_by: session.id,
     });
 
     revalidateTag("jurnal", "max");

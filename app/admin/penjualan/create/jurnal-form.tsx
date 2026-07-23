@@ -20,24 +20,12 @@ export function JurnalForm({ initialData }: { initialData?: JurnalRow }) {
     try {
       const formData = new FormData(e.currentTarget)
       
-      const sessionRes = await fetch('/api/auth/me')
-      let userId = 0
-      if (sessionRes.ok) {
-        const session = await sessionRes.json()
-        userId = session?.id || 0
-      }
-
-      if (!userId && !initialData) {
-        throw new Error("Gagal mengidentifikasi akun Anda. Silakan login ulang.")
-      }
-
       const payload = {
         tanggal: formData.get("tanggal"),
         nama_item: formData.get("nama_item"),
         jumlah_terjual: Number(formData.get("jumlah_terjual")),
         total_pendapatan: Number(formData.get("total_pendapatan")),
         keterangan: formData.get("keterangan"),
-        created_by: initialData ? initialData.created_by : userId,
       }
 
       const url = initialData ? `/api/jurnal/${initialData.id}` : "/api/jurnal"
