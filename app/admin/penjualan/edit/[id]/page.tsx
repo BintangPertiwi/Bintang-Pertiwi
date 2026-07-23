@@ -1,10 +1,11 @@
 import { Metadata } from "next"
 import { JurnalForm } from "../../create/jurnal-form"
-import { getJurnalById, getJurnalFilterOptions } from "@/lib/db/queries/jurnal"
+import { getJurnalById } from "@/lib/db/queries/jurnal"
 import { notFound } from "next/navigation"
 import { getSession } from "@/lib/auth"
 import { DashboardHeader } from "@/components/admin/layout/dashboard-header"
 import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context"
+import { getProdukNamesByOwner } from "@/lib/db/queries/produk"
 
 export const metadata: Metadata = {
   title: "Edit Jurnal Penjualan",
@@ -30,7 +31,7 @@ export default async function EditJurnalPage({
   }
 
   const ownerId = session?.role === "kontributor" ? session.id : undefined;
-  const options = await getJurnalFilterOptions(ownerId);
+  const produkNames = await getProdukNamesByOwner(ownerId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -41,7 +42,7 @@ export default async function EditJurnalPage({
       />
       
       <div className="max-w-3xl">
-        <JurnalForm initialData={jurnal} existingProducts={options.products} />
+        <JurnalForm initialData={jurnal} existingProducts={produkNames} />
       </div>
     </div>
   )

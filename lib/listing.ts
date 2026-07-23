@@ -54,13 +54,13 @@ export function buildListingQueryParams(
   return {
     q: updates.q ?? currentParams.q,
     filter: updates.filter ?? currentParams.filter,
-    status: updates.status !== undefined ? updates.status : currentParams.status,
+    status: "status" in updates ? updates.status : currentParams.status,
     page: updates.page ?? currentParams.page,
     limit: updates.limit ?? currentParams.limit,
-    view: updates.view !== undefined ? updates.view : currentParams.view,
-    month: updates.month !== undefined ? updates.month : currentParams.month,
-    year: updates.year !== undefined ? updates.year : currentParams.year,
-    product: updates.product !== undefined ? updates.product : currentParams.product,
+    view: "view" in updates ? updates.view : currentParams.view,
+    month: "month" in updates ? updates.month : currentParams.month,
+    year: "year" in updates ? updates.year : currentParams.year,
+    product: "product" in updates ? updates.product : currentParams.product,
   };
 }
 

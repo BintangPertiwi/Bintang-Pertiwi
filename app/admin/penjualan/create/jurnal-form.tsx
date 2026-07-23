@@ -186,6 +186,13 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
             placeholder="0"
             required
             defaultValue={initialData?.jumlah_terjual}
+            onKeyDown={(e) => {
+              if (e.key === "-" || e.key === "e" || e.key === "E") e.preventDefault()
+            }}
+            onChange={(e) => {
+              const val = Number(e.target.value)
+              if (val < 0) e.target.value = "0"
+            }}
           />
         </div>
 

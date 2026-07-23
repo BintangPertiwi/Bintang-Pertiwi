@@ -221,3 +221,19 @@ export async function getProdukListing(args: ProdukListingArgs) {
     categories,
   };
 }
+
+export async function getProdukNamesByOwner(ownerId?: number): Promise<string[]> {
+  const conditions = [];
+  if (ownerId !== undefined) {
+    conditions.push(eq(produkUmkm.created_by, ownerId));
+  }
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+  const result = await db
+    .selectDistinct({ nama: produkUmkm.nama })
+    .from(produkUmkm)
+    .where(whereClause)
+    .orderBy(asc(produkUmkm.nama));
+
+  return result.map((r) => r.nama).filter(Boolean);
+}

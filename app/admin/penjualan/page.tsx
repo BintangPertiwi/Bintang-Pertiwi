@@ -5,14 +5,15 @@ import { EmptyState } from "@/components/admin/common/empty-state"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getSession } from "@/lib/auth"
-import { getJurnalChartData, getJurnalListing, getJurnalFilterOptions } from "@/lib/db/queries/jurnal"
-import { FileText, PlusCircle } from "lucide-react"
+import { getJurnalChartData, getJurnalListing, getJurnalFilterOptions, getJurnalStats } from "@/lib/db/queries/jurnal"
+import { Banknote, FileText, Package, PlusCircle, ShoppingCart } from "lucide-react"
 import Link from "next/link"
 import { Suspense } from "react"
 import { JurnalChart } from "./jurnal-chart"
 import { JurnalTable } from "./jurnal-table"
 import { JurnalFilters } from "./jurnal-filters"
 import { toPositiveInteger } from "@/lib/listing"
+import { cookies } from "next/headers"
 
 export const metadata = {
   title: "Jurnal Penjualan — Bintang Pertiwi",
@@ -43,11 +44,21 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
   const product = typeof resolvedSearchParams.product === "string" ? resolvedSearchParams.product : undefined
   const ownerId = session?.role === "kontributor" ? session.id : undefined
 
-  const [jurnalResult, chartData, filterOptions] = await Promise.all([
+  const cookieStore = await cookies()
+  const savedView = cookieStore.get("admin_view_preference")?.value as "list" | "grid" | undefined
+  const view = (typeof resolvedSearchParams.view === "string" ? resolvedSearchParams.view : savedView) as "list" | "grid" | undefined
+
+  const hasActiveFilters = Boolean(month || year || product)
+
+  const [jurnalResult, chartData, filterOptions, stats] = await Promise.all([
     getJurnalListing({ q, filter, month, year, product, page, limit, sort, dir, ownerId }),
     getJurnalChartData({ ownerId, month, year, product }),
-    getJurnalFilterOptions(ownerId)
+    getJurnalFilterOptions(ownerId),
+    getJurnalStats(ownerId),
   ])
+
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value)
 
   return (
     <div className="flex flex-col gap-6">
@@ -60,6 +71,40 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
           Tambah Jurnal
         </Button>
       </DashboardHeader>
+
+      {/* Stats Cards */}
+      <div className="grid gap-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
+        <Card className="shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Pendapatan</CardTitle>
+            <Banknote className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-700 dark:text-green-400">{formatCurrency(stats.totalPendapatan)}</div>
+            <p className="text-xs text-muted-foreground mt-1">Akumulasi seluruh transaksi</p>
+          </CardContent>
+        </Card>
+        <Card className="shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Jenis Produk</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalProduk}</div>
+            <p className="text-xs text-muted-foreground mt-1">Produk unik tercatat</p>
+          </CardContent>
+        </Card>
+        <Card className="shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Kuantitas</CardTitle>
+            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalQty.toLocaleString("id-ID")}</div>
+            <p className="text-xs text-muted-foreground mt-1">Item terjual</p>
+          </CardContent>
+        </Card>
+      </div>
 
       {(chartData.pieData.length > 0 || chartData.lineData.length > 0) && (
         <Card className="shadow-sm">
@@ -80,7 +125,8 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
         filterOptions={[]}
         currentLimit={limit}
         currentPage={page}
-        currentView="list"
+        currentView={view || "list"}
+        hasExternalFilters={hasActiveFilters}
       >
         <JurnalFilters 
           currentQuery={{ q, filter, page, limit, sort, dir, month, year, product }} 
@@ -91,6 +137,7 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
       <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Memuat data...</div>}>
         <JurnalTable 
           data={jurnalResult.items} 
+          view={view || "list"}
           emptyState={
             <EmptyState 
               icon={FileText}

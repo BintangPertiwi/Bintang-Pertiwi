@@ -29,6 +29,7 @@ interface ListingToolbarProps {
   currentLimit: number;
   currentPage: number;
   currentView?: "list" | "grid";
+  hasExternalFilters?: boolean;
   children?: React.ReactNode;
 }
 
@@ -42,6 +43,7 @@ export function ListingToolbar({
   currentLimit,
   currentPage,
   currentView = "list",
+  hasExternalFilters = false,
   children,
 }: ListingToolbarProps) {
   const router = useRouter();
@@ -118,7 +120,7 @@ export function ListingToolbar({
       </div>
 
       <div className="flex flex-col lg:flex-row w-full lg:w-auto items-center gap-2 shrink-0">
-        {(searchValue || (activeFilter && activeFilter !== "all") || (activeStatusFilter && activeStatusFilter !== "all")) && (
+        {(searchValue || (activeFilter && activeFilter !== "all") || (activeStatusFilter && activeStatusFilter !== "all") || hasExternalFilters) && (
           <Button 
             type="button" 
             variant="outline" 

@@ -228,3 +228,30 @@ export async function getJurnalChartData(args: { ownerId?: number; month?: strin
     lineData: lineResult.map(r => ({ name: r.time, value: Number(r.value || 0) }))
   };
 }
+
+export interface JurnalStats {
+  totalPendapatan: number;
+  totalProduk: number;
+  totalQty: number;
+}
+
+export async function getJurnalStats(ownerId?: number): Promise<JurnalStats> {
+  const conditions = [];
+  if (ownerId) conditions.push(eq(jurnalPenjualan.created_by, ownerId));
+  const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
+
+  const [agg] = await db
+    .select({
+      totalPendapatan: sql<number>`COALESCE(SUM(${jurnalPenjualan.total_pendapatan}), 0)`,
+      totalProduk: sql<number>`COUNT(DISTINCT ${jurnalPenjualan.nama_item})`,
+      totalQty: sql<number>`COALESCE(SUM(${jurnalPenjualan.jumlah_terjual}), 0)`,
+    })
+    .from(jurnalPenjualan)
+    .where(whereCondition);
+
+  return {
+    totalPendapatan: Number(agg.totalPendapatan),
+    totalProduk: Number(agg.totalProduk),
+    totalQty: Number(agg.totalQty),
+  };
+}
