@@ -83,31 +83,37 @@ export function RevenueCarousel({ slides }: RevenueCarouselProps) {
       </div>
       
       {/* Navigation Buttons */}
-      <button 
-        onClick={scrollPrev} 
-        className="absolute -left-4 md:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-foreground/25 hover:bg-foreground hover:text-background text-foreground transition-all bg-background/40 backdrop-blur-sm z-10 cursor-pointer shadow-none"
-        title="Sebelumnya"
-      >
-        <ArrowLeft className="w-5 h-5" strokeWidth={2} />
-      </button>
-      <button 
-        onClick={scrollNext} 
-        className="absolute -right-4 md:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-foreground/25 hover:bg-foreground hover:text-background text-foreground transition-all bg-background/40 backdrop-blur-sm z-10 cursor-pointer shadow-none"
-        title="Selanjutnya"
-      >
-        <ArrowRight className="w-5 h-5" strokeWidth={2} />
-      </button>
+      {slides.length > 1 && (
+        <>
+          <button 
+            onClick={scrollPrev} 
+            className="absolute -left-4 md:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-foreground/25 hover:bg-foreground hover:text-background text-foreground transition-all bg-background/40 backdrop-blur-sm z-10 cursor-pointer shadow-none"
+            title="Sebelumnya"
+          >
+            <ArrowLeft className="w-5 h-5" strokeWidth={2} />
+          </button>
+          <button 
+            onClick={scrollNext} 
+            className="absolute -right-4 md:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-foreground/25 hover:bg-foreground hover:text-background text-foreground transition-all bg-background/40 backdrop-blur-sm z-10 cursor-pointer shadow-none"
+            title="Selanjutnya"
+          >
+            <ArrowRight className="w-5 h-5" strokeWidth={2} />
+          </button>
+        </>
+      )}
 
       {/* Dots */}
-      <div className="flex justify-center gap-2 mt-4">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${index === selectedIndex ? 'bg-primary scale-110' : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'}`}
-            onClick={() => emblaApi?.scrollTo(index)}
-          />
-        ))}
-      </div>
+      {slides.length > 1 && (
+        <div className="flex justify-center gap-2 mt-4">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${index === selectedIndex ? 'bg-primary scale-110' : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'}`}
+              onClick={() => emblaApi?.scrollTo(index)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
