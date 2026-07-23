@@ -58,8 +58,8 @@ export function JurnalChart({ data }: JurnalChartProps) {
       <div className="flex justify-end">
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "pie" | "line")} className="w-fit">
           <TabsList className="grid w-[200px] grid-cols-2">
-            <TabsTrigger value="pie">Komposisi</TabsTrigger>
-            <TabsTrigger value="line">Tren Waktu</TabsTrigger>
+            <TabsTrigger value="pie" className="cursor-pointer">Komposisi</TabsTrigger>
+            <TabsTrigger value="line" className="cursor-pointer">Tren Waktu</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -80,13 +80,13 @@ export function JurnalChart({ data }: JurnalChartProps) {
                 paddingAngle={2}
               >
                 {data.pieData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} className="cursor-pointer" />
                 ))}
               </Pie>
               <RechartsTooltip 
                 formatter={(value: unknown) => [formatCurrency(Number(value)), "Pendapatan"]}
-                contentStyle={{ borderRadius: '8px', border: '1px solid hsl(var(--border))', backgroundColor: 'hsl(var(--background))' }}
-                itemStyle={{ color: 'hsl(var(--foreground))' }}
+                contentStyle={{ borderRadius: '8px', border: '1px solid var(--border)', backgroundColor: 'var(--background)' }}
+                itemStyle={{ color: 'var(--foreground)' }}
               />
               <Legend 
                 verticalAlign="bottom" 
@@ -100,15 +100,15 @@ export function JurnalChart({ data }: JurnalChartProps) {
             <AreaChart data={data.lineData} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
               <defs>
                 <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.05}/>
+                  <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.05}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
               <XAxis 
                 dataKey="name" 
                 tickFormatter={formatDate}
-                stroke="hsl(var(--muted-foreground))"
+                stroke="var(--muted-foreground)"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
@@ -116,7 +116,7 @@ export function JurnalChart({ data }: JurnalChartProps) {
               />
               <YAxis 
                 tickFormatter={formatYAxis}
-                stroke="hsl(var(--muted-foreground))"
+                stroke="var(--muted-foreground)"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
@@ -125,17 +125,17 @@ export function JurnalChart({ data }: JurnalChartProps) {
               <RechartsTooltip 
                 formatter={(value: unknown) => [formatCurrency(Number(value)), "Pendapatan"]}
                 labelFormatter={formatDate}
-                contentStyle={{ borderRadius: '8px', border: '1px solid hsl(var(--border))', backgroundColor: 'hsl(var(--background))' }}
-                itemStyle={{ color: 'hsl(var(--foreground))' }}
+                contentStyle={{ borderRadius: '8px', border: '1px solid var(--border)', backgroundColor: 'var(--background)' }}
+                itemStyle={{ color: 'var(--foreground)' }}
               />
               <Area 
                 type="monotone" 
                 dataKey="value" 
-                stroke="hsl(var(--primary))" 
+                stroke="var(--primary)" 
                 strokeWidth={3}
                 fill="url(#colorValue)"
                 connectNulls={true}
-                dot={{ r: 4, fill: "hsl(var(--primary))", strokeWidth: 2, stroke: "hsl(var(--background))" }}
+                dot={{ r: 4, fill: "var(--primary)", strokeWidth: 2, stroke: "var(--background)" }}
                 activeDot={{ r: 6, strokeWidth: 0 }}
               />
             </AreaChart>

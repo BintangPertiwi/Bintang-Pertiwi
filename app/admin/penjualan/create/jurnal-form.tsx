@@ -1,19 +1,19 @@
 "use client"
 
+import { expireJurnalCache } from "@/app/actions/jurnal"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { CurrencyInput } from "@/components/ui/currency-input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { CurrencyInput } from "@/components/ui/currency-input"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Check, ChevronsUpDown, Plus, Trash2, ImagePlus } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import type { JurnalRow } from "@/types"
+import { Check, ChevronsUpDown, ImagePlus, Plus, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import * as React from "react"
 import { toast } from "sonner"
-import { expireJurnalCache } from "@/app/actions/jurnal"
 
 export function JurnalForm({ initialData, existingProducts = [] }: { initialData?: JurnalRow, existingProducts?: string[] }) {
   const router = useRouter()
@@ -26,6 +26,8 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
     initialData?.total_pendapatan != null ? String(initialData.total_pendapatan) : ""
   )
   const [urlNota, setUrlNota] = React.useState(initialData?.url_nota || "")
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = React.useState(initialData?.url_nota || "")
   const [isUploading, setIsUploading] = React.useState(false)
   const [isDragging, setIsDragging] = React.useState(false)
   
@@ -35,48 +37,34 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
 
   const today = new Date().toISOString().split('T')[0]
 
-  const processUpload = async (file: File) => {
+  React.useEffect(() => {
+    return () => {
+      if (previewUrl && previewUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(previewUrl)
+      }
+    }
+  }, [previewUrl])
+
+  const handleFileChange = (file: File) => {
     // Limit to 3MB
     if (file.size > 3 * 1024 * 1024) {
       toast.error("Ukuran file nota maksimal 3MB.")
       return
     }
 
-    setIsUploading(true)
-    const formData = new FormData()
-    formData.append("file", file)
-    formData.append("namaProduk", productName || "produk")
-    
-    // Get date from input or fallback to today
-    const dateInput = document.getElementById("tanggal") as HTMLInputElement
-    formData.append("tanggal", dateInput?.value || today)
-
-    try {
-      const res = await fetch("/api/jurnal/upload-nota", {
-        method: "POST",
-        body: formData,
-      })
-
-      if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.message || "Gagal mengunggah berkas nota.")
-      }
-
-      const data = await res.json()
-      setUrlNota(data.url)
-      toast.success("Gambar nota berhasil diunggah.")
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Terjadi kesalahan saat mengunggah."
-      toast.error(msg)
-    } finally {
-      setIsUploading(false)
+    if (previewUrl && previewUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(previewUrl)
     }
+
+    const localUrl = URL.createObjectURL(file)
+    setPreviewUrl(localUrl)
+    setSelectedFile(file)
   }
 
-  const handleUploadNota = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadNota = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      await processUpload(file)
+      handleFileChange(file)
     }
   }
 
@@ -92,15 +80,24 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
     setIsDragging(false)
   }
 
-  const handleDrop = async (e: React.DragEvent<HTMLLabelElement>) => {
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault()
     e.stopPropagation()
     setIsDragging(false)
 
     const file = e.dataTransfer.files?.[0]
     if (file) {
-      await processUpload(file)
+      handleFileChange(file)
     }
+  }
+
+  const handleRemoveNota = () => {
+    if (previewUrl && previewUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(previewUrl)
+    }
+    setPreviewUrl("")
+    setSelectedFile(null)
+    setUrlNota("")
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -109,8 +106,32 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
 
     try {
       const formData = new FormData(e.currentTarget)
-      
       const rawPendapatan = pendapatan.replace(/\D/g, "")
+      
+      let finalUrlNota = urlNota
+
+      // Upload file to Telegram first if a new one is selected
+      if (selectedFile) {
+        setIsUploading(true)
+        const uploadFormData = new FormData()
+        uploadFormData.append("file", selectedFile)
+        uploadFormData.append("namaProduk", productName || "produk")
+        uploadFormData.append("tanggal", formData.get("tanggal") || today)
+
+        const uploadRes = await fetch("/api/jurnal/upload-nota", {
+          method: "POST",
+          body: uploadFormData,
+        })
+
+        if (!uploadRes.ok) {
+          const errorData = await uploadRes.json()
+          throw new Error(errorData.message || "Gagal mengunggah berkas nota.")
+        }
+
+        const uploadData = await uploadRes.json()
+        finalUrlNota = uploadData.url
+        setIsUploading(false)
+      }
 
       const payload = {
         tanggal: formData.get("tanggal"),
@@ -118,7 +139,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
         jumlah_terjual: Number(formData.get("jumlah_terjual")),
         total_pendapatan: Number(rawPendapatan),
         keterangan: formData.get("keterangan"),
-        url_nota: urlNota,
+        url_nota: finalUrlNota,
       }
 
       if (!payload.nama_item) {
@@ -154,6 +175,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       const errorMessage = error instanceof Error ? error.message : "Gagal menyimpan jurnal"
       toast.error(errorMessage)
     } finally {
+      setIsUploading(false)
       setIsSubmitting(false)
     }
   }
@@ -225,17 +247,17 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
                   <CommandGroup>
                     {allProducts.map((prod) => (
                       <CommandItem
-                        key={prod}
-                        value={prod}
-                        onSelect={() => {
-                          setProductName(prod);
-                          setComboboxOpen(false);
-                          setSearch("");
-                        }}
-                      >
-                        <Check className={cn("mr-2 h-4 w-4", productName === prod ? "opacity-100" : "opacity-0")} />
-                        {prod}
-                      </CommandItem>
+                          key={prod}
+                          value={prod}
+                          onSelect={() => {
+                            setProductName(prod);
+                            setComboboxOpen(false);
+                            setSearch("");
+                          }}
+                        >
+                          <Check className={cn("mr-2 h-4 w-4", productName === prod ? "opacity-100" : "opacity-0")} />
+                          {prod}
+                        </CommandItem>
                     ))}
                   </CommandGroup>
                 </CommandList>
@@ -295,17 +317,17 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
         <div className="md:col-span-2 space-y-2">
           <Label className="text-sm font-semibold">Gambar Nota (Opsional)</Label>
           <div className="relative group mt-1">
-            {urlNota ? (
-              <div className="relative w-full aspect-video md:w-[300px] border rounded-md overflow-hidden bg-muted/20">
+            {previewUrl ? (
+              <div className="relative inline-block border rounded-md overflow-hidden bg-muted/20">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
-                  src={urlNota} 
+                  src={previewUrl} 
                   alt="Nota Penjualan" 
-                  className="w-full h-full object-contain"
+                  className="max-w-full md:max-w-[300px] max-h-[300px] w-auto h-auto object-contain"
                 />
                 <button
                   type="button"
-                  onClick={() => setUrlNota("")}
+                  onClick={handleRemoveNota}
                   className="absolute top-2 right-2 p-1.5 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors shadow-sm"
                   title="Hapus Nota"
                 >
@@ -324,33 +346,23 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
               >
-                {isUploading ? (
-                  <div className="flex flex-col items-center justify-center p-4 z-10 relative text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
-                    <p className="text-[13px] text-muted-foreground animate-pulse">
-                      Mengunggah...
-                    </p>
+                <div className="flex flex-col items-center justify-center p-4 z-10 relative text-center">
+                  <div className="flex gap-4 items-center mb-3 text-muted-foreground">
+                    <ImagePlus className="w-5 h-5" />
                   </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center p-4 z-10 relative text-center">
-                    <div className="flex gap-4 items-center mb-3 text-muted-foreground">
-                      <ImagePlus className="w-5 h-5" />
-                    </div>
-                    <p className="text-[13px] text-muted-foreground mb-1">
-                      Geser & Lepas berkas disini
-                    </p>
-                    <p className="text-[11px] text-muted-foreground">
-                      Format didukung: JPG, JPEG, PNG. Maks: 3MB.
-                    </p>
-                  </div>
-                )}
+                  <p className="text-[13px] text-muted-foreground mb-1">
+                    Geser & Lepas berkas disini
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Format didukung: JPG, JPEG, PNG. Maks: 3MB.
+                  </p>
+                </div>
                 <Input
                   id="nota-file"
                   type="file"
                   accept="image/*"
                   className="hidden"
                   onChange={handleUploadNota}
-                  disabled={isUploading}
                 />
               </label>
             )}
@@ -373,7 +385,11 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
           disabled={isSubmitting}
           className="w-full sm:flex-1 text-base h-14 order-1 sm:order-2"
         >
-          {isSubmitting ? "Menyimpan..." : (initialData ? "Simpan Perubahan" : "Simpan Jurnal")}
+          {isSubmitting ? (
+            isUploading ? "Mengunggah Nota..." : "Menyimpan..."
+          ) : (
+            initialData ? "Simpan Perubahan" : "Simpan Jurnal"
+          )}
         </Button>
       </div>
     </form>
