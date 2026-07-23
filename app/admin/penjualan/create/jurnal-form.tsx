@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Check, ChevronsUpDown, Plus, Trash2 } from "lucide-react"
+import { Check, ChevronsUpDown, Plus, Trash2, ImagePlus } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { JurnalRow } from "@/types"
 import { useRouter } from "next/navigation"
@@ -27,6 +27,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
   )
   const [urlNota, setUrlNota] = React.useState(initialData?.url_nota || "")
   const [isUploading, setIsUploading] = React.useState(false)
+  const [isDragging, setIsDragging] = React.useState(false)
   
   const allProducts = React.useMemo(() => {
     return Array.from(new Set([...existingProducts, ...customProducts]))
@@ -34,10 +35,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
 
   const today = new Date().toISOString().split('T')[0]
 
-  const handleUploadNota = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
+  const processUpload = async (file: File) => {
     // Limit to 3MB
     if (file.size > 3 * 1024 * 1024) {
       toast.error("Ukuran file nota maksimal 3MB.")
@@ -72,6 +70,36 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       toast.error(msg)
     } finally {
       setIsUploading(false)
+    }
+  }
+
+  const handleUploadNota = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      await processUpload(file)
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = async (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+
+    const file = e.dataTransfer.files?.[0]
+    if (file) {
+      await processUpload(file)
     }
   }
 
@@ -266,9 +294,9 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
 
         <div className="md:col-span-2 space-y-2">
           <Label className="text-sm font-semibold">Gambar Nota (Opsional)</Label>
-          <div className="flex flex-col gap-4 p-4 border rounded-lg bg-muted/20">
+          <div className="relative group mt-1">
             {urlNota ? (
-              <div className="relative w-full max-w-sm aspect-video rounded-md overflow-hidden border bg-background group">
+              <div className="relative w-full aspect-video md:w-[300px] border rounded-md overflow-hidden bg-muted/20">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={urlNota} 
@@ -285,25 +313,47 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-4">
+              <label
+                htmlFor="nota-file"
+                className={`flex flex-col items-center justify-center w-full h-40 border border-dashed rounded-md cursor-pointer overflow-hidden transition-all ${
+                  isDragging
+                    ? "border-primary bg-primary/5"
+                    : "border-border bg-transparent hover:border-slate-400/80 hover:bg-muted"
+                }`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                {isUploading ? (
+                  <div className="flex flex-col items-center justify-center p-4 z-10 relative text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
+                    <p className="text-[13px] text-muted-foreground animate-pulse">
+                      Mengunggah ke Drive...
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center p-4 z-10 relative text-center">
+                    <div className="flex gap-4 items-center mb-3 text-muted-foreground">
+                      <ImagePlus className="w-5 h-5" />
+                    </div>
+                    <p className="text-[13px] text-muted-foreground mb-1">
+                      Geser & Lepas berkas disini
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">
+                      Format didukung: JPG, JPEG, PNG. Maks: 3MB.
+                    </p>
+                  </div>
+                )}
                 <Input
                   id="nota-file"
                   type="file"
                   accept="image/*"
+                  className="hidden"
                   onChange={handleUploadNota}
                   disabled={isUploading}
-                  className="flex-1 h-12 pt-2.5 bg-background cursor-pointer"
                 />
-                {isUploading && (
-                  <span className="text-xs text-muted-foreground animate-pulse">
-                    Mengunggah ke Drive...
-                  </span>
-                )}
-              </div>
+              </label>
             )}
-            <p className="text-xs text-muted-foreground">
-              Format yang didukung: JPG, JPEG, PNG. Ukuran file maksimal 3MB. Berkas akan diunggah ke Google Drive kelompok.
-            </p>
           </div>
         </div>
       </div>
