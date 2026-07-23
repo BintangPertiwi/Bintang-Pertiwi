@@ -1,11 +1,12 @@
+import { JurnalChart } from "@/app/admin/penjualan/jurnal-chart";
+import { RefreshStorageButton } from "@/components/admin/refresh-storage-button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getStorageUsage } from "@/lib/cloudinary";
 import { getSession } from "@/lib/auth";
+import { getStorageUsage } from "@/lib/cloudinary";
 import { getTotalBerita, getTotalGaleri } from "@/lib/db/queries";
 import { getJurnalChartData, getJurnalStats } from "@/lib/db/queries/jurnal";
-import { JurnalChart } from "@/app/admin/penjualan/jurnal-chart";
 import {
   BadgeInfo,
   Banknote,
@@ -20,7 +21,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { StorageManagement } from "./pengaturan/storage-management";
-import { RefreshStorageButton } from "@/components/admin/refresh-storage-button";
 
 export default async function AdminDashboardPage() {
   const session = await getSession();
@@ -123,7 +123,7 @@ export default async function AdminDashboardPage() {
             <Banknote className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-700 dark:text-green-400">{formatCurrency(jurnalStats.totalPendapatan)}</div>
+            <div className="text-2xl font-bold text-primary">{formatCurrency(jurnalStats.totalPendapatan)}</div>
             <p className="text-xs text-muted-foreground mt-1">Akumulasi seluruh transaksi</p>
           </CardContent>
         </Card>

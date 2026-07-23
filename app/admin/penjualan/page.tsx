@@ -1,19 +1,19 @@
+import { EmptyState } from "@/components/admin/common/empty-state"
 import { ListingPagination } from "@/components/admin/common/listing-pagination"
 import { ListingToolbar } from "@/components/admin/common/listing-toolbar"
 import { DashboardHeader } from "@/components/admin/layout/dashboard-header"
-import { EmptyState } from "@/components/admin/common/empty-state"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getSession } from "@/lib/auth"
-import { getJurnalChartData, getJurnalListing, getJurnalFilterOptions, getJurnalStats } from "@/lib/db/queries/jurnal"
+import { getJurnalChartData, getJurnalFilterOptions, getJurnalListing, getJurnalStats } from "@/lib/db/queries/jurnal"
+import { toPositiveInteger } from "@/lib/listing"
 import { Banknote, FileText, Package, PlusCircle, ShoppingCart } from "lucide-react"
+import { cookies } from "next/headers"
 import Link from "next/link"
 import { Suspense } from "react"
 import { JurnalChart } from "./jurnal-chart"
-import { JurnalTable } from "./jurnal-table"
 import { JurnalFilters } from "./jurnal-filters"
-import { toPositiveInteger } from "@/lib/listing"
-import { cookies } from "next/headers"
+import { JurnalTable } from "./jurnal-table"
 
 export const metadata = {
   title: "Jurnal Penjualan — Bintang Pertiwi",
@@ -80,7 +80,7 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
             <Banknote className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-700 dark:text-green-400">{formatCurrency(stats.totalPendapatan)}</div>
+            <div className="text-2xl font-bold text-primary">{formatCurrency(stats.totalPendapatan)}</div>
             <p className="text-xs text-muted-foreground mt-1">Akumulasi seluruh transaksi</p>
           </CardContent>
         </Card>
