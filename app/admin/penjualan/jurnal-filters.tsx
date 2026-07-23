@@ -1,6 +1,6 @@
 "use client";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { usePathname, useRouter } from "next/navigation";
 import { buildListingQueryParams, createListingSearchParams, type ListingQueryParams } from "@/lib/listing";
 
