@@ -48,7 +48,7 @@ export function RevenueCarousel({ slides }: RevenueCarouselProps) {
           {slides.map((slide, index) => (
             <div className="flex-[0_0_100%] min-w-0" key={index}>
               <h3 className="text-center font-bold text-foreground mb-4 text-lg tracking-wide uppercase">{slide.title}</h3>
-              <div className="h-[300px] w-full">
+              <div className="h-[400px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -71,7 +71,7 @@ export function RevenueCarousel({ slides }: RevenueCarouselProps) {
                     />
                     <Legend 
                       verticalAlign="bottom" 
-                      height={36} 
+                      height={80} 
                       formatter={(value) => <span className="text-sm font-medium text-foreground">{value}</span>}
                     />
                   </PieChart>
