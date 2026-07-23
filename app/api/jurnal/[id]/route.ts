@@ -41,6 +41,7 @@ export async function PUT(
       jumlah_terjual: body.jumlah_terjual !== undefined ? Number(body.jumlah_terjual) : undefined,
       total_pendapatan: body.total_pendapatan !== undefined ? Number(body.total_pendapatan) : undefined,
       keterangan: body.keterangan,
+      url_nota: body.url_nota,
     });
 
     revalidateTag("jurnal", "max");

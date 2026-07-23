@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
       jumlah_terjual: Number(body.jumlah_terjual),
       total_pendapatan: Number(body.total_pendapatan),
       keterangan: body.keterangan || "",
+      url_nota: body.url_nota || "",
       created_by: session.id,
     });
 

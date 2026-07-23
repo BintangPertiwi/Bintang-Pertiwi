@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Check, ChevronsUpDown, Plus } from "lucide-react"
+import { Check, ChevronsUpDown, Plus, Trash2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { JurnalRow } from "@/types"
 import { useRouter } from "next/navigation"
@@ -25,10 +25,55 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
   const [pendapatan, setPendapatan] = React.useState(
     initialData?.total_pendapatan != null ? String(initialData.total_pendapatan) : ""
   )
+  const [urlNota, setUrlNota] = React.useState(initialData?.url_nota || "")
+  const [isUploading, setIsUploading] = React.useState(false)
   
   const allProducts = React.useMemo(() => {
     return Array.from(new Set([...existingProducts, ...customProducts]))
   }, [existingProducts, customProducts])
+
+  const today = new Date().toISOString().split('T')[0]
+
+  const handleUploadNota = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Limit to 3MB
+    if (file.size > 3 * 1024 * 1024) {
+      toast.error("Ukuran file nota maksimal 3MB.")
+      return
+    }
+
+    setIsUploading(true)
+    const formData = new FormData()
+    formData.append("file", file)
+    formData.append("namaProduk", productName || "produk")
+    
+    // Get date from input or fallback to today
+    const dateInput = document.getElementById("tanggal") as HTMLInputElement
+    formData.append("tanggal", dateInput?.value || today)
+
+    try {
+      const res = await fetch("/api/jurnal/upload-nota", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.message || "Gagal mengunggah berkas nota.")
+      }
+
+      const data = await res.json()
+      setUrlNota(data.url)
+      toast.success("Gambar nota berhasil diunggah.")
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Terjadi kesalahan saat mengunggah."
+      toast.error(msg)
+    } finally {
+      setIsUploading(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -45,6 +90,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
         jumlah_terjual: Number(formData.get("jumlah_terjual")),
         total_pendapatan: Number(rawPendapatan),
         keterangan: formData.get("keterangan"),
+        url_nota: urlNota,
       }
 
       if (!payload.nama_item) {
@@ -83,8 +129,6 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       setIsSubmitting(false)
     }
   }
-
-  const today = new Date().toISOString().split('T')[0]
 
   return (
     <form onSubmit={handleSubmit} className="max-w-3xl space-y-10 pb-20">
@@ -218,6 +262,49 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
             rows={4}
             className="resize-none min-h-[100px]"
           />
+        </div>
+
+        <div className="md:col-span-2 space-y-2">
+          <Label className="text-sm font-semibold">Gambar Nota (Opsional)</Label>
+          <div className="flex flex-col gap-4 p-4 border rounded-lg bg-muted/20">
+            {urlNota ? (
+              <div className="relative w-full max-w-sm aspect-video rounded-md overflow-hidden border bg-background group">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src={urlNota} 
+                  alt="Nota Penjualan" 
+                  className="w-full h-full object-contain"
+                />
+                <button
+                  type="button"
+                  onClick={() => setUrlNota("")}
+                  className="absolute top-2 right-2 p-1.5 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors shadow-sm"
+                  title="Hapus Nota"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <Input
+                  id="nota-file"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleUploadNota}
+                  disabled={isUploading}
+                  className="flex-1 h-12 pt-2.5 bg-background cursor-pointer"
+                />
+                {isUploading && (
+                  <span className="text-xs text-muted-foreground animate-pulse">
+                    Mengunggah ke Drive...
+                  </span>
+                )}
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Format yang didukung: JPG, JPEG, PNG. Ukuran file maksimal 3MB. Berkas akan diunggah ke Google Drive kelompok.
+            </p>
+          </div>
         </div>
       </div>
 

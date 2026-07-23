@@ -71,6 +71,7 @@ export interface JurnalRow {
   jumlah_terjual: number;
   total_pendapatan: number;
   keterangan: string;
+  url_nota?: string;
   created_by: number;
   created_at?: string;
 }

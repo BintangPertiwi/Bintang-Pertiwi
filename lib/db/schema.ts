@@ -89,6 +89,7 @@ export const jurnalPenjualan = sqliteTable("jurnal_penjualan", {
   jumlah_terjual: integer("jumlah_terjual").notNull().default(0),
   total_pendapatan: integer("total_pendapatan").notNull().default(0),
   keterangan: text("keterangan").default(""),
+  url_nota: text("url_nota").default(""),
   created_by: integer("created_by").notNull().references(() => adminAuth.id),
   created_at: text("created_at").default(sql`(datetime('now'))`),
   updated_at: text("updated_at").default(sql`(datetime('now'))`),

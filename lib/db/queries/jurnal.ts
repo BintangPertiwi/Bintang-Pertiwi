@@ -66,6 +66,7 @@ export async function getJurnalListing(
       jumlah_terjual: jurnalPenjualan.jumlah_terjual,
       total_pendapatan: jurnalPenjualan.total_pendapatan,
       keterangan: jurnalPenjualan.keterangan,
+      url_nota: jurnalPenjualan.url_nota,
       created_by: jurnalPenjualan.created_by,
       created_at: jurnalPenjualan.created_at,
       authorName: adminAuth.nama,
@@ -79,9 +80,10 @@ export async function getJurnalListing(
     .offset((currentPage - 1) * limit);
 
   return {
-    items: data.map(({ authorName, authorUsername, created_at, keterangan, ...rest }) => ({ 
+    items: data.map(({ authorName, authorUsername, created_at, keterangan, url_nota, ...rest }) => ({ 
       ...rest, 
       keterangan: keterangan || "",
+      url_nota: url_nota || undefined,
       created_at: created_at || undefined,
       authorName: authorName?.trim() || authorUsername || "-" 
     })),
@@ -102,10 +104,11 @@ export async function getJurnalById(id: string): Promise<JurnalRow | null> {
     .limit(1);
 
   if (result.length === 0) return null;
-  const { created_at, updated_at, keterangan, ...rest } = result[0];
+  const { created_at, updated_at, keterangan, url_nota, ...rest } = result[0];
   return {
     ...rest,
     keterangan: keterangan || "",
+    url_nota: url_nota || "",
     created_at: created_at || undefined,
   };
 }

@@ -60,6 +60,24 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
     ),
   },
   {
+    accessorKey: "url_nota",
+    header: "Nota",
+    cell: ({ row }) => {
+      const url = row.original.url_nota;
+      if (!url) return <span className="text-muted-foreground text-xs">-</span>;
+      return (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium"
+        >
+          Lihat Nota
+        </a>
+      );
+    },
+  },
+  {
     accessorKey: "authorName",
     header: "Dicatat Oleh",
     cell: ({ row }) => (
@@ -102,9 +120,21 @@ function JurnalGridCard({ item }: { item: JurnalRow & { authorName?: string } })
       <CardContent className="p-5 space-y-3">
         <div className="flex items-center justify-between">
           <span className="font-semibold text-foreground line-clamp-1">{item.nama_item}</span>
-          <Badge variant="outline" className="font-mono shrink-0 ml-2">
-            x{item.jumlah_terjual}
-          </Badge>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {item.url_nota && (
+              <a
+                href={item.url_nota}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] bg-sky-50 text-sky-600 hover:bg-sky-100 px-2 py-0.5 rounded-full border border-sky-100 font-medium"
+              >
+                Nota
+              </a>
+            )}
+            <Badge variant="outline" className="font-mono">
+              x{item.jumlah_terjual}
+            </Badge>
+          </div>
         </div>
         <div className="text-xl font-bold text-primary">
           Rp {item.total_pendapatan.toLocaleString("id-ID")}
