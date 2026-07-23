@@ -99,19 +99,20 @@ export function JurnalForm({ initialData }: { initialData?: JurnalRow }) {
             name="jumlah_terjual"
             type="number"
             min="1"
+            inputMode="numeric"
+            pattern="[0-9]*"
             placeholder="0"
             required
             defaultValue={initialData?.jumlah_terjual}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="total_pendapatan">Total Pendapatan (Rp)</Label>
+          <Label htmlFor="total_pendapatan">Nominal Transaksi (Rp)</Label>
           <Input
             id="total_pendapatan"
             name="total_pendapatan"
             type="number"
-            min="0"
-            placeholder="0"
+            placeholder="Gunakan minus (-) jika pengeluaran"
             required
             defaultValue={initialData?.total_pendapatan}
           />

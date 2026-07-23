@@ -20,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { cn } from "@/lib/utils"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -33,6 +34,7 @@ export function DataTable<TData, TValue>({
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const [isPending, startTransition] = React.useTransition()
 
   const sortParam = searchParams.get("sort")
   const dirParam = searchParams.get("dir")
@@ -54,7 +56,9 @@ export function DataTable<TData, TValue>({
     
     const newQueryString = params.toString()
     if (newQueryString !== searchParams.toString()) {
-      router.push(`${pathname}?${newQueryString}`, { scroll: false })
+      startTransition(() => {
+        router.push(`${pathname}?${newQueryString}`, { scroll: false })
+      })
     }
   }, [sorting, pathname, router, searchParams])
 
@@ -79,7 +83,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="flex flex-col w-full bg-card">
-      <div className="overflow-auto">
+      <div className={cn("overflow-auto transition-opacity duration-200", isPending ? "opacity-50 pointer-events-none" : "opacity-100")}>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -127,3 +131,4 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
