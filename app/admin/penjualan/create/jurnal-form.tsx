@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { CurrencyInput } from "@/components/ui/currency-input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
@@ -21,6 +22,9 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
   const [comboboxOpen, setComboboxOpen] = React.useState(false)
   const [search, setSearch] = React.useState("")
   const [customProducts, setCustomProducts] = React.useState<string[]>([])
+  const [pendapatan, setPendapatan] = React.useState(
+    initialData?.total_pendapatan != null ? String(initialData.total_pendapatan) : ""
+  )
   
   const allProducts = React.useMemo(() => {
     return Array.from(new Set([...existingProducts, ...customProducts]))
@@ -33,16 +37,26 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
     try {
       const formData = new FormData(e.currentTarget)
       
+      const rawPendapatan = pendapatan.replace(/\D/g, "")
+
       const payload = {
         tanggal: formData.get("tanggal"),
-        nama_item: productName, // Use the state from combobox
+        nama_item: productName,
         jumlah_terjual: Number(formData.get("jumlah_terjual")),
-        total_pendapatan: Number(formData.get("total_pendapatan")),
+        total_pendapatan: Number(rawPendapatan),
         keterangan: formData.get("keterangan"),
       }
 
       if (!payload.nama_item) {
         throw new Error("Nama produk wajib diisi.")
+      }
+
+      if (payload.jumlah_terjual < 1) {
+        throw new Error("Jumlah terjual harus minimal 1.")
+      }
+
+      if (!rawPendapatan || payload.total_pendapatan <= 0) {
+        throw new Error("Nominal transaksi harus diisi dan lebih dari 0.")
       }
 
       const url = initialData ? `/api/jurnal/${initialData.id}` : "/api/jurnal"
@@ -60,7 +74,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       }
 
       toast.success(initialData ? "Jurnal berhasil diperbarui" : "Jurnal berhasil ditambahkan")
-      await expireJurnalCache() // invalidate cache on server
+      await expireJurnalCache()
       router.push("/admin/penjualan")
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Gagal menyimpan jurnal"
@@ -73,89 +87,95 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
   const today = new Date().toISOString().split('T')[0]
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="tanggal">Tanggal Transaksi</Label>
-        <Input
-          id="tanggal"
-          name="tanggal"
-          type="date"
-          required
-          defaultValue={initialData?.tanggal ? initialData.tanggal.split('T')[0] : today}
-        />
-      </div>
+    <form onSubmit={handleSubmit} className="max-w-3xl space-y-10 pb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <div className="md:col-span-2 space-y-2">
+          <Label htmlFor="tanggal" className="text-sm font-semibold">
+            Tanggal Transaksi <span className="text-red-500 ml-0.5">*</span>
+          </Label>
+          <Input
+            id="tanggal"
+            name="tanggal"
+            type="date"
+            required
+            defaultValue={initialData?.tanggal ? initialData.tanggal.split('T')[0] : today}
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="nama_item">Nama Produk / Item</Label>
-        <input type="hidden" name="nama_item" value={productName} />
-        <Popover open={comboboxOpen} onOpenChange={setComboboxOpen}>
-          <PopoverTrigger 
-            render={
-              <Button
-                type="button"
-                variant="outline"
-                role="combobox"
-                aria-expanded={comboboxOpen}
-                className={cn("w-full justify-between h-10 font-normal bg-background", !productName && "text-muted-foreground")}
-              />
-            }
-          >
-            {productName || "Pilih atau ketik nama produk..."}
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </PopoverTrigger>
-          <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
-            <Command>
-              <CommandInput 
-                placeholder="Cari atau tambah produk..." 
-                value={search} 
-                onValueChange={setSearch} 
-              />
-              <CommandList>
-                <CommandEmpty>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="w-full justify-start text-sm px-2 py-1.5 h-auto"
-                    onPointerDown={(event) => {
-                      event.preventDefault();
-                      const newProd = search.trim();
-                      if (newProd && !customProducts.includes(newProd) && !existingProducts.includes(newProd)) {
-                        setCustomProducts([...customProducts, newProd]);
-                      }
-                      setProductName(newProd);
-                      setComboboxOpen(false);
-                      setSearch("");
-                    }}
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    Buat &quot;{search.trim()}&quot;
-                  </Button>
-                </CommandEmpty>
-                <CommandGroup>
-                  {allProducts.map((prod) => (
-                    <CommandItem
-                      key={prod}
-                      value={prod}
-                      onSelect={() => {
-                        setProductName(prod);
+        <div className="md:col-span-2 space-y-2">
+          <Label htmlFor="nama_item" className="text-sm font-semibold">
+            Nama Produk / Item <span className="text-red-500 ml-0.5">*</span>
+          </Label>
+          <input type="hidden" name="nama_item" value={productName} />
+          <Popover open={comboboxOpen} onOpenChange={setComboboxOpen}>
+            <PopoverTrigger 
+              render={
+                <Button
+                  type="button"
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={comboboxOpen}
+                  className={cn("w-full justify-between h-14 font-normal bg-background", !productName && "text-muted-foreground")}
+                />
+              }
+            >
+              {productName || "Pilih atau ketik nama produk..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </PopoverTrigger>
+            <PopoverContent className="w-(--anchor-width) p-0" align="start">
+              <Command>
+                <CommandInput 
+                  placeholder="Cari atau tambah produk..." 
+                  value={search} 
+                  onValueChange={setSearch} 
+                />
+                <CommandList>
+                  <CommandEmpty>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="w-full justify-start text-sm px-2 py-1.5 h-auto"
+                      onPointerDown={(event) => {
+                        event.preventDefault();
+                        const newProd = search.trim();
+                        if (newProd && !customProducts.includes(newProd) && !existingProducts.includes(newProd)) {
+                          setCustomProducts([...customProducts, newProd]);
+                        }
+                        setProductName(newProd);
                         setComboboxOpen(false);
                         setSearch("");
                       }}
                     >
-                      <Check className={cn("mr-2 h-4 w-4", productName === prod ? "opacity-100" : "opacity-0")} />
-                      {prod}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      </div>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Buat &quot;{search.trim()}&quot;
+                    </Button>
+                  </CommandEmpty>
+                  <CommandGroup>
+                    {allProducts.map((prod) => (
+                      <CommandItem
+                        key={prod}
+                        value={prod}
+                        onSelect={() => {
+                          setProductName(prod);
+                          setComboboxOpen(false);
+                          setSearch("");
+                        }}
+                      >
+                        <Check className={cn("mr-2 h-4 w-4", productName === prod ? "opacity-100" : "opacity-0")} />
+                        {prod}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
 
-      <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="jumlah_terjual">Jumlah Terjual (Qty)</Label>
+          <Label htmlFor="jumlah_terjual" className="text-sm font-semibold">
+            Jumlah Terjual (Qty) <span className="text-red-500 ml-0.5">*</span>
+          </Label>
           <Input
             id="jumlah_terjual"
             name="jumlah_terjual"
@@ -168,40 +188,47 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
             defaultValue={initialData?.jumlah_terjual}
           />
         </div>
+
         <div className="space-y-2">
-          <Label htmlFor="total_pendapatan">Nominal Transaksi (Rp)</Label>
-          <Input
+          <Label htmlFor="total_pendapatan" className="text-sm font-semibold">
+            Nominal Transaksi (Rp) <span className="text-red-500 ml-0.5">*</span>
+          </Label>
+          <CurrencyInput
             id="total_pendapatan"
-            name="total_pendapatan"
-            type="number"
-            placeholder="Gunakan minus (-) jika pengeluaran"
-            required
-            defaultValue={initialData?.total_pendapatan}
+            placeholder="Contoh: 15.000"
+            value={pendapatan}
+            onChange={(rawDigits) => setPendapatan(rawDigits)}
+          />
+        </div>
+
+        <div className="md:col-span-2 space-y-2">
+          <Label htmlFor="keterangan" className="text-sm font-semibold">Keterangan (Opsional)</Label>
+          <Textarea
+            id="keterangan"
+            name="keterangan"
+            placeholder="Catatan tambahan seperti nama pembeli, platform, atau metode pembayaran..."
+            defaultValue={initialData?.keterangan}
+            rows={4}
+            className="resize-none min-h-[100px]"
           />
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="keterangan">Keterangan (Opsional)</Label>
-        <Textarea
-          id="keterangan"
-          name="keterangan"
-          placeholder="Catatan tambahan seperti nama pembeli, platform, atau metode pembayaran..."
-          defaultValue={initialData?.keterangan}
-          rows={4}
-        />
-      </div>
-
-      <div className="flex justify-end gap-2 pt-4">
+      <div className="pt-4 flex flex-col sm:flex-row gap-3">
         <Button
           type="button"
-          variant="outline"
-          onClick={() => router.back()}
+          variant="destructive"
           disabled={isSubmitting}
+          className="w-full sm:w-auto text-base h-14 order-2 sm:order-1"
+          onClick={() => router.back()}
         >
           Batal
         </Button>
-        <Button type="submit" disabled={isSubmitting}>
+        <Button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="w-full sm:flex-1 text-base h-14 order-1 sm:order-2"
+        >
           {isSubmitting ? "Menyimpan..." : (initialData ? "Simpan Perubahan" : "Simpan Jurnal")}
         </Button>
       </div>

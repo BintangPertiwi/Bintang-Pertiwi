@@ -69,6 +69,7 @@ export async function getJurnalListing(
       created_by: jurnalPenjualan.created_by,
       created_at: jurnalPenjualan.created_at,
       authorName: adminAuth.nama,
+      authorUsername: adminAuth.username,
     })
     .from(jurnalPenjualan)
     .leftJoin(adminAuth, eq(jurnalPenjualan.created_by, adminAuth.id))
@@ -78,11 +79,11 @@ export async function getJurnalListing(
     .offset((currentPage - 1) * limit);
 
   return {
-    items: data.map(({ authorName, created_at, keterangan, ...rest }) => ({ 
+    items: data.map(({ authorName, authorUsername, created_at, keterangan, ...rest }) => ({ 
       ...rest, 
       keterangan: keterangan || "",
       created_at: created_at || undefined,
-      authorName: authorName || "Unknown" 
+      authorName: authorName?.trim() || authorUsername || "-" 
     })),
     totalItems,
     totalPages,

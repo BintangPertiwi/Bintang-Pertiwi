@@ -3,6 +3,8 @@
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { usePathname, useRouter } from "next/navigation";
 import { buildListingQueryParams, createListingSearchParams, type ListingQueryParams } from "@/lib/listing";
+import { useTransition } from "react";
+import { Loader2 } from "lucide-react";
 
 interface JurnalFiltersProps {
   currentQuery: ListingQueryParams;
@@ -30,26 +32,44 @@ const MONTHS = [
 export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
 
   const navigate = (updates: Partial<ListingQueryParams>) => {
     const nextQuery = buildListingQueryParams(currentQuery, {
       ...updates,
-      page: 1, // reset page on filter
+      page: 1,
     });
-    router.replace(`${pathname}${createListingSearchParams(nextQuery)}`);
+    startTransition(() => {
+      router.replace(`${pathname}${createListingSearchParams(nextQuery)}`, { scroll: false });
+    });
   };
+
+  const monthLabel = currentQuery.month && currentQuery.month !== "all" 
+    ? MONTHS.find((m) => m.value === currentQuery.month)?.label || "Bulan..."
+    : "Semua Bulan";
+
+  const yearLabel = currentQuery.year && currentQuery.year !== "all" 
+    ? currentQuery.year 
+    : "Semua Tahun";
+
+  const productLabel = currentQuery.product && currentQuery.product !== "all" 
+    ? currentQuery.product 
+    : "Semua Produk";
 
   return (
     <>
+      {isPending && (
+        <div className="flex items-center justify-center h-14 w-8">
+          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+        </div>
+      )}
       <Select
         value={currentQuery.month || "all"}
         onValueChange={(value) => navigate({ month: value === "all" || !value ? undefined : String(value) })}
       >
         <SelectTrigger className="h-14 w-full lg:w-[150px] bg-background shadow-sm border-muted-foreground/20 text-base">
           <span className="flex flex-1 text-left truncate">
-            {currentQuery.month && currentQuery.month !== "all" 
-              ? MONTHS.find((m) => m.value === currentQuery.month)?.label || "Bulan..." 
-              : "Semua Bulan"}
+            {monthLabel}
           </span>
         </SelectTrigger>
         <SelectContent align="end" className="max-h-[300px]">
@@ -66,9 +86,7 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
       >
         <SelectTrigger className="h-14 w-full lg:w-[130px] bg-background shadow-sm border-muted-foreground/20 text-base">
           <span className="flex flex-1 text-left truncate">
-            {currentQuery.year && currentQuery.year !== "all" 
-              ? currentQuery.year 
-              : "Semua Tahun"}
+            {yearLabel}
           </span>
         </SelectTrigger>
         <SelectContent align="end" className="max-h-[300px]">
@@ -85,9 +103,7 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
       >
         <SelectTrigger className="h-14 w-full lg:w-[200px] bg-background shadow-sm border-muted-foreground/20 text-base">
           <span className="flex flex-1 text-left truncate">
-            {currentQuery.product && currentQuery.product !== "all" 
-              ? currentQuery.product 
-              : "Semua Produk"}
+            {productLabel}
           </span>
         </SelectTrigger>
         <SelectContent align="end" className="max-h-[300px]">

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts"
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend, AreaChart, Area, XAxis, YAxis, CartesianGrid } from "recharts"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface JurnalChartProps {
@@ -24,7 +24,6 @@ export function JurnalChart({ data }: JurnalChartProps) {
     )
   }
 
-  // Format currency for tooltip
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -34,17 +33,24 @@ export function JurnalChart({ data }: JurnalChartProps) {
     }).format(value)
   }
 
-  // Format date for timeline
   const formatDate = (dateVal: unknown) => {
     if (typeof dateVal !== "string") return String(dateVal || "")
     const parts = dateVal.split("-")
     if (parts.length === 3) {
-      return `${parts[2]} ${new Date(dateVal).toLocaleString('id-ID', { month: 'short' })}`
+      const d = new Date(dateVal)
+      return `${parts[2]} ${d.toLocaleString('id-ID', { month: 'short' })}`
     }
     if (parts.length === 2) {
-      return new Date(`${dateVal}-01`).toLocaleString('id-ID', { month: 'short', year: 'numeric' })
+      const d = new Date(`${dateVal}-01`)
+      return d.toLocaleString('id-ID', { month: 'short', year: 'numeric' })
     }
     return dateVal
+  }
+
+  const formatYAxis = (value: number) => {
+    if (Math.abs(value) >= 1_000_000) return `Rp${(value / 1_000_000).toFixed(1)}jt`
+    if (Math.abs(value) >= 1_000) return `Rp${(value / 1_000).toFixed(0)}k`
+    return `Rp${value}`
   }
 
   return (
@@ -91,7 +97,13 @@ export function JurnalChart({ data }: JurnalChartProps) {
               />
             </PieChart>
           ) : (
-            <LineChart data={data.lineData} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
+            <AreaChart data={data.lineData} margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
+              <defs>
+                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.05}/>
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
               <XAxis 
                 dataKey="name" 
@@ -103,7 +115,7 @@ export function JurnalChart({ data }: JurnalChartProps) {
                 dy={10}
               />
               <YAxis 
-                tickFormatter={(value) => `Rp${value / 1000}k`}
+                tickFormatter={formatYAxis}
                 stroke="hsl(var(--muted-foreground))"
                 fontSize={12}
                 tickLine={false}
@@ -116,16 +128,17 @@ export function JurnalChart({ data }: JurnalChartProps) {
                 contentStyle={{ borderRadius: '8px', border: '1px solid hsl(var(--border))', backgroundColor: 'hsl(var(--background))' }}
                 itemStyle={{ color: 'hsl(var(--foreground))' }}
               />
-              <Line 
+              <Area 
                 type="monotone" 
                 dataKey="value" 
                 stroke="hsl(var(--primary))" 
                 strokeWidth={3}
+                fill="url(#colorValue)"
                 connectNulls={true}
                 dot={{ r: 4, fill: "hsl(var(--primary))", strokeWidth: 2, stroke: "hsl(var(--background))" }}
                 activeDot={{ r: 6, strokeWidth: 0 }}
               />
-            </LineChart>
+            </AreaChart>
           )}
         </ResponsiveContainer>
       </div>
