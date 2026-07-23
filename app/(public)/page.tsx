@@ -16,7 +16,7 @@ export default async function BerandaPage() {
     getGlobalConfig(),
     getGaleriList(),
     getRecentBerita(4),
-    getJurnalChartData(), // Fetch global aggregated revenue
+    getJurnalChartData({}),
   ]);
   
   const selectedGaleriIdsStr = globalConfig["beranda_galeri_ids"];
@@ -96,7 +96,7 @@ export default async function BerandaPage() {
         mitraBinaan={mitraBinaan}
         penerimaLangsung={penerimaLangsung}
         penerimaTidakLangsung={penerimaTidakLangsung}
-        jurnalChartData={jurnalChartData}
+        jurnalChartData={jurnalChartData.pieData}
       />
       {/* Galeri Section */}
       <GaleriSection initialSlides={galeriSlides} />

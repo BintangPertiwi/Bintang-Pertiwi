@@ -29,7 +29,7 @@ export default async function AdminDashboardPage() {
   const [totalBerita, totalGaleri, chartData] = await Promise.all([
     isSuperAdmin ? getTotalBerita() : 0,
     isSuperAdmin ? getTotalGaleri() : 0,
-    getJurnalChartData(ownerId)
+    getJurnalChartData({ ownerId })
   ]);
 
   // Non-blocking: jangan biarkan Cloudinary timeout memblokir seluruh dashboard
@@ -109,7 +109,7 @@ export default async function AdminDashboardPage() {
       )}
 
       {/* Revenue Insight Chart */}
-      {chartData && chartData.length > 0 && (
+      {chartData && (chartData.pieData.length > 0 || chartData.lineData.length > 0) && (
         <Card className="bg-transparent rounded-md">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-bold">Ringkasan Pendapatan</CardTitle>

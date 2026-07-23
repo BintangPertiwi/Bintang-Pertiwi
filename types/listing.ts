@@ -7,6 +7,9 @@ export interface ListingQueryParams {
   view?: string;
   sort?: string;
   dir?: string;
+  month?: string;
+  year?: string;
+  product?: string;
 }
 
 export interface PaginatedResult<T> {

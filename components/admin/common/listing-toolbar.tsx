@@ -29,6 +29,7 @@ interface ListingToolbarProps {
   currentLimit: number;
   currentPage: number;
   currentView?: "list" | "grid";
+  children?: React.ReactNode;
 }
 
 export function ListingToolbar({
@@ -41,6 +42,7 @@ export function ListingToolbar({
   currentLimit,
   currentPage,
   currentView = "list",
+  children,
 }: ListingToolbarProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -130,36 +132,40 @@ export function ListingToolbar({
           </Button>
         )}
 
-        <Select 
-          value={activeFilter} 
-          onValueChange={(value) => {
-            if (value !== null) navigate({ filter: value, page: 1 });
-          }}
-        >
-          <SelectTrigger className="h-14 w-full lg:w-[220px] bg-background shadow-sm border-muted-foreground/20 text-base relative overflow-visible">
-            <div className="flex items-center gap-2">
-              <div className="relative">
-                <Filter className="h-5 w-5 text-muted-foreground shrink-0" />
-                {activeFilter && activeFilter !== "all" && (
-                  <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
-                  </span>
-                )}
+        {children}
+
+        {filterOptions && filterOptions.length > 0 && (
+          <Select 
+            value={activeFilter} 
+            onValueChange={(value) => {
+              if (value !== null) navigate({ filter: value, page: 1 });
+            }}
+          >
+            <SelectTrigger className="h-14 w-full lg:w-[220px] bg-background shadow-sm border-muted-foreground/20 text-base relative overflow-visible">
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <Filter className="h-5 w-5 text-muted-foreground shrink-0" />
+                  {activeFilter && activeFilter !== "all" && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+                    </span>
+                  )}
+                </div>
+                <span className="flex flex-1 text-left truncate">
+                  {filterOptions.find((opt) => opt.value === activeFilter)?.label || "Kategori..."}
+                </span>
               </div>
-              <span className="flex flex-1 text-left truncate">
-                {filterOptions.find((opt) => opt.value === activeFilter)?.label || "Kategori..."}
-              </span>
-            </div>
-          </SelectTrigger>
-          <SelectContent align="end">
-            {filterOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+            </SelectTrigger>
+            <SelectContent align="end">
+              {filterOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
 
         {statusOptions && (
           <Select 

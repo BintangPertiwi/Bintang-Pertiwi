@@ -5,12 +5,13 @@ import { EmptyState } from "@/components/admin/common/empty-state"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getSession } from "@/lib/auth"
-import { getJurnalChartData, getJurnalListing } from "@/lib/db/queries/jurnal"
+import { getJurnalChartData, getJurnalListing, getJurnalFilterOptions } from "@/lib/db/queries/jurnal"
 import { FileText, PlusCircle } from "lucide-react"
 import Link from "next/link"
 import { Suspense } from "react"
 import { JurnalChart } from "./jurnal-chart"
 import { JurnalTable } from "./jurnal-table"
+import { JurnalFilters } from "./jurnal-filters"
 import { toPositiveInteger } from "@/lib/listing"
 
 export const metadata = {
@@ -37,11 +38,15 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
   )
   const sort = typeof resolvedSearchParams.sort === "string" ? resolvedSearchParams.sort : undefined
   const dir = typeof resolvedSearchParams.dir === "string" ? resolvedSearchParams.dir : undefined
+  const month = typeof resolvedSearchParams.month === "string" ? resolvedSearchParams.month : undefined
+  const year = typeof resolvedSearchParams.year === "string" ? resolvedSearchParams.year : undefined
+  const product = typeof resolvedSearchParams.product === "string" ? resolvedSearchParams.product : undefined
   const ownerId = session?.role === "kontributor" ? session.id : undefined
 
-  const [jurnalResult, chartData] = await Promise.all([
-    getJurnalListing({ q, filter, page, limit, sort, dir, ownerId }),
-    getJurnalChartData(ownerId)
+  const [jurnalResult, chartData, filterOptions] = await Promise.all([
+    getJurnalListing({ q, filter, month, year, product, page, limit, sort, dir, ownerId }),
+    getJurnalChartData({ ownerId, month, year, product }),
+    getJurnalFilterOptions(ownerId)
   ])
 
   return (
@@ -56,11 +61,11 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
         </Button>
       </DashboardHeader>
 
-      {chartData && chartData.length > 0 && (
+      {(chartData.pieData.length > 0 || chartData.lineData.length > 0) && (
         <Card className="shadow-sm">
           <CardHeader className="pb-3 border-b border-border/50 bg-muted/20">
             <CardTitle className="text-base">Ringkasan Pendapatan</CardTitle>
-            <CardDescription>Berdasarkan total pendapatan per produk</CardDescription>
+            <CardDescription>Visualisasi pendapatan penjualan produk</CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
             <JurnalChart data={chartData} />
@@ -72,15 +77,16 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
         searchPlaceholder="Cari nama produk..."
         searchValue={q}
         activeFilter={filter}
-        filterOptions={[
-          { label: "Semua Waktu", value: "all" },
-          { label: "Bulan Ini", value: "bulan_ini" },
-          { label: "Tahun Ini", value: "tahun_ini" },
-        ]}
+        filterOptions={[]}
         currentLimit={limit}
         currentPage={page}
         currentView="list"
-      />
+      >
+        <JurnalFilters 
+          currentQuery={{ q, filter, page, limit, sort, dir, month, year, product }} 
+          options={filterOptions} 
+        />
+      </ListingToolbar>
 
       <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Memuat data...</div>}>
         <JurnalTable 
@@ -103,7 +109,7 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
       {jurnalResult.totalPages > 1 && (
         <ListingPagination
           pathname="/admin/penjualan"
-          query={{ q, filter, page, limit, sort, dir }}
+          query={{ q, filter, page, limit, sort, dir, month, year, product }}
           page={jurnalResult.page}
           totalPages={jurnalResult.totalPages}
           totalItems={jurnalResult.totalItems}

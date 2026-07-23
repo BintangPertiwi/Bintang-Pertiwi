@@ -6,7 +6,7 @@ import { adminAuth, jurnalPenjualan } from "../schema";
 export async function getJurnalListing(
   args: ListingQueryParams & { ownerId?: number },
 ): Promise<PaginatedResult<JurnalRow & { authorName: string }>> {
-  const { q = "", filter = "all", page = 1, limit = 10, ownerId } = args;
+  const { q = "", month, year, product, page = 1, limit = 10, ownerId } = args;
 
   const conditions = [];
   
@@ -18,13 +18,20 @@ export async function getJurnalListing(
     conditions.push(eq(jurnalPenjualan.created_by, ownerId));
   }
 
-  const now = new Date();
-  if (filter === "bulan_ini") {
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-    conditions.push(sql`${jurnalPenjualan.tanggal} >= ${startOfMonth}`);
-  } else if (filter === "tahun_ini") {
-    const startOfYear = new Date(now.getFullYear(), 0, 1).toISOString();
-    conditions.push(sql`${jurnalPenjualan.tanggal} >= ${startOfYear}`);
+  if (year && year !== "all") {
+    conditions.push(like(jurnalPenjualan.tanggal, `${year}-%`));
+  }
+  
+  if (month && month !== "all") {
+    if (year && year !== "all") {
+      conditions.push(like(jurnalPenjualan.tanggal, `${year}-${month}-%`));
+    } else {
+      conditions.push(like(jurnalPenjualan.tanggal, `%-${month}-%`));
+    }
+  }
+
+  if (product && product !== "all") {
+    conditions.push(eq(jurnalPenjualan.nama_item, product));
   }
 
   const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
@@ -130,15 +137,65 @@ export async function deleteJurnalById(id: string): Promise<boolean> {
   return result.length > 0;
 }
 
-export async function getJurnalChartData(ownerId?: number) {
+export async function getJurnalFilterOptions(ownerId?: number) {
   const conditions = [];
-  if (ownerId) {
-    conditions.push(eq(jurnalPenjualan.created_by, ownerId));
+  if (ownerId) conditions.push(eq(jurnalPenjualan.created_by, ownerId));
+  const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
+
+  const productsResult = await db
+    .select({ name: jurnalPenjualan.nama_item })
+    .from(jurnalPenjualan)
+    .where(whereCondition)
+    .groupBy(jurnalPenjualan.nama_item)
+    .orderBy(jurnalPenjualan.nama_item);
+
+  const yearsResult = await db
+    .select({ year: sql<string>`strftime('%Y', ${jurnalPenjualan.tanggal})` })
+    .from(jurnalPenjualan)
+    .where(whereCondition)
+    .groupBy(sql`strftime('%Y', ${jurnalPenjualan.tanggal})`)
+    .orderBy(desc(sql`strftime('%Y', ${jurnalPenjualan.tanggal})`));
+
+  const currentYear = new Date().getFullYear();
+  let years = yearsResult.map(r => r.year).filter(Boolean);
+  
+  if (years.length === 0) {
+    years = Array.from({ length: 5 }, (_, i) => String(currentYear - i));
+  } else {
+    if (!years.includes(String(currentYear))) {
+      years.unshift(String(currentYear));
+      years.sort((a, b) => Number(b) - Number(a));
+    }
   }
+
+  return {
+    products: productsResult.map(r => r.name).filter(Boolean),
+    years,
+  };
+}
+
+export async function getJurnalChartData(args: { ownerId?: number; month?: string; year?: string; product?: string }) {
+  const { ownerId, month, year, product } = args;
+  const conditions = [];
+  if (ownerId) conditions.push(eq(jurnalPenjualan.created_by, ownerId));
+  
+  if (year && year !== "all") {
+    conditions.push(like(jurnalPenjualan.tanggal, `${year}-%`));
+  }
+  if (month && month !== "all") {
+    if (year && year !== "all") {
+      conditions.push(like(jurnalPenjualan.tanggal, `${year}-${month}-%`));
+    } else {
+      conditions.push(like(jurnalPenjualan.tanggal, `%-${month}-%`));
+    }
+  }
+  if (product && product !== "all") {
+    conditions.push(eq(jurnalPenjualan.nama_item, product));
+  }
+
   const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
   
-  // Aggregate revenue by item name
-  const result = await db
+  const pieResult = await db
     .select({
       name: jurnalPenjualan.nama_item,
       value: sql<number>`SUM(${jurnalPenjualan.total_pendapatan})`,
@@ -149,8 +206,24 @@ export async function getJurnalChartData(ownerId?: number) {
     .orderBy(desc(sql`SUM(${jurnalPenjualan.total_pendapatan})`))
     .limit(10);
     
-  return result.map(r => ({
-    name: r.name,
-    value: Number(r.value || 0),
-  }));
+  let timeFormat = '%Y-%m';
+  if (month && month !== "all") {
+    timeFormat = '%Y-%m-%d';
+  }
+  
+  const lineResult = await db
+    .select({
+      time: sql<string>`strftime(${timeFormat}, ${jurnalPenjualan.tanggal})`,
+      value: sql<number>`SUM(${jurnalPenjualan.total_pendapatan})`,
+    })
+    .from(jurnalPenjualan)
+    .where(whereCondition)
+    .groupBy(sql`strftime(${timeFormat}, ${jurnalPenjualan.tanggal})`)
+    .orderBy(asc(sql`strftime(${timeFormat}, ${jurnalPenjualan.tanggal})`))
+    .limit(30);
+
+  return {
+    pieData: pieResult.map(r => ({ name: r.name, value: Number(r.value || 0) })),
+    lineData: lineResult.map(r => ({ name: r.time, value: Number(r.value || 0) }))
+  };
 }
