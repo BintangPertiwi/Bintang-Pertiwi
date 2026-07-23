@@ -49,6 +49,8 @@ export function PengaturanBerandaForm({
     setPenerimaLangsung,
     penerimaTidakLangsung,
     setPenerimaTidakLangsung,
+    revenueNarasi,
+    setRevenueNarasi,
     selectedGaleriIds,
     handleAddSlide,
     handleRemoveSlide,
@@ -65,7 +67,7 @@ export function PengaturanBerandaForm({
 
   return (
     <> <form onSubmit={handleSubmit} className="max-w-4xl pb-20">
-      <Accordion multiple defaultValue={["hero", "tentang", "galeri", "berita"]} className="w-full space-y-4">
+      <Accordion multiple defaultValue={["hero", "tentang", "pendapatan", "galeri", "berita"]} className="w-full space-y-4">
         
         <AccordionItem value="hero" className="border-b pb-4">
           <AccordionTrigger className="text-xl font-bold hover:no-underline">
@@ -262,6 +264,28 @@ export function PengaturanBerandaForm({
                   required
                 />
               </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="pendapatan" className="border-b pb-4">
+          <AccordionTrigger className="text-xl font-bold hover:no-underline">
+            Bagian Ringkasan Pendapatan UMKM
+          </AccordionTrigger>
+          <AccordionContent className="pt-4 pb-6 space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="revenueNarasi" className="text-sm font-semibold">
+                Narasi Ringkasan Pendapatan <span className="text-red-500 ml-0.5">*</span>
+              </Label>
+              <Textarea
+                id="revenueNarasi"
+                placeholder="Tuliskan cerita singkat atau penjelasan untuk grafik pendapatan..."
+                className="resize-y min-h-[120px]"
+                value={revenueNarasi}
+                onChange={(e) => setRevenueNarasi(e.target.value)}
+                required
+              />
+              <p className="text-xs text-muted-foreground">Keterangan ini akan ditampilkan di sebelah kiri diagram lingkaran/statistik pendapatan pada halaman beranda publik.</p>
             </div>
           </AccordionContent>
         </AccordionItem>

@@ -26,6 +26,7 @@ export async function POST(request: Request) {
       "beranda_tentang_rt",
       "beranda_tentang_penerima_tidak_langsung",
       "beranda_galeri_ids",
+      "beranda_revenue_narasi",
     ];
     
     const updates: Record<string, string> = {};

@@ -59,6 +59,11 @@ export function usePengaturanBerandaForm({
     globalConfig?.["beranda_galeri_ids"] ? globalConfig["beranda_galeri_ids"].split(",").map(id => id.trim()) : []
   );
 
+  const [revenueNarasi, setRevenueNarasi] = useState(
+    globalConfig?.["beranda_revenue_narasi"] || 
+    "Diagram berikut menyajikan ringkasan pendapatan dari berbagai produk unggulan Kelompok Binaan Program PPM Bintang Pertiwi Pertamina EP Sangatta Field."
+  );
+
   const handleAddSlide = () => {
     setSlides([
       ...slides,
@@ -169,6 +174,7 @@ export function usePengaturanBerandaForm({
           beranda_tentang_rt: penerimaLangsung,
           beranda_tentang_penerima_tidak_langsung: penerimaTidakLangsung,
           beranda_galeri_ids: selectedGaleriIds.join(","),
+          beranda_revenue_narasi: revenueNarasi,
         }),
       });
       if (!response.ok) throw new Error("Gagal menyimpan pengaturan.");
@@ -196,6 +202,8 @@ export function usePengaturanBerandaForm({
     setPenerimaLangsung,
     penerimaTidakLangsung,
     setPenerimaTidakLangsung,
+    revenueNarasi,
+    setRevenueNarasi,
     selectedGaleriIds,
     handleAddSlide,
     handleRemoveSlide,

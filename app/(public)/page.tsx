@@ -4,6 +4,7 @@ import { NewsSection } from "@/components/public/beranda/news-section";
 import { GaleriSection } from "@/components/public/galeri/galeri-section";
 import { getGaleriList, getGlobalConfig, getRecentBerita } from "@/lib/db/queries";
 import { getJurnalChartData } from "@/lib/db/queries/jurnal";
+import { RevenueSection } from "@/components/public/beranda/revenue-section";
 import { formatDate } from "@/lib/utils";
 
 export const metadata = {
@@ -85,6 +86,7 @@ export default async function BerandaPage() {
   const penerimaLangsung = parseStat(globalConfig["beranda_tentang_rt"]);
   const penerimaTidakLangsung = parseStat(globalConfig["beranda_tentang_penerima_tidak_langsung"]);
   const narasi = globalConfig["beranda_tentang_narasi"];
+  const revenueNarasi = globalConfig["beranda_revenue_narasi"];
 
   return (
     <div className="flex flex-col w-full">
@@ -96,8 +98,9 @@ export default async function BerandaPage() {
         mitraBinaan={mitraBinaan}
         penerimaLangsung={penerimaLangsung}
         penerimaTidakLangsung={penerimaTidakLangsung}
-        jurnalChartData={jurnalChartData.pieData}
       />
+      {/* Revenue Section */}
+      <RevenueSection data={jurnalChartData.pieData} narasi={revenueNarasi} />
       {/* Galeri Section */}
       <GaleriSection initialSlides={galeriSlides} />
       {/* News Section */}

@@ -3,7 +3,6 @@
 import { FadeIn } from "@/components/ui/fade-in";
 import { animate, motion, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { RevenueCarousel } from "./revenue-carousel";
 
 function Counter({
   from = 0,
@@ -65,14 +64,12 @@ export function AboutSection({
   mitraBinaan = 0,
   penerimaLangsung = 0,
   penerimaTidakLangsung = 0,
-  jurnalChartData,
 }: {
   narasi?: string;
   nilaiEkonomi?: number;
   mitraBinaan?: number;
   penerimaLangsung?: number;
   penerimaTidakLangsung?: number;
-  jurnalChartData?: { name: string; value: number }[];
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
@@ -147,12 +144,6 @@ export function AboutSection({
                 </motion.p>
               ))}
             </motion.div>
-            
-            {jurnalChartData && jurnalChartData.length > 0 && (
-              <FadeIn direction="up" delay={0.6} className="mt-12">
-                <RevenueCarousel data={jurnalChartData} />
-              </FadeIn>
-            )}
           </div>
 
           <FadeIn direction="up" delay={0.4} className="lg:col-span-4 flex flex-col gap-6 lg:gap-10 lg:border-l lg:border-border lg:pl-16">
