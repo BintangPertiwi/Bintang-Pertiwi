@@ -328,7 +328,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
                   <div className="flex flex-col items-center justify-center p-4 z-10 relative text-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
                     <p className="text-[13px] text-muted-foreground animate-pulse">
-                      Mengunggah ke Drive...
+                      Mengunggah...
                     </p>
                   </div>
                 ) : (

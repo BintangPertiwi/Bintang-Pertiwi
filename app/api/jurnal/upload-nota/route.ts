@@ -1,7 +1,7 @@
 import { requireRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { adminAuth } from "@/lib/db/schema";
-import { uploadToGoogleDrive } from "@/lib/google-drive";
+import { uploadToTelegram } from "@/lib/telegram-storage";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -79,8 +79,12 @@ export async function POST(request: Request) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Upload to Google Drive
-    const directViewUrl = await uploadToGoogleDrive(buffer, fileName, file.type);
+    // Upload to Telegram with descriptive caption
+    const caption = `📝 Nota Penjualan\n📦 Produk: ${namaProdukRaw || "Produk"}\n👤 Oleh: ${kelompokRaw}\n📅 Tanggal: ${cleanTanggal}`;
+    const fileId = await uploadToTelegram(buffer, fileName, caption);
+    
+    // Construct local internal route url
+    const directViewUrl = `/api/jurnal/nota/${fileId}`;
 
     return NextResponse.json({
       success: true,
@@ -88,9 +92,9 @@ export async function POST(request: Request) {
       fileName,
     });
   } catch (error) {
-    console.error("Error uploading receipt to Google Drive:", error);
+    console.error("Error uploading receipt to Telegram:", error);
     return NextResponse.json(
-      { success: false, message: "Gagal mengunggah nota ke Google Drive." },
+      { success: false, message: "Gagal mengunggah nota." },
       { status: 500 }
     );
   }
