@@ -7,11 +7,9 @@ import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import type { JurnalRow } from "@/types"
 import { ColumnDef } from "@tanstack/react-table"
-import { CalendarDays, Pencil, Trash2 } from "lucide-react"
+import { CalendarDays, Pencil } from "lucide-react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import * as React from "react"
-import { toast } from "sonner"
+import { DeleteJurnalButton } from "@/components/admin/penjualan/delete-jurnal-button"
 
 export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
   {
@@ -75,23 +73,6 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
     header: () => <div className="text-right">Aksi</div>,
     cell: function ActionCell({ row }) {
       const jurnal = row.original
-      const router = useRouter()
-      const [isDeleting, setIsDeleting] = React.useState(false)
-
-      const handleDelete = async () => {
-        if (!confirm(`Hapus pencatatan ${jurnal.nama_item}?`)) return
-        setIsDeleting(true)
-        try {
-          const res = await fetch(`/api/jurnal/${jurnal.id}`, { method: "DELETE" })
-          if (!res.ok) throw new Error("Gagal menghapus")
-          toast.success("Catatan berhasil dihapus")
-          router.refresh()
-        } catch {
-          toast.error("Terjadi kesalahan saat menghapus catatan")
-        } finally {
-          setIsDeleting(false)
-        }
-      }
 
       return (
         <div className="flex items-center justify-end gap-2">
@@ -103,14 +84,12 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
             <Pencil className="h-4 w-4 mr-1" />
             Edit
           </Link>
-          <button
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-8 px-2 text-red-600 bg-red-50 hover:bg-red-600 hover:text-white transition-colors disabled:opacity-50"
-            title="Hapus"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
+          <DeleteJurnalButton
+            id={jurnal.id}
+            namaItem={jurnal.nama_item}
+            triggerVariant="ghost"
+            triggerClassName="h-8 px-2 text-red-600 bg-red-50 hover:bg-red-600 hover:text-white transition-colors"
+          />
         </div>
       )
     },
@@ -118,24 +97,6 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
 ]
 
 function JurnalGridCard({ item }: { item: JurnalRow & { authorName?: string } }) {
-  const router = useRouter()
-  const [isDeleting, setIsDeleting] = React.useState(false)
-
-  const handleDelete = async () => {
-    if (!confirm(`Hapus pencatatan ${item.nama_item}?`)) return
-    setIsDeleting(true)
-    try {
-      const res = await fetch(`/api/jurnal/${item.id}`, { method: "DELETE" })
-      if (!res.ok) throw new Error("Gagal menghapus")
-      toast.success("Catatan berhasil dihapus")
-      router.refresh()
-    } catch {
-      toast.error("Terjadi kesalahan saat menghapus catatan")
-    } finally {
-      setIsDeleting(false)
-    }
-  }
-
   return (
     <Card className="shadow-sm hover:shadow-md transition-shadow">
       <CardContent className="p-5 space-y-3">
@@ -172,13 +133,12 @@ function JurnalGridCard({ item }: { item: JurnalRow & { authorName?: string } })
             <Pencil className="h-3.5 w-3.5 mr-1" />
             Edit
           </Link>
-          <button
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-9 px-3 text-red-600 bg-red-50 hover:bg-red-600 hover:text-white transition-colors disabled:opacity-50"
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-          </button>
+          <DeleteJurnalButton
+            id={item.id}
+            namaItem={item.nama_item}
+            triggerVariant="ghost"
+            triggerClassName="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-9 px-3 text-red-600 bg-red-50 hover:bg-red-600 hover:text-white transition-colors"
+          />
         </div>
       </CardContent>
     </Card>
