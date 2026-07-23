@@ -4,7 +4,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useCallback, useEffect, useState } from 'react';
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 interface RevenueCarouselProps {
   slides: { title: string; data: { name: string; value: number }[] }[];
@@ -48,7 +48,7 @@ export function RevenueCarousel({ slides }: RevenueCarouselProps) {
           {slides.map((slide, index) => (
             <div className="flex-[0_0_100%] min-w-0" key={index}>
               <h3 className="text-center font-bold text-foreground mb-4 text-lg tracking-wide uppercase">{slide.title}</h3>
-              <div className="h-[400px] w-full">
+              <div className="h-[280px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -64,19 +64,26 @@ export function RevenueCarousel({ slides }: RevenueCarouselProps) {
                         <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip 
+                    <Tooltip
                       formatter={(value: unknown) => [formatCurrency(Number(value)), "Pendapatan"]}
                       contentStyle={{ borderRadius: '8px', border: '1px solid hsl(var(--border))', backgroundColor: 'hsl(var(--background))' }}
                       itemStyle={{ color: 'hsl(var(--foreground))' }}
                     />
-                    <Legend 
-                      verticalAlign="bottom" 
-                      height={80} 
-                      formatter={(value) => <span className="text-sm font-medium text-foreground">{value}</span>}
-                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
+
+              <ul className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 px-2">
+                {slide.data.map((item, idx) => (
+                  <li key={`legend-${idx}`} className="flex items-center gap-2">
+                    <span
+                      className="inline-block w-3 h-3 rounded-full shrink-0"
+                      style={{ backgroundColor: COLORS[idx % COLORS.length] }}
+                    />
+                    <span className="text-sm font-medium text-foreground">{item.name}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
