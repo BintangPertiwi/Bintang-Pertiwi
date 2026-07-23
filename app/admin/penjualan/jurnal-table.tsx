@@ -3,15 +3,15 @@
 import { DataTable } from "@/components/admin/common/data-table"
 import { DataTableColumnHeader } from "@/components/admin/common/data-table-column-header"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
 import { buttonVariants } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import type { JurnalRow } from "@/types"
 import { ColumnDef } from "@tanstack/react-table"
 import { CalendarDays, Pencil, Trash2 } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import * as React from "react"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
 
 export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
   {
@@ -56,7 +56,7 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
       <DataTableColumnHeader column={column} title="Pendapatan" />
     ),
     cell: ({ row }) => (
-      <span className="font-semibold text-green-700 dark:text-green-400">
+      <span className="font-semibold text-primary">
         Rp {row.original.total_pendapatan.toLocaleString("id-ID")}
       </span>
     ),
@@ -145,7 +145,7 @@ function JurnalGridCard({ item }: { item: JurnalRow & { authorName?: string } })
             x{item.jumlah_terjual}
           </Badge>
         </div>
-        <div className="text-xl font-bold text-green-700 dark:text-green-400">
+        <div className="text-xl font-bold text-primary">
           Rp {item.total_pendapatan.toLocaleString("id-ID")}
         </div>
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">

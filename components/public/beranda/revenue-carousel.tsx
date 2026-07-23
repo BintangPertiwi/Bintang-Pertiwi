@@ -2,7 +2,7 @@
 
 import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-react';
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useCallback, useEffect, useState } from 'react';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
@@ -50,12 +50,12 @@ export function RevenueCarousel({ data }: RevenueCarouselProps) {
   };
 
   return (
-    <div className="relative w-full max-w-lg mx-auto bg-card rounded-2xl p-6 shadow-sm border border-border">
+    <div className="relative w-full max-w-lg mx-auto bg-transparent">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {slides.map((slide, index) => (
             <div className="flex-[0_0_100%] min-w-0" key={index}>
-              <h3 className="text-center font-bold text-foreground mb-4 text-lg">{slide.title}</h3>
+              <h3 className="text-center font-bold text-foreground mb-4 text-lg tracking-wide uppercase">{slide.title}</h3>
               <div className="h-[250px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -90,18 +90,20 @@ export function RevenueCarousel({ data }: RevenueCarouselProps) {
         </div>
       </div>
       
-      {/* Navigation Buttons */}
+      {/* Navigation Buttons (Style matched with Galeri Section but adapted to light theme) */}
       <button 
         onClick={scrollPrev} 
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-background border border-border shadow-sm text-foreground hover:bg-muted transition-colors z-10"
+        className="absolute -left-4 md:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-foreground/25 hover:bg-foreground hover:text-background text-foreground transition-all bg-background/40 backdrop-blur-sm z-10 cursor-pointer shadow-none"
+        title="Sebelumnya"
       >
-        <ChevronLeft className="w-4 h-4" />
+        <ArrowLeft className="w-5 h-5" strokeWidth={2} />
       </button>
       <button 
         onClick={scrollNext} 
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-background border border-border shadow-sm text-foreground hover:bg-muted transition-colors z-10"
+        className="absolute -right-4 md:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-foreground/25 hover:bg-foreground hover:text-background text-foreground transition-all bg-background/40 backdrop-blur-sm z-10 cursor-pointer shadow-none"
+        title="Selanjutnya"
       >
-        <ChevronRight className="w-4 h-4" />
+        <ArrowRight className="w-5 h-5" strokeWidth={2} />
       </button>
 
       {/* Dots */}
@@ -109,7 +111,7 @@ export function RevenueCarousel({ data }: RevenueCarouselProps) {
         {slides.map((_, index) => (
           <button
             key={index}
-            className={`w-2 h-2 rounded-full transition-colors ${index === selectedIndex ? 'bg-primary' : 'bg-muted-foreground/30'}`}
+            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${index === selectedIndex ? 'bg-primary scale-110' : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'}`}
             onClick={() => emblaApi?.scrollTo(index)}
           />
         ))}
