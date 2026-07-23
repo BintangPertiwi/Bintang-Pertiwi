@@ -1,8 +1,10 @@
 import { Metadata } from "next"
 import { JurnalForm } from "../../create/jurnal-form"
-import { getJurnalById } from "@/lib/db/queries/jurnal"
+import { getJurnalById, getJurnalFilterOptions } from "@/lib/db/queries/jurnal"
 import { notFound } from "next/navigation"
 import { getSession } from "@/lib/auth"
+import { DashboardHeader } from "@/components/admin/layout/dashboard-header"
+import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context"
 
 export const metadata: Metadata = {
   title: "Edit Jurnal Penjualan",
@@ -27,19 +29,19 @@ export default async function EditJurnalPage({
     notFound()
   }
 
+  const ownerId = session?.role === "kontributor" ? session.id : undefined;
+  const options = await getJurnalFilterOptions(ownerId);
+
   return (
-    <div className="space-y-6 max-w-2xl mx-auto pb-10">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
-          Edit Jurnal Penjualan
-        </h1>
-        <p className="text-muted-foreground mt-1 text-sm">
-          Perbarui data pencatatan penjualan produk Anda.
-        </p>
-      </div>
+    <div className="flex flex-col gap-6">
+      <SetBreadcrumb label="Edit Jurnal" />
+      <DashboardHeader 
+        title="Edit Jurnal Penjualan" 
+        description="Perbarui data pencatatan penjualan produk Anda."
+      />
       
-      <div className="bg-card border border-border rounded-lg p-6">
-        <JurnalForm initialData={jurnal} />
+      <div className="max-w-3xl">
+        <JurnalForm initialData={jurnal} existingProducts={options.products} />
       </div>
     </div>
   )

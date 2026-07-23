@@ -46,9 +46,13 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
         onValueChange={(value) => navigate({ month: value === "all" || !value ? undefined : String(value) })}
       >
         <SelectTrigger className="h-14 w-full lg:w-[150px] bg-background shadow-sm border-muted-foreground/20 text-base">
-          <SelectValue placeholder="Bulan..." />
+          <span className="flex flex-1 text-left truncate">
+            {currentQuery.month && currentQuery.month !== "all" 
+              ? MONTHS.find((m) => m.value === currentQuery.month)?.label || "Bulan..." 
+              : "Semua Bulan"}
+          </span>
         </SelectTrigger>
-        <SelectContent align="end">
+        <SelectContent align="end" className="max-h-[300px]">
           <SelectItem value="all">Semua Bulan</SelectItem>
           {MONTHS.map((m) => (
             <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>
@@ -61,9 +65,13 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
         onValueChange={(value) => navigate({ year: value === "all" || !value ? undefined : String(value) })}
       >
         <SelectTrigger className="h-14 w-full lg:w-[130px] bg-background shadow-sm border-muted-foreground/20 text-base">
-          <SelectValue placeholder="Tahun..." />
+          <span className="flex flex-1 text-left truncate">
+            {currentQuery.year && currentQuery.year !== "all" 
+              ? currentQuery.year 
+              : "Semua Tahun"}
+          </span>
         </SelectTrigger>
-        <SelectContent align="end">
+        <SelectContent align="end" className="max-h-[300px]">
           <SelectItem value="all">Semua Tahun</SelectItem>
           {options.years.map((y) => (
             <SelectItem key={y} value={y}>{y}</SelectItem>
@@ -76,9 +84,13 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
         onValueChange={(value) => navigate({ product: value === "all" || !value ? undefined : String(value) })}
       >
         <SelectTrigger className="h-14 w-full lg:w-[200px] bg-background shadow-sm border-muted-foreground/20 text-base">
-          <SelectValue placeholder="Semua Produk" />
+          <span className="flex flex-1 text-left truncate">
+            {currentQuery.product && currentQuery.product !== "all" 
+              ? currentQuery.product 
+              : "Semua Produk"}
+          </span>
         </SelectTrigger>
-        <SelectContent align="end">
+        <SelectContent align="end" className="max-h-[300px]">
           <SelectItem value="all">Semua Produk</SelectItem>
           {options.products.map((p) => (
             <SelectItem key={p} value={p}>{p}</SelectItem>

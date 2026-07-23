@@ -14,7 +14,7 @@ interface JurnalChartProps {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#8dd1e1', '#a4de6c', '#d0ed57']
 
 export function JurnalChart({ data }: JurnalChartProps) {
-  const [activeTab, setActiveTab] = useState<"pie" | "line">("pie")
+  const [activeTab, setActiveTab] = useState<"pie" | "line">("line")
   
   if (!data || (data.pieData.length === 0 && data.lineData.length === 0)) {
     return (
@@ -121,6 +121,7 @@ export function JurnalChart({ data }: JurnalChartProps) {
                 dataKey="value" 
                 stroke="hsl(var(--primary))" 
                 strokeWidth={3}
+                connectNulls={true}
                 dot={{ r: 4, fill: "hsl(var(--primary))", strokeWidth: 2, stroke: "hsl(var(--background))" }}
                 activeDot={{ r: 6, strokeWidth: 0 }}
               />
