@@ -20,6 +20,7 @@ export const beritaDusun = sqliteTable("berita_dusun", {
   kategori: text("kategori").default(""),
   media_assets: text("media_assets").default(""),
   status_publikasi: text("status_publikasi").default("Publik"),
+  created_by: integer("created_by"),
   created_at: text("created_at").default(sql`(datetime('now'))`),
   updated_at: text("updated_at").default(sql`(datetime('now'))`),
 });

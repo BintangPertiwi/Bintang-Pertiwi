@@ -9,6 +9,8 @@ function isKontributorAllowed(pathname: string): boolean {
   if (pathname === '/admin') return true;
   if (pathname === '/admin/pengaturan') return true; // akun sendiri (password + WA)
   if (pathname === '/admin/produk' || pathname.startsWith('/admin/produk/')) return true;
+  if (pathname === '/admin/penjualan' || pathname.startsWith('/admin/penjualan/')) return true;
+  if (pathname === '/admin/berita' || pathname.startsWith('/admin/berita/')) return true;
   return false;
 }
 

@@ -6,7 +6,8 @@ import { requireRole } from "@/lib/auth";
 
 export async function POST(request: Request) {
   try {
-    if (!(await requireRole(["super_admin"]))) {
+    const session = await requireRole(["super_admin", "kontributor"]);
+    if (!session) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }
@@ -43,6 +44,7 @@ export async function POST(request: Request) {
       kategori: kategori || "",
       media_assets: media_assets || "",
       status_publikasi: status_publikasi || "Publik",
+      created_by: session.id,
     });
     revalidateTag("berita", "max");
 

@@ -8,6 +8,7 @@ export interface BeritaRow {
   kategori: string;
   media_assets?: string;
   status_publikasi?: string;
+  created_by?: number;
 }
 
 export interface GaleriRow {

@@ -11,6 +11,8 @@ import { DEFAULT_PAGE_LIMITS, toPositiveInteger } from "@/lib/listing";
 import { BeritaTable } from "./berita-table";
 import { BeritaGrid } from "./berita-grid";
 
+import { getSession } from "@/lib/auth";
+
 export const metadata = {
   title: "Manajemen Berita — Bintang Pertiwi",
 };
@@ -20,6 +22,9 @@ interface BeritaPageProps {
 }
 
 export default async function BeritaPage({ searchParams }: BeritaPageProps) {
+  const session = await getSession();
+  const ownerId = session?.role === "kontributor" ? session.id : undefined;
+
   const resolvedSearchParams = (await searchParams) ?? {};
   const q = typeof resolvedSearchParams.q === "string" ? resolvedSearchParams.q : "";
   const filter = typeof resolvedSearchParams.filter === "string" ? resolvedSearchParams.filter : "all";
@@ -48,6 +53,7 @@ export default async function BeritaPage({ searchParams }: BeritaPageProps) {
     limit,
     sort,
     dir,
+    ownerId,
   });
 
   const emptyState = (
