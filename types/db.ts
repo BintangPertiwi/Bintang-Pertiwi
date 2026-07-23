@@ -8,6 +8,7 @@ export interface BeritaRow {
   kategori: string;
   media_assets?: string;
   status_publikasi?: string;
+  created_by?: number;
 }
 
 export interface GaleriRow {
@@ -61,4 +62,16 @@ export interface PerangkatRow {
   nama: string;
   jabatan: string;
   url_foto: string;
+}
+
+export interface JurnalRow {
+  id: string;
+  tanggal: string;
+  nama_item: string;
+  jumlah_terjual: number;
+  total_pendapatan: number;
+  keterangan: string;
+  url_nota?: string;
+  created_by: number;
+  created_at?: string;
 }

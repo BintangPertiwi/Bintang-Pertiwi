@@ -15,6 +15,7 @@ function mapBeritaRow(r: typeof beritaDusun.$inferSelect): BeritaRow {
     kategori: r.kategori || "",
     media_assets: r.media_assets || "",
     status_publikasi: r.status_publikasi || "Publik",
+    created_by: r.created_by ?? undefined,
   };
 }
 
@@ -101,6 +102,7 @@ export async function appendBerita(data: BeritaRow): Promise<void> {
     kategori: data.kategori || "",
     media_assets: data.media_assets || "",
     status_publikasi: data.status_publikasi || "Publik",
+    created_by: data.created_by ?? null,
   });
 }
 
@@ -117,6 +119,7 @@ export async function updateBeritaById(id: string, updatedData: Partial<BeritaRo
   if (updatedData.kategori !== undefined) setData.kategori = updatedData.kategori;
   if (updatedData.media_assets !== undefined) setData.media_assets = updatedData.media_assets;
   if (updatedData.status_publikasi !== undefined) setData.status_publikasi = updatedData.status_publikasi;
+  if (updatedData.created_by !== undefined) setData.created_by = updatedData.created_by;
 
   const result = await db.update(beritaDusun).set(setData).where(eq(beritaDusun.id, id));
   return result.rowsAffected > 0;
@@ -135,6 +138,7 @@ interface BeritaListingArgs {
   limit: number;
   sort?: string;
   dir?: string;
+  ownerId?: number;
 }
 
 export async function getBeritaListing(args: BeritaListingArgs) {
@@ -175,6 +179,10 @@ export async function getBeritaListing(args: BeritaListingArgs) {
   const statusFilter = args.status && args.status !== "all" ? args.status : "all";
   if (statusFilter !== "all") {
     conditions.push(eq(beritaDusun.status_publikasi, statusFilter));
+  }
+
+  if (args.ownerId !== undefined) {
+    conditions.push(eq(beritaDusun.created_by, args.ownerId));
   }
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;

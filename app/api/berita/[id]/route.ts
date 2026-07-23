@@ -11,7 +11,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!(await requireRole(["super_admin"]))) {
+    const session = await requireRole(["super_admin", "kontributor"]);
+    if (!session) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }
@@ -49,6 +50,13 @@ export async function PUT(
       return NextResponse.json(
         { success: false, message: "Berita tidak ditemukan." },
         { status: 404 }
+      );
+    }
+
+    if (session.role === "kontributor" && oldBerita.created_by !== session.id) {
+      return NextResponse.json(
+        { success: false, message: "Anda tidak memiliki hak akses untuk mengubah berita ini." },
+        { status: 403 }
       );
     }
 
@@ -126,7 +134,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!(await requireRole(["super_admin"]))) {
+    const session = await requireRole(["super_admin", "kontributor"]);
+    if (!session) {
       return NextResponse.json(
         { success: false, message: "Sesi admin tidak valid." },
         { status: 401 }
@@ -147,6 +156,13 @@ export async function DELETE(
       return NextResponse.json(
         { success: false, message: "Berita tidak ditemukan." },
         { status: 404 }
+      );
+    }
+
+    if (session.role === "kontributor" && berita.created_by !== session.id) {
+      return NextResponse.json(
+        { success: false, message: "Anda tidak memiliki hak akses untuk menghapus berita ini." },
+        { status: 403 }
       );
     }
 

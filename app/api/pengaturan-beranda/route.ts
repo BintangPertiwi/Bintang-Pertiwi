@@ -26,6 +26,11 @@ export async function POST(request: Request) {
       "beranda_tentang_rt",
       "beranda_tentang_penerima_tidak_langsung",
       "beranda_galeri_ids",
+      "beranda_revenue_narasi",
+      "beranda_revenue_badge",
+      "beranda_revenue_title",
+      "beranda_revenue_desc",
+      "beranda_revenue_charts",
     ];
     
     const updates: Record<string, string> = {};

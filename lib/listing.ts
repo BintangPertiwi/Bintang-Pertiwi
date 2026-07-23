@@ -54,10 +54,13 @@ export function buildListingQueryParams(
   return {
     q: updates.q ?? currentParams.q,
     filter: updates.filter ?? currentParams.filter,
-    status: updates.status !== undefined ? updates.status : currentParams.status,
+    status: "status" in updates ? updates.status : currentParams.status,
     page: updates.page ?? currentParams.page,
     limit: updates.limit ?? currentParams.limit,
-    view: updates.view !== undefined ? updates.view : currentParams.view,
+    view: "view" in updates ? updates.view : currentParams.view,
+    month: "month" in updates ? updates.month : currentParams.month,
+    year: "year" in updates ? updates.year : currentParams.year,
+    product: "product" in updates ? updates.product : currentParams.product,
   };
 }
 
@@ -65,8 +68,11 @@ export function createListingSearchParams(params: ListingQueryParams): string {
   const searchParams = new URLSearchParams();
 
   if (params.q) searchParams.set("q", params.q);
-  if (params.filter) searchParams.set("filter", params.filter);
-  if (params.status) searchParams.set("status", params.status);
+  if (params.filter && params.filter !== "all") searchParams.set("filter", params.filter);
+  if (params.status && params.status !== "all") searchParams.set("status", params.status);
+  if (params.month && params.month !== "all") searchParams.set("month", params.month);
+  if (params.year && params.year !== "all") searchParams.set("year", params.year);
+  if (params.product && params.product !== "all") searchParams.set("product", params.product);
   if (params.page > 1) searchParams.set("page", String(params.page));
   if (params.limit) searchParams.set("limit", String(params.limit));
   if (params.view) searchParams.set("view", params.view);

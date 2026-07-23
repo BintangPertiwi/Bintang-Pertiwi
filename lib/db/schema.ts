@@ -20,6 +20,7 @@ export const beritaDusun = sqliteTable("berita_dusun", {
   kategori: text("kategori").default(""),
   media_assets: text("media_assets").default(""),
   status_publikasi: text("status_publikasi").default("Publik"),
+  created_by: integer("created_by"),
   created_at: text("created_at").default(sql`(datetime('now'))`),
   updated_at: text("updated_at").default(sql`(datetime('now'))`),
 });
@@ -79,4 +80,17 @@ export const perangkatDusun = sqliteTable("perangkat_dusun", {
   nama: text("nama").notNull(),
   jabatan: text("jabatan").notNull(),
   url_foto: text("url_foto").default(""),
+});
+
+export const jurnalPenjualan = sqliteTable("jurnal_penjualan", {
+  id: text("id").primaryKey(),
+  tanggal: text("tanggal").notNull(),
+  nama_item: text("nama_item").notNull(),
+  jumlah_terjual: integer("jumlah_terjual").notNull().default(0),
+  total_pendapatan: integer("total_pendapatan").notNull().default(0),
+  keterangan: text("keterangan").default(""),
+  url_nota: text("url_nota").default(""),
+  created_by: integer("created_by").notNull().references(() => adminAuth.id),
+  created_at: text("created_at").default(sql`(datetime('now'))`),
+  updated_at: text("updated_at").default(sql`(datetime('now'))`),
 });

@@ -1,30 +1,40 @@
+import { JurnalChart } from "@/app/admin/penjualan/jurnal-chart";
+import { RefreshStorageButton } from "@/components/admin/refresh-storage-button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getStorageUsage } from "@/lib/cloudinary";
 import { getSession } from "@/lib/auth";
+import { getStorageUsage } from "@/lib/cloudinary";
 import { getTotalBerita, getTotalGaleri } from "@/lib/db/queries";
+import { getJurnalChartData, getJurnalStats } from "@/lib/db/queries/jurnal";
 import {
   BadgeInfo,
+  Banknote,
   Database,
   FileText,
   Image as ImageIcon,
   Info,
+  Package,
   PlusCircle,
   ShoppingBag,
+  ShoppingCart,
 } from "lucide-react";
 import Link from "next/link";
 import { StorageManagement } from "./pengaturan/storage-management";
-import { RefreshStorageButton } from "@/components/admin/refresh-storage-button";
 
 export default async function AdminDashboardPage() {
   const session = await getSession();
   const isSuperAdmin = session?.role === "super_admin";
 
-  // Statistik & storage hanya relevan (dan hanya di-fetch) untuk Super Admin.
-  const [totalBerita, totalGaleri] = isSuperAdmin
-    ? await Promise.all([getTotalBerita(), getTotalGaleri()])
-    : [0, 0];
+  const ownerId = session?.role === "kontributor" ? session.id : undefined;
+
+  // Statistik & storage
+  const [totalBerita, totalGaleri, chartData, jurnalStats] = await Promise.all([
+    isSuperAdmin ? getTotalBerita() : 0,
+    isSuperAdmin ? getTotalGaleri() : 0,
+    getJurnalChartData({ ownerId }),
+    getJurnalStats(ownerId),
+  ]);
 
   // Non-blocking: jangan biarkan Cloudinary timeout memblokir seluruh dashboard
   const storageBytes = isSuperAdmin
@@ -44,6 +54,9 @@ export default async function AdminDashboardPage() {
 
   const formattedStorage = formatBytes(storageBytes);
   const percentUsed = ((storageBytes / (15 * 1024 * 1024 * 1024)) * 100).toFixed(2);
+
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
 
   return (
     <div className="space-y-8 pb-10 max-w-5xl">
@@ -100,6 +113,53 @@ export default async function AdminDashboardPage() {
             </CardContent>
           </Card>
         </div>
+      )}
+
+      {/* Row: Jurnal Stats — semua role */}
+      <div className="grid gap-6 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
+        <Card className="bg-transparent rounded-md">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Pendapatan</CardTitle>
+            <Banknote className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-primary">{formatCurrency(jurnalStats.totalPendapatan)}</div>
+            <p className="text-xs text-muted-foreground mt-1">Akumulasi seluruh transaksi</p>
+          </CardContent>
+        </Card>
+        <Card className="bg-transparent rounded-md">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Jenis Produk</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{jurnalStats.totalProduk}</div>
+            <p className="text-xs text-muted-foreground mt-1">Produk unik tercatat</p>
+          </CardContent>
+        </Card>
+        <Card className="bg-transparent rounded-md">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Kuantitas</CardTitle>
+            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{jurnalStats.totalQty.toLocaleString("id-ID")}</div>
+            <p className="text-xs text-muted-foreground mt-1">Item terjual</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Revenue Insight Chart */}
+      {chartData && (chartData.pieData.length > 0 || chartData.lineData.length > 0) && (
+        <Card className="bg-transparent rounded-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-bold">Ringkasan Pendapatan</CardTitle>
+            <p className="text-sm text-muted-foreground">Distribusi pendapatan penjualan produk {isSuperAdmin ? "semua UMKM" : "Anda"}</p>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <JurnalChart data={chartData} />
+          </CardContent>
+        </Card>
       )}
 
       {/* Row 2: Quick Actions — berbeda per role */}

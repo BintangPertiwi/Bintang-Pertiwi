@@ -4,18 +4,25 @@ import { BeritaForm } from "@/components/admin/berita/berita-form";
 import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context";
 import { DashboardHeader } from "@/components/admin/layout/dashboard-header";
 
+import { getSession } from "@/lib/auth";
+
 export const metadata = {
   title: "Edit Berita — Bintang Pertiwi",
 };
 
 export default async function EditBeritaPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const session = await getSession();
   const berita = await getBeritaById(id);
   const beritaList = await getBeritaList();
 
   const existingCategories = Array.from(new Set(beritaList.map((item) => item.kategori).filter(Boolean)));
 
   if (!berita) {
+    notFound();
+  }
+
+  if (session?.role === "kontributor" && berita.created_by !== session.id) {
     notFound();
   }
 

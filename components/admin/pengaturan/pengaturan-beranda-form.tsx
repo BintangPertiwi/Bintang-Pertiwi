@@ -49,6 +49,19 @@ export function PengaturanBerandaForm({
     setPenerimaLangsung,
     penerimaTidakLangsung,
     setPenerimaTidakLangsung,
+    revenueBadge,
+    setRevenueBadge,
+    revenueTitle,
+    setRevenueTitle,
+    revenueDesc,
+    setRevenueDesc,
+    revenueCharts,
+    handleAddChart,
+    handleRemoveChart,
+    handleUpdateChartTitle,
+    handleChartAddItem,
+    handleChartRemoveItem,
+    handleChartUpdateItem,
     selectedGaleriIds,
     handleAddSlide,
     handleRemoveSlide,
@@ -65,7 +78,7 @@ export function PengaturanBerandaForm({
 
   return (
     <> <form onSubmit={handleSubmit} className="max-w-4xl pb-20">
-      <Accordion multiple defaultValue={["hero", "tentang", "galeri", "berita"]} className="w-full space-y-4">
+      <Accordion multiple defaultValue={["hero", "tentang", "pendapatan", "galeri", "berita"]} className="w-full space-y-4">
         
         <AccordionItem value="hero" className="border-b pb-4">
           <AccordionTrigger className="text-xl font-bold hover:no-underline">
@@ -262,6 +275,153 @@ export function PengaturanBerandaForm({
                   required
                 />
               </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="pendapatan" className="border-b pb-4">
+          <AccordionTrigger className="text-xl font-bold hover:no-underline">
+            Bagian Ringkasan Pendapatan UMKM
+          </AccordionTrigger>
+          <AccordionContent className="pt-4 pb-6 space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="revenueBadge" className="text-sm font-semibold">
+                  Label Tag / Badge <span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                <Input
+                  id="revenueBadge"
+                  placeholder="Contoh: PENDAPATAN UMKM"
+                  value={revenueBadge}
+                  onChange={(e) => setRevenueBadge(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="revenueTitle" className="text-sm font-semibold">
+                  Judul Section <span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                <Input
+                  id="revenueTitle"
+                  placeholder="Contoh: Kontribusi & Perkembangan Kelompok Binaan"
+                  value={revenueTitle}
+                  onChange={(e) => setRevenueTitle(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="revenueDesc" className="text-sm font-semibold">
+                  Deskripsi / Narasi Section <span className="text-red-500 ml-0.5">*</span>
+                </Label>
+                <Textarea
+                  id="revenueDesc"
+                  placeholder="Tuliskan penjelasan singkat untuk grafik pendapatan..."
+                  className="resize-y min-h-[100px]"
+                  value={revenueDesc}
+                  onChange={(e) => setRevenueDesc(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-6 border-t pt-6">
+              <div className="flex justify-between items-center">
+                <h4 className="font-bold text-foreground text-lg">Daftar Slide Grafik (Pie Chart)</h4>
+                <span className="text-xs text-muted-foreground">Total slide: {revenueCharts.length}</span>
+              </div>
+
+              <div className="space-y-8">
+                {revenueCharts.map((chart, chartIndex) => (
+                  <div key={chart.id} className="p-6 border rounded-lg bg-muted/35 relative space-y-4">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs">
+                          {chartIndex + 1}
+                        </span>
+                        <h5 className="font-semibold text-foreground">Slide Grafik</h5>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="text-red-500 hover:text-red-600 hover:bg-red-50 h-8 w-8"
+                        onClick={() => handleRemoveChart(chart.id)}
+                        disabled={revenueCharts.length === 1}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-xs font-semibold">Judul Grafik (Contoh: Top 5 Pendapatan UMKM)</Label>
+                      <Input
+                        placeholder="Masukkan judul grafik..."
+                        value={chart.title}
+                        onChange={(e) => handleUpdateChartTitle(chart.id, e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-3">
+                      <Label className="text-xs font-semibold">Data Item Grafik</Label>
+                      <div className="space-y-2">
+                        {chart.items.map((item, itemIndex) => (
+                          <div key={itemIndex} className="flex gap-3 items-center">
+                            <Input
+                              placeholder="Nama Label (mis. Asap Ajaib)"
+                              value={item.name}
+                              onChange={(e) => handleChartUpdateItem(chart.id, itemIndex, "name", e.target.value)}
+                              className="flex-1"
+                              required
+                            />
+                            <div className="w-[180px]">
+                              <CurrencyInput
+                                placeholder="Nominal (Rp)"
+                                value={item.value ? String(item.value) : ""}
+                                onChange={(rawDigits) => handleChartUpdateItem(chart.id, itemIndex, "value", rawDigits)}
+                                required
+                              />
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="text-red-500 hover:text-red-600 hover:bg-red-50 h-8 w-8 shrink-0"
+                              onClick={() => handleChartRemoveItem(chart.id, itemIndex)}
+                              disabled={chart.items.length === 1}
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="h-9 text-xs"
+                        onClick={() => handleChartAddItem(chart.id)}
+                      >
+                        <Plus className="w-3.5 h-3.5 mr-1" />
+                        Tambah Data Row
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full border-dashed h-12"
+                onClick={handleAddChart}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Tambah Slide Grafik
+              </Button>
             </div>
           </AccordionContent>
         </AccordionItem>

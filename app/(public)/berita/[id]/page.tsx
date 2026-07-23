@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   
   if (!berita || (berita.status_publikasi !== "Publik" && berita.status_publikasi)) {
     return {
-      title: "Berita Tidak Ditemukan — SIG-Bintang Pertiwi",
+      title: "Berita Tidak Ditemukan — Bintang Pertiwi",
     };
   }
 

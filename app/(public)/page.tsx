@@ -3,6 +3,8 @@ import { HeroBanner } from "@/components/public/beranda/hero-banner";
 import { NewsSection } from "@/components/public/beranda/news-section";
 import { GaleriSection } from "@/components/public/galeri/galeri-section";
 import { getGaleriList, getGlobalConfig, getRecentBerita } from "@/lib/db/queries";
+import { getJurnalChartData } from "@/lib/db/queries/jurnal";
+import { RevenueSection } from "@/components/public/beranda/revenue-section";
 import { formatDate } from "@/lib/utils";
 
 export const metadata = {
@@ -11,9 +13,12 @@ export const metadata = {
 };
 
 export default async function BerandaPage() {
-  const globalConfig = await getGlobalConfig();
-  const galeriList = await getGaleriList();
-  const beritaList = await getRecentBerita(4);
+  const [globalConfig, galeriList, beritaList, jurnalChartData] = await Promise.all([
+    getGlobalConfig(),
+    getGaleriList(),
+    getRecentBerita(4),
+    getJurnalChartData({}),
+  ]);
   
   const selectedGaleriIdsStr = globalConfig["beranda_galeri_ids"];
   let selectedGaleri = galeriList;
@@ -82,6 +87,19 @@ export default async function BerandaPage() {
   const penerimaTidakLangsung = parseStat(globalConfig["beranda_tentang_penerima_tidak_langsung"]);
   const narasi = globalConfig["beranda_tentang_narasi"];
 
+  const revenueBadge = globalConfig["beranda_revenue_badge"];
+  const revenueTitle = globalConfig["beranda_revenue_title"];
+  const revenueDesc = globalConfig["beranda_revenue_desc"] || globalConfig["beranda_revenue_narasi"];
+  
+  let parsedRevenueCharts = undefined;
+  if (globalConfig["beranda_revenue_charts"]) {
+    try {
+      parsedRevenueCharts = JSON.parse(globalConfig["beranda_revenue_charts"]);
+    } catch {
+      // ignore parse error
+    }
+  }
+
   return (
     <div className="flex flex-col w-full">
       <HeroBanner initialSlides={parsedHeroSlides} />
@@ -92,6 +110,14 @@ export default async function BerandaPage() {
         mitraBinaan={mitraBinaan}
         penerimaLangsung={penerimaLangsung}
         penerimaTidakLangsung={penerimaTidakLangsung}
+      />
+      {/* Revenue Section */}
+      <RevenueSection 
+        badge={revenueBadge}
+        title={revenueTitle}
+        narasi={revenueDesc}
+        charts={parsedRevenueCharts}
+        fallbackData={jurnalChartData.pieData}
       />
       {/* Galeri Section */}
       <GaleriSection initialSlides={galeriSlides} />

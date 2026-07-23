@@ -7,6 +7,7 @@ import {
   Home,
   Image as ImageIcon,
   LogOut,
+  LineChart,
   Newspaper,
   PanelTop,
   Settings,
@@ -56,7 +57,8 @@ const menuGroups: SidebarGroupDef[] = [
     section: "Master Data",
     items: [
       { title: "Produk", icon: ShoppingBag, href: "/admin/produk" },
-      { title: "Berita", icon: Newspaper, href: "/admin/berita", superAdminOnly: true },
+      { title: "Jurnal Penjualan", icon: LineChart, href: "/admin/penjualan" },
+      { title: "Berita", icon: Newspaper, href: "/admin/berita", superAdminOnly: false }, // Updated per plan: kontributor can submit
       { title: "Galeri", icon: ImageIcon, href: "/admin/galeri", superAdminOnly: true },
       { title: "Dokumen", icon: FileText, href: "/admin/dokumen", superAdminOnly: true },
       { title: "Informasi Web", icon: BadgeInfo, href: "/admin/informasi-web", superAdminOnly: true },
