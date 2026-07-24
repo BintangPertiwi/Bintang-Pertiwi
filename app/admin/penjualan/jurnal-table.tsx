@@ -7,8 +7,9 @@ import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import type { JurnalRow } from "@/types"
 import { ColumnDef } from "@tanstack/react-table"
-import { CalendarDays, Pencil } from "lucide-react"
+import { CalendarDays, ImageIcon, Pencil } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { DeleteJurnalButton } from "@/components/admin/penjualan/delete-jurnal-button"
 
 export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
@@ -116,61 +117,88 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
 
 function JurnalGridCard({ item }: { item: JurnalRow & { authorName?: string } }) {
   return (
-    <Card className="shadow-sm hover:shadow-md transition-shadow">
-      <CardContent className="p-5 space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="font-semibold text-foreground line-clamp-1">{item.nama_item}</span>
-          <div className="flex items-center gap-1.5 shrink-0">
-            {item.url_nota && (
-              <a
-                href={item.url_nota}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[10px] bg-sky-50 text-sky-600 hover:bg-sky-100 px-2 py-0.5 rounded-full border border-sky-100 font-medium"
-              >
-                Nota
-              </a>
-            )}
-            <Badge variant="outline" className="font-mono">
-              x{item.jumlah_terjual}
-            </Badge>
+    <Card className="flex flex-col overflow-hidden h-full border-border/60 shadow-sm hover:shadow-md transition-all bg-card rounded-none p-0 gap-0">
+      <div className="relative aspect-video w-full bg-card border-b flex shrink-0 items-center justify-center">
+        {item.url_nota ? (
+          <Image 
+            src={item.url_nota} 
+            alt={item.nama_item} 
+            fill 
+            className="object-cover" 
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, (max-width: 1536px) 33vw, 25vw"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+            <ImageIcon className="h-8 w-8 opacity-40" />
           </div>
-        </div>
-        <div className="text-xl font-bold text-primary">
-          Rp {item.total_pendapatan.toLocaleString("id-ID")}
-        </div>
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <CalendarDays className="h-3 w-3" />
-          {new Date(item.tanggal).toLocaleDateString("id-ID", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          })}
-          {item.authorName && item.authorName !== "-" && (
-            <span className="ml-auto">oleh {item.authorName}</span>
+        )}
+        
+        <div className="absolute top-3 left-3 z-10">
+          {item.url_nota ? (
+            <Badge variant="default" className="font-semibold text-[10px] uppercase tracking-wider bg-sky-600 hover:bg-sky-600 text-white rounded-full px-3 py-0.5 shadow-sm border-none">
+              Ada Nota
+            </Badge>
+          ) : (
+            <Badge variant="secondary" className="font-semibold text-[10px] uppercase tracking-wider bg-card/95 backdrop-blur-sm text-muted-foreground rounded-full px-3 py-0.5 shadow-sm">
+              Tanpa Nota
+            </Badge>
           )}
         </div>
+
+        <div className="absolute top-3 right-3 z-10">
+          <Badge variant="outline" className="font-semibold text-[10px] bg-card/95 backdrop-blur-sm text-foreground rounded-full px-3 py-0.5 shadow-sm font-mono border-border/60">
+            x{item.jumlah_terjual}
+          </Badge>
+        </div>
+      </div>
+
+      <CardContent className="flex flex-col flex-1 px-4 py-3 justify-start items-start text-left gap-1">
+        <h3 className="font-semibold text-[15px] line-clamp-2 text-foreground leading-snug">
+          {item.nama_item}
+        </h3>
+        
+        <div className="text-lg font-bold text-primary">
+          Rp {item.total_pendapatan.toLocaleString("id-ID")}
+        </div>
+
         {item.keterangan && (
-          <p className="text-xs text-muted-foreground line-clamp-2 border-t pt-2">
+          <p className="text-xs text-muted-foreground line-clamp-2 mt-1 border-t pt-1.5 w-full">
             {item.keterangan}
           </p>
         )}
-        <div className="flex items-center gap-2 pt-1">
-          <Link 
-            href={`/admin/penjualan/edit/${item.id}`}
-            className={buttonVariants({ variant: "outline", size: "sm", className: "flex-1 h-9" })}
-          >
-            <Pencil className="h-3.5 w-3.5 mr-1" />
-            Edit
-          </Link>
-          <DeleteJurnalButton
-            id={item.id}
-            namaItem={item.nama_item}
-            triggerVariant="ghost"
-            triggerClassName="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-9 px-3 text-red-600 bg-red-50 hover:bg-red-600 hover:text-white transition-colors"
-          />
+
+        <div className="flex items-center justify-between w-full mt-auto pt-2 text-[11px] text-muted-foreground font-medium border-t border-border/40">
+          <div className="flex items-center gap-1.5">
+            <CalendarDays className="h-3.5 w-3.5" />
+            {new Date(item.tanggal).toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
+          </div>
+          {item.authorName && item.authorName !== "-" && (
+            <span>oleh {item.authorName}</span>
+          )}
         </div>
       </CardContent>
+
+      <div className="grid grid-cols-2 border-t bg-card shrink-0">
+        <Link 
+          href={`/admin/penjualan/edit/${item.id}`}
+          className={buttonVariants({ variant: "ghost", className: "h-11 rounded-none text-muted-foreground hover:text-blue-700 hover:bg-muted font-medium text-xs uppercase tracking-wide" })}
+          title="Edit"
+        >
+          <Pencil className="h-3.5 w-3.5 mr-2" />
+          Edit
+        </Link>
+        <DeleteJurnalButton
+          id={item.id}
+          namaItem={item.nama_item}
+          triggerVariant="ghost"
+          showText={true}
+          triggerClassName="h-11 w-full rounded-none text-red-600 bg-red-50 hover:bg-red-600 hover:text-white font-medium text-xs uppercase tracking-wide"
+        />
+      </div>
     </Card>
   )
 }
@@ -188,7 +216,7 @@ export function JurnalTable({ data, view = "list", emptyState }: JurnalTableProp
 
   if (view === "grid") {
     return (
-      <div className="grid gap-4 mobile:grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
         {data.map((item) => (
           <JurnalGridCard key={item.id} item={item} />
         ))}
