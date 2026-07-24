@@ -65,16 +65,19 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
     header: "Nota",
     cell: ({ row }) => {
       const url = row.original.url_nota;
-      if (!url) return <span className="text-muted-foreground text-xs">-</span>;
-      return (
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium"
+      return url ? (
+        <a 
+          href={url} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="block relative h-12 w-16 rounded overflow-hidden shrink-0 bg-muted border border-border/40 hover:opacity-80 transition-opacity"
         >
-          Lihat Nota
+          <Image src={url} alt="Nota" fill className="object-cover" sizes="64px" />
         </a>
+      ) : (
+        <div className="flex h-12 w-16 items-center justify-center rounded bg-muted/50 text-muted-foreground shrink-0 border border-border/40">
+          <ImageIcon className="h-4 w-4 opacity-40" />
+        </div>
       );
     },
   },

@@ -306,20 +306,20 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
           <Label className="text-sm font-semibold">Gambar Nota (Opsional)</Label>
           <div className="relative group mt-1">
             {previewUrl ? (
-              <div className="relative inline-block border rounded-md overflow-hidden bg-muted/20">
+              <div className="relative block w-full border rounded-md overflow-hidden bg-muted/20">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={previewUrl} 
                   alt="Nota Penjualan" 
-                  className="max-w-full md:max-w-[300px] max-h-[300px] w-auto h-auto object-contain"
+                  className="w-full h-auto object-contain max-h-[600px]"
                 />
                 <button
                   type="button"
                   onClick={handleRemoveNota}
-                  className="absolute top-2 right-2 p-1.5 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors shadow-sm"
+                  className="absolute top-4 right-4 p-2 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors shadow-md z-10"
                   title="Hapus Nota"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-5 w-5" />
                 </button>
               </div>
             ) : (
