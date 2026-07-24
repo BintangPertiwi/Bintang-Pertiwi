@@ -6,39 +6,26 @@ export async function uploadToTelegram(fileBuffer: Buffer, fileName: string, cap
     throw new Error("Missing Telegram Bot Token or Chat ID in environment variables");
   }
 
-  const boundary = "boundary_multipart_upload_telegram";
-  const delimiter = `\r\n--${boundary}\r\n`;
-  const closeDelimiter = `\r\n--${boundary}--\r\n`;
+  const ext = fileName.split(".").pop()?.toLowerCase();
+  const mimeMap: Record<string, string> = {
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+    png: "image/png",
+    webp: "image/webp",
+  };
+  const mimeType = mimeMap[ext || ""] || "image/jpeg";
 
-  const chatIdPart = `Content-Disposition: form-data; name="chat_id"\r\n\r\n${TELEGRAM_CHAT_ID}`;
-  const filePartHeader = `Content-Disposition: form-data; name="photo"; filename="${fileName}"\r\nContent-Type: image/jpeg\r\n\r\n`;
-
-  const parts = [
-    Buffer.from(delimiter),
-    Buffer.from(chatIdPart),
-  ];
+  const formData = new FormData();
+  formData.append("chat_id", TELEGRAM_CHAT_ID);
+  formData.append("photo", new Blob([new Uint8Array(fileBuffer)], { type: mimeType }), fileName);
 
   if (caption) {
-    const captionPart = `Content-Disposition: form-data; name="caption"\r\n\r\n${caption}`;
-    parts.push(Buffer.from(delimiter), Buffer.from(captionPart));
+    formData.append("caption", caption);
   }
-
-  parts.push(
-    Buffer.from(delimiter),
-    Buffer.from(filePartHeader),
-    Buffer.from(fileBuffer),
-    Buffer.from(closeDelimiter),
-  );
-
-  const body = Buffer.concat(parts);
 
   const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
     method: "POST",
-    headers: {
-      "Content-Type": `multipart/form-data; boundary=${boundary}`,
-      "Content-Length": body.length.toString(),
-    },
-    body,
+    body: formData,
   });
 
   if (!res.ok) {
