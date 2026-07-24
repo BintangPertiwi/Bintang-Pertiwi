@@ -107,65 +107,53 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
     try {
       const formData = new FormData(e.currentTarget)
       const rawPendapatan = pendapatan.replace(/\D/g, "")
-      
-      let finalUrlNota = urlNota
 
-      // Upload file to Telegram first if a new one is selected
-      if (selectedFile) {
-        setIsUploading(true)
-        const uploadFormData = new FormData()
-        uploadFormData.append("file", selectedFile)
-        uploadFormData.append("namaProduk", productName || "produk")
-        uploadFormData.append("tanggal", formData.get("tanggal") || today)
+      if (!productName) throw new Error("Nama produk wajib diisi.")
+      if (Number(formData.get("jumlah_terjual")) < 1) throw new Error("Jumlah terjual harus minimal 1.")
+      if (!rawPendapatan || Number(rawPendapatan) <= 0) throw new Error("Nominal transaksi harus diisi dan lebih dari 0.")
 
-        const uploadRes = await fetch("/api/jurnal/upload-nota", {
-          method: "POST",
-          body: uploadFormData,
-        })
-
-        if (!uploadRes.ok) {
-          const errorData = await uploadRes.json()
-          throw new Error(errorData.message || "Gagal mengunggah berkas nota.")
+      if (initialData) {
+        // Edit mode: JSON PUT (no file re-upload in edit for now)
+        const payload = {
+          tanggal: formData.get("tanggal"),
+          nama_item: productName,
+          jumlah_terjual: Number(formData.get("jumlah_terjual")),
+          total_pendapatan: Number(rawPendapatan),
+          keterangan: formData.get("keterangan"),
+          url_nota: urlNota,
         }
 
-        const uploadData = await uploadRes.json()
-        finalUrlNota = uploadData.url
-        setIsUploading(false)
-      }
+        const res = await fetch(`/api/jurnal/${initialData.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
 
-      const payload = {
-        tanggal: formData.get("tanggal"),
-        nama_item: productName,
-        jumlah_terjual: Number(formData.get("jumlah_terjual")),
-        total_pendapatan: Number(rawPendapatan),
-        keterangan: formData.get("keterangan"),
-        url_nota: finalUrlNota,
-      }
+        if (!res.ok) {
+          const errorData = await res.json()
+          throw new Error(errorData.error || "Terjadi kesalahan")
+        }
+      } else {
+        // Create mode: single FormData request (upload + save in one round-trip)
+        if (selectedFile) setIsUploading(true)
 
-      if (!payload.nama_item) {
-        throw new Error("Nama produk wajib diisi.")
-      }
+        const submitForm = new FormData()
+        submitForm.append("tanggal", (formData.get("tanggal") as string) || today)
+        submitForm.append("nama_item", productName)
+        submitForm.append("jumlah_terjual", String(formData.get("jumlah_terjual")))
+        submitForm.append("total_pendapatan", rawPendapatan)
+        submitForm.append("keterangan", (formData.get("keterangan") as string) || "")
+        if (selectedFile) submitForm.append("file", selectedFile)
 
-      if (payload.jumlah_terjual < 1) {
-        throw new Error("Jumlah terjual harus minimal 1.")
-      }
+        const res = await fetch("/api/jurnal", {
+          method: "POST",
+          body: submitForm,
+        })
 
-      if (!rawPendapatan || payload.total_pendapatan <= 0) {
-        throw new Error("Nominal transaksi harus diisi dan lebih dari 0.")
-      }
-
-      const url = initialData ? `/api/jurnal/${initialData.id}` : "/api/jurnal"
-      const method = initialData ? "PUT" : "POST"
-
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
-
-      if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.error || "Terjadi kesalahan")
+        if (!res.ok) {
+          const errorData = await res.json()
+          throw new Error(errorData.message || errorData.error || "Gagal menyimpan jurnal.")
+        }
       }
 
       toast.success(initialData ? "Jurnal berhasil diperbarui" : "Jurnal berhasil ditambahkan")
