@@ -25,7 +25,7 @@ async function AdminShell({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <UserNav />
+            <UserNav username={session?.username} />
           </div>
         </header>
         <main className="flex-1 p-4 tablet:p-6 desktop:p-8 bg-background">

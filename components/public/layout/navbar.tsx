@@ -15,6 +15,7 @@ const navItems = [
   { label: "Galeri", href: "/galeri" },
   { label: "Dokumen", href: "/dokumen" },
   { label: "Kontak", href: "/kontak" },
+  { label: "Tim Pengembang", href: "/tim-pengembang" },
 ];
 
 export function Navbar() {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { CopyrightYear } from "./copyright-year";
+import { FooterNav } from "./footer-nav";
 import { getGlobalConfig } from "@/lib/db/queries";
 
 export async function Footer() {
@@ -43,14 +44,7 @@ export async function Footer() {
           {/* Navigasi */}
           <div className="lg:col-span-3 lg:col-start-7">
             <h4 className="font-bold text-foreground mb-6">Platform</h4>
-            <ul className="space-y-4 text-sm font-medium text-muted-foreground">
-              <li><Link href="/" className="hover:text-primary transition-colors">Beranda</Link></li>
-              <li><Link href="/produk-umkm" className="hover:text-primary transition-colors">Produk UMKM</Link></li>
-              <li><Link href="/berita" className="hover:text-primary transition-colors">Berita & Artikel</Link></li>
-              <li><Link href="/galeri" className="hover:text-primary transition-colors">Galeri Foto</Link></li>
-              <li><Link href="/dokumen" className="hover:text-primary transition-colors">Dokumen</Link></li>
-              <li><Link href="/kontak" className="hover:text-primary transition-colors">Kontak</Link></li>
-            </ul>
+            <FooterNav />
           </div>
 
           {/* Kontak */}

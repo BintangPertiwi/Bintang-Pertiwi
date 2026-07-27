@@ -17,8 +17,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function UserNav() {
+export function UserNav({ username }: { username?: string | null }) {
   const router = useRouter();
+  const displayName = username || "Admin";
+  const initial = displayName.charAt(0).toUpperCase();
 
   const handleLogout = async () => {
     try {
@@ -36,19 +38,19 @@ export function UserNav() {
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="ghost" className="flex items-center gap-2 rounded-md pl-1 pr-3 py-1 h-auto border border-transparent hover:border-border" />}>
         <Avatar className="h-8 w-8">
-          <AvatarFallback className="bg-primary text-white flex items-center justify-center">
-            <User className="h-4 w-4" />
+          <AvatarFallback className="bg-primary text-white flex items-center justify-center text-xs font-semibold">
+            {initial}
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col items-start text-left">
-          <span className="text-sm font-semibold leading-none">Admin</span>
+          <span className="text-sm font-semibold leading-none">{displayName}</span>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 p-2 rounded-md" align="end">
         <DropdownMenuGroup>
           <DropdownMenuLabel className="font-normal p-2">
             <div className="flex flex-col space-y-1.5">
-              <p className="text-sm font-bold leading-none text-foreground">Admin</p>
+              <p className="text-sm font-bold leading-none text-foreground">{displayName}</p>
             </div>
           </DropdownMenuLabel>
         </DropdownMenuGroup>
