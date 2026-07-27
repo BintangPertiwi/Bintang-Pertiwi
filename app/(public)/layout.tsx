@@ -14,7 +14,9 @@ export default function PublicLayout({
         <Navbar />
       </Suspense>
       <main className="flex-1">{children}</main>
-      <Footer />
+      <Suspense fallback={<div className="h-64 bg-background" />}>
+        <Footer />
+      </Suspense>
       <ScrollToTop />
     </div>
   );
