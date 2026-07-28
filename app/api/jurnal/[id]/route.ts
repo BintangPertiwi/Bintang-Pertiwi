@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getJurnalById, updateJurnal, deleteJurnalById } from "@/lib/db/queries/jurnal";
+import { deleteJurnalById, getJurnalById, updateJurnal } from "@/lib/db/queries/jurnal";
 import { revalidateTag } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   _request: NextRequest,
@@ -30,8 +30,8 @@ export async function GET(
 import { requireRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { adminAuth } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 import { uploadToTelegram } from "@/lib/telegram-storage";
+import { eq } from "drizzle-orm";
 
 function toPascalCase(str: string): string {
   if (!str) return "";
@@ -55,9 +55,9 @@ function formatIndonesianDate(dateStr: string): string {
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) {
     const now = new Date();
-    return `${now.getDate()}${months[now.getMonth()]}${now.getFullYear()}`;
+    return `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
   }
-  return `${d.getDate()}${months[d.getMonth()]}${d.getFullYear()}`;
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
 export async function PUT(

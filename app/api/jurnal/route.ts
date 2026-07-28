@@ -61,9 +61,9 @@ function formatIndonesianDate(dateStr: string): string {
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) {
     const now = new Date();
-    return `${now.getDate()}${months[now.getMonth()]}${now.getFullYear()}`;
+    return `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
   }
-  return `${d.getDate()}${months[d.getMonth()]}${d.getFullYear()}`;
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
 export async function POST(request: NextRequest) {
