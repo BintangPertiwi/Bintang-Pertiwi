@@ -32,7 +32,7 @@ const sections: DeveloperSection[] = [
   {
     id: "kkn",
     title: "Tim KKN 4 Bina Desa",
-    description: "Kelompok mahasiswa Kuliah Kerja Nyata (KKN) 4 Bina Desa yang berdedikasi dalam melaksanakan program pengabdian masyarakat. Kehadiran dan antusiasme mereka turut mengiringi langkah awal digitalisasi potensi UMKM di wilayah Bintang Pertiwi.",
+    description: "Kelompok mahasiswa dari Universtias Mulawarman Kuliah Kerja Nyata (KKN) 4 Bina Desa yang berdedikasi dalam melaksanakan program pengabdian masyarakat. Kehadiran dan antusiasme mereka turut mengiringi langkah awal digitalisasi potensi UMKM di wilayah Bintang Pertiwi.",
     image: "/images/fotokelompok.webp",
     imageClassName: "object-contain object-bottom pt-4 px-4 pb-0",
   },
