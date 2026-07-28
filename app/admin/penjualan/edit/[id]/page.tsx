@@ -1,11 +1,11 @@
-import { Metadata } from "next"
-import { JurnalForm } from "../../create/jurnal-form"
-import { getJurnalById } from "@/lib/db/queries/jurnal"
-import { notFound } from "next/navigation"
-import { getSession } from "@/lib/auth"
-import { DashboardHeader } from "@/components/admin/layout/dashboard-header"
 import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context"
+import { DashboardHeader } from "@/components/admin/layout/dashboard-header"
+import { getSession } from "@/lib/auth"
+import { getJurnalById } from "@/lib/db/queries/jurnal"
 import { getProdukNamesByOwner } from "@/lib/db/queries/produk"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { JurnalForm } from "../../create/jurnal-form"
 
 export const metadata: Metadata = {
   title: "Edit Jurnal Penjualan",
@@ -25,7 +25,6 @@ export default async function EditJurnalPage({
     notFound()
   }
 
-  // Kontributor tidak boleh mengedit jurnal milik orang lain
   if (session?.role === "kontributor" && jurnal.created_by !== session.id) {
     notFound()
   }

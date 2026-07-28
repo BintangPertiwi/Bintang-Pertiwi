@@ -113,14 +113,36 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       if (!rawPendapatan || Number(rawPendapatan) <= 0) throw new Error("Nominal transaksi harus diisi dan lebih dari 0.")
 
       if (initialData) {
-        // Edit mode: JSON PUT (no file re-upload in edit for now)
+        let finalUrlNota = urlNota;
+
+        if (selectedFile) {
+          setIsUploading(true)
+          const uploadForm = new FormData()
+          uploadForm.append("file", selectedFile)
+          uploadForm.append("namaProduk", productName)
+          uploadForm.append("tanggal", (formData.get("tanggal") as string) || today)
+
+          const uploadRes = await fetch("/api/jurnal/upload-nota", {
+            method: "POST",
+            body: uploadForm,
+          })
+
+          if (!uploadRes.ok) {
+            const errorData = await uploadRes.json()
+            throw new Error(errorData.message || "Gagal mengunggah nota baru.")
+          }
+
+          const uploadData = await uploadRes.json()
+          finalUrlNota = uploadData.url
+        }
+
         const payload = {
           tanggal: formData.get("tanggal"),
           nama_item: productName,
           jumlah_terjual: Number(formData.get("jumlah_terjual")),
           total_pendapatan: Number(rawPendapatan),
           keterangan: formData.get("keterangan"),
-          url_nota: urlNota,
+          url_nota: finalUrlNota,
         }
 
         const res = await fetch(`/api/jurnal/${initialData.id}`, {
