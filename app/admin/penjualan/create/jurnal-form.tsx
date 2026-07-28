@@ -148,7 +148,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
         const res = await fetch(`/api/jurnal/${initialData.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(payload),gst 
         })
 
         if (!res.ok) {
