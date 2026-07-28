@@ -113,47 +113,29 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       if (!rawPendapatan || Number(rawPendapatan) <= 0) throw new Error("Nominal transaksi harus diisi dan lebih dari 0.")
 
       if (initialData) {
-        let finalUrlNota = urlNota;
+        if (selectedFile) setIsUploading(true)
 
+        const submitForm = new FormData()
+        submitForm.append("tanggal", (formData.get("tanggal") as string) || today)
+        submitForm.append("nama_item", productName)
+        submitForm.append("jumlah_terjual", String(formData.get("jumlah_terjual")))
+        submitForm.append("total_pendapatan", rawPendapatan)
+        submitForm.append("keterangan", (formData.get("keterangan") as string) || "")
+        submitForm.append("url_nota", selectedFile ? "" : urlNota)
+        
         if (selectedFile) {
-          setIsUploading(true)
-          const uploadForm = new FormData()
-          uploadForm.append("file", selectedFile)
-          uploadForm.append("namaProduk", productName)
-          uploadForm.append("tanggal", (formData.get("tanggal") as string) || today)
-
-          const uploadRes = await fetch("/api/jurnal/upload-nota", {
-            method: "POST",
-            body: uploadForm,
-          })
-
-          if (!uploadRes.ok) {
-            const errorData = await uploadRes.json()
-            throw new Error(errorData.message || "Gagal mengunggah nota baru.")
-          }
-
-          const uploadData = await uploadRes.json()
-          finalUrlNota = uploadData.url
+          submitForm.append("file", selectedFile)
         }
-
-        const payload = {
-          tanggal: formData.get("tanggal"),
-          nama_item: productName,
-          jumlah_terjual: Number(formData.get("jumlah_terjual")),
-          total_pendapatan: Number(rawPendapatan),
-          keterangan: formData.get("keterangan"),
-          url_nota: finalUrlNota,
-        }
+        submitForm.append("isEdit", "true")
 
         const res = await fetch(`/api/jurnal/${initialData.id}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          body: submitForm,
         })
 
         if (!res.ok) {
           const errorData = await res.json()
-          throw new Error(errorData.error || "Terjadi kesalahan")
+          throw new Error(errorData.error || errorData.message || "Terjadi kesalahan")
         }
       } else {
         // Create mode: single FormData request (upload + save in one round-trip)
