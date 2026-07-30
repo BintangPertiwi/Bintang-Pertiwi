@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { compressImage } from "@/lib/image-compression"
 import { cn } from "@/lib/utils"
 import type { JurnalRow } from "@/types"
-import { Check, ChevronsUpDown, ImagePlus, Plus, Trash2 } from "lucide-react"
+import { Check, ChevronsUpDown, ImagePlus, Loader2, Plus, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import * as React from "react"
 import { toast } from "sonner"
@@ -389,7 +389,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
           className="w-full sm:flex-1 text-base h-14 order-1 sm:order-2"
         >
           {isSubmitting ? (
-            isUploading ? "Mengunggah Nota..." : "Menyimpan..."
+            <><Loader2 className="mr-2 h-5 w-5 animate-spin" />{isUploading ? "Mengunggah Nota..." : "Menyimpan..."}</>
           ) : (
             initialData ? "Simpan Perubahan" : "Simpan Jurnal"
           )}
