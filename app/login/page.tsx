@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -140,7 +140,11 @@ export default function LoginPage() {
 
               <div className="pt-6">
                 <Button type="submit" disabled={loading} className="w-full h-12 text-sm md:text-base font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all">
-                  {loading ? "Memproses..." : "Masuk"}
+                  {loading ? (
+                    <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Memproses...</>
+                  ) : (
+                    "Masuk"
+                  )}
                 </Button>
               </div>
             </form>

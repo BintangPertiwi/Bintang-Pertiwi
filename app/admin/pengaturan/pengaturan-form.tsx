@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Save } from "lucide-react";
+import { Save, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -173,8 +173,11 @@ export function PengaturanForm({ initialUsername, initialWa, role }: PengaturanF
                 </div>
                 <div className="pt-4 flex md:col-span-2">
                   <Button type="submit" disabled={isWaLoading} className="w-full px-8 text-base h-14">
-                    <Save className="mr-2 h-5 w-5" />
-                    {isWaLoading ? "Menyimpan..." : "Simpan Nomor WA"}
+                    {isWaLoading ? (
+                      <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Menyimpan...</>
+                    ) : (
+                      <><Save className="mr-2 h-5 w-5" />Simpan Nomor WA</>
+                    )}
                   </Button>
                 </div>
               </div>
@@ -227,8 +230,11 @@ export function PengaturanForm({ initialUsername, initialWa, role }: PengaturanF
 
                 <div className="pt-4 flex md:col-span-2">
                   <Button type="submit" disabled={isUsernameLoading} className="w-full px-8 text-base h-14">
-                    <Save className="mr-2 h-5 w-5" />
-                    {isUsernameLoading ? "Menyimpan..." : "Simpan Username"}
+                    {isUsernameLoading ? (
+                      <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Menyimpan...</>
+                    ) : (
+                      <><Save className="mr-2 h-5 w-5" />Simpan Username</>
+                    )}
                   </Button>
                 </div>
               </div>
@@ -298,8 +304,11 @@ export function PengaturanForm({ initialUsername, initialWa, role }: PengaturanF
 
                 <div className="pt-4 flex md:col-span-2">
                   <Button type="submit" disabled={isPasswordLoading} className="w-full px-8 text-base h-14">
-                    <Save className="mr-2 h-5 w-5" />
-                    {isPasswordLoading ? "Menyimpan..." : "Simpan Password"}
+                    {isPasswordLoading ? (
+                      <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Menyimpan...</>
+                    ) : (
+                      <><Save className="mr-2 h-5 w-5" />Simpan Password</>
+                    )}
                   </Button>
                 </div>
               </div>
