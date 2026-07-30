@@ -207,6 +207,9 @@ export function useProdukForm({ existingCategories, initialData, defaultWa, onSu
 
       toast.success(`Produk berhasil ${mode === "edit" ? "diperbarui" : "ditambahkan"}!`);
 
+      form.reset();
+      setImages([]);
+
       onSuccess?.();
       router.push("/admin/produk");
       router.refresh();

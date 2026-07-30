@@ -161,6 +161,12 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       }
 
       toast.success(initialData ? "Jurnal berhasil diperbarui" : "Jurnal berhasil ditambahkan")
+      if (e.currentTarget) e.currentTarget.reset()
+      setProductName("")
+      setPendapatan("")
+      setPreviewUrl("")
+      setSelectedFile(null)
+      setUrlNota("")
       await expireJurnalCache()
       router.push("/admin/penjualan")
     } catch (error: unknown) {
