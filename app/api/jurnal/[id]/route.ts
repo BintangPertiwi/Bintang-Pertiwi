@@ -127,15 +127,17 @@ async function handleFormDataPut(request: NextRequest, id: string) {
   }
 
   if (file && file.size > 0) {
-    const arrayBuffer = await file.arrayBuffer();
+    // Parallelkan: baca file buffer + ambil info user dari DB secara bersamaan
+    const [arrayBuffer, users] = await Promise.all([
+      file.arrayBuffer(),
+      db
+        .select({ nama: adminAuth.nama, username: adminAuth.username })
+        .from(adminAuth)
+        .where(eq(adminAuth.id, session.id))
+        .limit(1),
+    ]);
+
     const buffer = Buffer.from(arrayBuffer);
-
-    const users = await db
-      .select({ nama: adminAuth.nama, username: adminAuth.username })
-      .from(adminAuth)
-      .where(eq(adminAuth.id, session.id))
-      .limit(1);
-
     const user = users[0];
     const kelompokRaw = user?.nama || user?.username || "Kontributor";
     const cleanKelompok = toPascalCase(kelompokRaw);

@@ -149,10 +149,8 @@ export function useGaleriForm({ existingCategories, initialData, onSuccess }: Us
 
       toast.success(`Galeri berhasil ${mode === "edit" ? "diperbarui" : "ditambahkan"}!`);
 
-      if (mode === "create") {
-        form.reset();
-        resetPreview();
-      }
+      form.reset();
+      resetPreview();
 
       onSuccess?.();
       router.push("/admin/galeri");

@@ -8,9 +8,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Textarea } from "@/components/ui/textarea"
+import { compressImage } from "@/lib/image-compression"
 import { cn } from "@/lib/utils"
 import type { JurnalRow } from "@/types"
-import { Check, ChevronsUpDown, ImagePlus, Plus, Trash2 } from "lucide-react"
+import { Check, ChevronsUpDown, ImagePlus, Loader2, Plus, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import * as React from "react"
 import { toast } from "sonner"
@@ -112,8 +113,13 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       if (Number(formData.get("jumlah_terjual")) < 1) throw new Error("Jumlah terjual harus minimal 1.")
       if (!rawPendapatan || Number(rawPendapatan) <= 0) throw new Error("Nominal transaksi harus diisi dan lebih dari 0.")
 
+      // Kompres gambar nota sebelum upload agar lebih cepat
+      const fileToUpload = selectedFile
+        ? await compressImage(selectedFile, 1600, 1600, 0.75)
+        : null;
+
       if (initialData) {
-        if (selectedFile) setIsUploading(true)
+        if (fileToUpload) setIsUploading(true)
 
         const submitForm = new FormData()
         submitForm.append("tanggal", (formData.get("tanggal") as string) || today)
@@ -121,10 +127,10 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
         submitForm.append("jumlah_terjual", String(formData.get("jumlah_terjual")))
         submitForm.append("total_pendapatan", rawPendapatan)
         submitForm.append("keterangan", (formData.get("keterangan") as string) || "")
-        submitForm.append("url_nota", selectedFile ? "" : urlNota)
+        submitForm.append("url_nota", fileToUpload ? "" : urlNota)
         
-        if (selectedFile) {
-          submitForm.append("file", selectedFile)
+        if (fileToUpload) {
+          submitForm.append("file", fileToUpload)
         }
         submitForm.append("isEdit", "true")
 
@@ -138,8 +144,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
           throw new Error(errorData.error || errorData.message || "Terjadi kesalahan")
         }
       } else {
-        // Create mode: single FormData request (upload + save in one round-trip)
-        if (selectedFile) setIsUploading(true)
+        if (fileToUpload) setIsUploading(true)
 
         const submitForm = new FormData()
         submitForm.append("tanggal", (formData.get("tanggal") as string) || today)
@@ -147,7 +152,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
         submitForm.append("jumlah_terjual", String(formData.get("jumlah_terjual")))
         submitForm.append("total_pendapatan", rawPendapatan)
         submitForm.append("keterangan", (formData.get("keterangan") as string) || "")
-        if (selectedFile) submitForm.append("file", selectedFile)
+        if (fileToUpload) submitForm.append("file", fileToUpload)
 
         const res = await fetch("/api/jurnal", {
           method: "POST",
@@ -161,6 +166,12 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       }
 
       toast.success(initialData ? "Jurnal berhasil diperbarui" : "Jurnal berhasil ditambahkan")
+      if (e.currentTarget) e.currentTarget.reset()
+      setProductName("")
+      setPendapatan("")
+      setPreviewUrl("")
+      setSelectedFile(null)
+      setUrlNota("")
       await expireJurnalCache()
       router.push("/admin/penjualan")
     } catch (error: unknown) {
@@ -378,7 +389,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
           className="w-full sm:flex-1 text-base h-14 order-1 sm:order-2"
         >
           {isSubmitting ? (
-            isUploading ? "Mengunggah Nota..." : "Menyimpan..."
+            <><Loader2 className="mr-2 h-5 w-5 animate-spin" />{isUploading ? "Mengunggah Nota..." : "Menyimpan..."}</>
           ) : (
             initialData ? "Simpan Perubahan" : "Simpan Jurnal"
           )}

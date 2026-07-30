@@ -56,6 +56,7 @@ export function PenggunaForm() {
         throw new Error(data.message || "Gagal membuat akun");
       }
       toast.success(data.message);
+      setForm(EMPTY_FORM);
       
       router.push("/admin/pengguna");
       router.refresh();

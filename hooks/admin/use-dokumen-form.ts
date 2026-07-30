@@ -142,10 +142,8 @@ export function useDokumenForm({ existingCategories, initialData, onSuccess }: U
 
       toast.success(`Dokumen berhasil ${mode === "edit" ? "diperbarui" : "ditambahkan"}!`);
 
-      if (mode === "create") {
-        form.reset();
-        setSelectedFile(null);
-      }
+      form.reset();
+      setSelectedFile(null);
 
       onSuccess?.();
       router.push("/admin/dokumen");
