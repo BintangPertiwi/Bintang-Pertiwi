@@ -60,7 +60,7 @@ export function RichTextEditor({ value, onChange, mediaAssets = [], setMediaAsse
     onTransaction: () => forceUpdate(),
     editorProps: {
       attributes: {
-        class: "min-h-[300px] w-full bg-transparent px-4 py-4 text-sm outline-none prose prose-sm max-w-none focus:outline-none",
+        class: "min-h-[300px] w-full bg-transparent px-4 py-4 text-sm outline-none prose prose-sm dark:prose-invert max-w-none focus:outline-none",
       },
     },
   });
