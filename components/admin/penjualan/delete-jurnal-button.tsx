@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -81,7 +81,11 @@ export function DeleteJurnalButton({
             disabled={isDeleting}
             className="bg-red-600 hover:bg-red-700 text-white"
           >
-            {isDeleting ? "Menghapus..." : "Ya, Hapus"}
+            {isDeleting ? (
+              <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Menghapus...</>
+            ) : (
+              "Ya, Hapus"
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
