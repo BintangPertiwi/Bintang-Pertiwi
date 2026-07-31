@@ -105,8 +105,10 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
     e.preventDefault()
     setIsSubmitting(true)
 
+    const formElement = e.currentTarget;
+
     try {
-      const formData = new FormData(e.currentTarget)
+      const formData = new FormData(formElement)
       const rawPendapatan = pendapatan.replace(/\D/g, "")
 
       if (!productName) throw new Error("Nama produk wajib diisi.")
@@ -166,7 +168,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       }
 
       toast.success(initialData ? "Jurnal berhasil diperbarui" : "Jurnal berhasil ditambahkan")
-      if (e.currentTarget) e.currentTarget.reset()
+      if (formElement) formElement.reset()
       setProductName("")
       setPendapatan("")
       setPreviewUrl("")
@@ -174,6 +176,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
       setUrlNota("")
       await expireJurnalCache()
       router.push("/admin/penjualan")
+      router.refresh()
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Gagal menyimpan jurnal"
       toast.error(errorMessage)
