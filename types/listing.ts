@@ -10,6 +10,8 @@ export interface ListingQueryParams {
   month?: string;
   year?: string;
   product?: string;
+  dateFrom?: string;
+  dateTo?: string;
 }
 
 export interface PaginatedResult<T> {

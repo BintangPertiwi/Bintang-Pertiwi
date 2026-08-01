@@ -6,14 +6,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getSession } from "@/lib/auth"
 import { getJurnalChartData, getJurnalFilterOptions, getJurnalListing, getJurnalStats } from "@/lib/db/queries/jurnal"
+import { getNotaSettings } from "@/lib/db/queries/nota-settings"
 import { toPositiveInteger } from "@/lib/listing"
-import { Banknote, FileText, Package, PlusCircle, ShoppingCart } from "lucide-react"
+import { Banknote, FileText, Package, PlusCircle, Settings, ShoppingCart } from "lucide-react"
 import { cookies } from "next/headers"
 import Link from "next/link"
 import { Suspense } from "react"
 import { JurnalChart } from "./jurnal-chart"
 import { JurnalFilters } from "./jurnal-filters"
 import { JurnalTable } from "./jurnal-table"
+import { ExportReportDialog } from "@/components/admin/penjualan/export-report-dialog"
 
 export const metadata = {
   title: "Jurnal Penjualan — Bintang Pertiwi",
@@ -25,6 +27,8 @@ interface PenjualanPageProps {
 
 export default async function PenjualanPage({ searchParams }: PenjualanPageProps) {
   const session = await getSession()
+  if (!session) return null;
+
   const resolvedSearchParams = (await searchParams) ?? {}
   
   const q = typeof resolvedSearchParams.q === "string" ? resolvedSearchParams.q : ""
@@ -42,19 +46,22 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
   const month = typeof resolvedSearchParams.month === "string" ? resolvedSearchParams.month : undefined
   const year = typeof resolvedSearchParams.year === "string" ? resolvedSearchParams.year : undefined
   const product = typeof resolvedSearchParams.product === "string" ? resolvedSearchParams.product : undefined
-  const ownerId = session?.role === "kontributor" ? session.id : undefined
+  const dateFrom = typeof resolvedSearchParams.dateFrom === "string" ? resolvedSearchParams.dateFrom : undefined
+  const dateTo = typeof resolvedSearchParams.dateTo === "string" ? resolvedSearchParams.dateTo : undefined
+  const ownerId = session.role === "kontributor" ? session.id : undefined
 
   const cookieStore = await cookies()
   const savedView = cookieStore.get("admin_view_preference")?.value as "list" | "grid" | undefined
   const view = (typeof resolvedSearchParams.view === "string" ? resolvedSearchParams.view : savedView) as "list" | "grid" | undefined
 
-  const hasActiveFilters = Boolean(month || year || product)
+  const hasActiveFilters = Boolean(month || year || product || (dateFrom && dateTo))
 
-  const [jurnalResult, chartData, filterOptions, stats] = await Promise.all([
-    getJurnalListing({ q, filter, month, year, product, page, limit, sort, dir, ownerId }),
+  const [jurnalResult, chartData, filterOptions, stats, notaSettings] = await Promise.all([
+    getJurnalListing({ q, filter, month, year, product, dateFrom, dateTo, page, limit, sort, dir, ownerId }),
     getJurnalChartData({ ownerId, month, year, product }),
     getJurnalFilterOptions(ownerId),
     getJurnalStats(ownerId),
+    getNotaSettings(session.id),
   ])
 
   const formatCurrency = (value: number) =>
@@ -66,13 +73,18 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
         title="Jurnal Penjualan" 
         description="Catat dan pantau riwayat penjualan produk UMKM Anda."
       >
-        <Button render={<Link href="/admin/penjualan/create" />} nativeButton={false} className="h-14 px-6 text-base">
-          <PlusCircle className="mr-2 h-5 w-5" />
-          Tambah Jurnal
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" render={<Link href="/admin/penjualan/pengaturan-nota" />} nativeButton={false} className="h-10 px-4">
+            <Settings className="mr-2 h-4 w-4" />
+            Pengaturan Nota
+          </Button>
+          <Button render={<Link href="/admin/penjualan/create" />} nativeButton={false} className="h-10 px-4">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Tambah Jurnal
+          </Button>
+        </div>
       </DashboardHeader>
 
-      {/* Stats Cards */}
       <div className="grid gap-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -128,25 +140,37 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
         currentView={view || "list"}
         hasExternalFilters={hasActiveFilters}
       >
-        <JurnalFilters 
-          currentQuery={{ q, filter, page, limit, sort, dir, month, year, product }} 
-          options={filterOptions} 
-        />
+        <div className="flex gap-2 items-center flex-wrap">
+          <JurnalFilters 
+            currentQuery={{ q, filter, page, limit, sort, dir, month, year, product, dateFrom, dateTo }} 
+            options={filterOptions} 
+          />
+          <ExportReportDialog 
+            currentQuery={{ q, filter, sort, dir, month, year, product, dateFrom, dateTo }} 
+          />
+        </div>
       </ListingToolbar>
 
       <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Memuat data...</div>}>
         <JurnalTable 
           data={jurnalResult.items} 
+          branding={notaSettings}
           view={view || "list"}
           emptyState={
             <EmptyState 
               icon={FileText}
-              title="Belum ada pencatatan"
-              description="Silakan klik tombol Tambah Jurnal untuk merekam riwayat penjualan produk Anda."
+              title={hasActiveFilters || q ? "Tidak ada hasil pencarian" : "Belum ada pencatatan"}
+              description={hasActiveFilters || q ? "Coba ubah kata kunci pencarian, filter, atau rentang tanggal." : "Silakan klik tombol Tambah Jurnal untuk merekam riwayat penjualan produk Anda."}
               action={
-                <Button render={<Link href="/admin/penjualan/create" />} nativeButton={false} variant="outline">
-                  Mulai Pencatatan
-                </Button>
+                hasActiveFilters || q ? (
+                  <Button variant="outline" render={<Link href="/admin/penjualan" />} nativeButton={false}>
+                    Reset Filter
+                  </Button>
+                ) : (
+                  <Button render={<Link href="/admin/penjualan/create" />} nativeButton={false} variant="outline">
+                    Mulai Pencatatan
+                  </Button>
+                )
               }
             />
           } 
@@ -156,7 +180,7 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
       {jurnalResult.totalPages > 1 && (
         <ListingPagination
           pathname="/admin/penjualan"
-          query={{ q, filter, page, limit, sort, dir, month, year, product }}
+          query={{ q, filter, page, limit, sort, dir, month, year, product, dateFrom, dateTo }}
           page={jurnalResult.page}
           totalPages={jurnalResult.totalPages}
           totalItems={jurnalResult.totalItems}

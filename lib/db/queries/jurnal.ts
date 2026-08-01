@@ -1,12 +1,12 @@
 import type { JurnalRow, ListingQueryParams, PaginatedResult } from "@/types";
-import { and, asc, count, desc, eq, like, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, like, sql, gte, lte } from "drizzle-orm";
 import { db } from "../index";
 import { adminAuth, jurnalPenjualan } from "../schema";
 
 export async function getJurnalListing(
   args: ListingQueryParams & { ownerId?: number },
 ): Promise<PaginatedResult<JurnalRow & { authorName: string }>> {
-  const { q = "", month, year, product, page = 1, limit = 10, ownerId } = args;
+  const { q = "", month, year, product, page = 1, limit = 10, ownerId, dateFrom, dateTo } = args;
 
   const conditions = [];
   
@@ -18,14 +18,17 @@ export async function getJurnalListing(
     conditions.push(eq(jurnalPenjualan.created_by, ownerId));
   }
 
-  if (year && year !== "all") {
-    conditions.push(like(jurnalPenjualan.tanggal, `${year}-%`));
-  }
-  
-  if (month && month !== "all") {
+  if (dateFrom && dateTo) {
+    conditions.push(gte(jurnalPenjualan.tanggal, dateFrom));
+    conditions.push(lte(jurnalPenjualan.tanggal, dateTo));
+  } else {
     if (year && year !== "all") {
-      conditions.push(like(jurnalPenjualan.tanggal, `${year}-${month}-%`));
-    } else {
+      if (month && month !== "all") {
+        conditions.push(like(jurnalPenjualan.tanggal, `${year}-${month}-%`));
+      } else {
+        conditions.push(like(jurnalPenjualan.tanggal, `${year}-%`));
+      }
+    } else if (month && month !== "all") {
       conditions.push(like(jurnalPenjualan.tanggal, `%-${month}-%`));
     }
   }
@@ -236,6 +239,96 @@ export interface JurnalStats {
   totalPendapatan: number;
   totalProduk: number;
   totalQty: number;
+}
+
+export async function getJurnalExportData(
+  args: ListingQueryParams & { ownerId?: number },
+): Promise<{
+  items: (JurnalRow & { authorName: string })[];
+  stats: { totalPendapatan: number; totalProduk: number; totalQty: number; totalTransaksi: number };
+}> {
+  const { q = "", month, year, product, dateFrom, dateTo, ownerId } = args;
+
+  const conditions = [];
+
+  if (ownerId) {
+    conditions.push(eq(jurnalPenjualan.created_by, ownerId));
+  }
+
+  if (q) {
+    conditions.push(like(jurnalPenjualan.nama_item, `%${q}%`));
+  }
+
+  // If dateRange is used, it overrides month/year
+  if (dateFrom && dateTo) {
+    conditions.push(gte(jurnalPenjualan.tanggal, dateFrom));
+    conditions.push(lte(jurnalPenjualan.tanggal, dateTo));
+  } else {
+    if (year && year !== "all") {
+      conditions.push(like(jurnalPenjualan.tanggal, `${year}-%`));
+    }
+    
+    if (month && month !== "all") {
+      if (year && year !== "all") {
+        conditions.push(like(jurnalPenjualan.tanggal, `${year}-${month}-%`));
+      } else {
+        conditions.push(like(jurnalPenjualan.tanggal, `%-${month}-%`));
+      }
+    }
+  }
+
+  if (product && product !== "all") {
+    conditions.push(eq(jurnalPenjualan.nama_item, product));
+  }
+
+  const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
+
+  const items = await db
+    .select({
+      id: jurnalPenjualan.id,
+      tanggal: jurnalPenjualan.tanggal,
+      nama_item: jurnalPenjualan.nama_item,
+      jumlah_terjual: jurnalPenjualan.jumlah_terjual,
+      total_pendapatan: jurnalPenjualan.total_pendapatan,
+      keterangan: jurnalPenjualan.keterangan,
+      url_nota: jurnalPenjualan.url_nota,
+      created_by: jurnalPenjualan.created_by,
+      created_at: jurnalPenjualan.created_at,
+      authorName: adminAuth.nama,
+    })
+    .from(jurnalPenjualan)
+    .leftJoin(adminAuth, eq(jurnalPenjualan.created_by, adminAuth.id))
+    .where(whereCondition)
+    .orderBy(desc(jurnalPenjualan.tanggal), desc(jurnalPenjualan.created_at))
+    .limit(5000);
+
+  // Compute stats locally to avoid multiple queries for export
+  let totalPendapatan = 0;
+  let totalQty = 0;
+  const uniqueProducts = new Set<string>();
+
+  const mappedItems = items.map(item => {
+    totalPendapatan += item.total_pendapatan;
+    totalQty += item.jumlah_terjual;
+    uniqueProducts.add(item.nama_item);
+    return {
+      ...item,
+      keterangan: item.keterangan || "",
+      url_nota: item.url_nota || "",
+      authorName: item.authorName || "-",
+      created_at: item.created_at || undefined,
+    };
+  });
+
+  return {
+    items: mappedItems,
+    stats: {
+      totalPendapatan,
+      totalProduk: uniqueProducts.size,
+      totalQty,
+      totalTransaksi: items.length,
+    }
+  };
 }
 
 export async function getJurnalStats(ownerId?: number): Promise<JurnalStats> {

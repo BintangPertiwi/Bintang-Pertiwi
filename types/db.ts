@@ -75,3 +75,12 @@ export interface JurnalRow {
   created_by: number;
   created_at?: string;
 }
+
+export interface NotaSettingsRow {
+  id: string;
+  user_id: number;
+  nama_usaha: string;
+  alamat: string;
+  nomor_telepon: string;
+  url_logo: string;
+}

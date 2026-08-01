@@ -12,7 +12,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { DeleteJurnalButton } from "@/components/admin/penjualan/delete-jurnal-button"
 
-export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
+import { DownloadNotaButton } from "@/components/admin/penjualan/download-nota-button"
+import type { NotaBranding } from "@/lib/pdf/nota-generator"
+
+export const getColumns = (branding: NotaBranding): ColumnDef<JurnalRow & { authorName?: string }>[] => [
   {
     accessorKey: "tanggal",
     header: ({ column }) => (
@@ -62,7 +65,7 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
   },
   {
     accessorKey: "url_nota",
-    header: "Nota",
+    header: "Foto Nota",
     cell: ({ row }) => {
       const url = row.original.url_nota;
       return url ? (
@@ -98,6 +101,19 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
 
       return (
         <div className="flex items-center justify-end gap-2">
+          <DownloadNotaButton
+            data={{
+              id: jurnal.id,
+              tanggal: jurnal.tanggal,
+              nama_item: jurnal.nama_item,
+              jumlah_terjual: jurnal.jumlah_terjual,
+              total_pendapatan: jurnal.total_pendapatan,
+              keterangan: jurnal.keterangan || "",
+              authorName: jurnal.authorName || "",
+            }}
+            branding={branding}
+            variant="outline"
+          />
           <Link 
             href={`/admin/penjualan/edit/${jurnal.id}`}
             className={buttonVariants({ variant: "outline", size: "sm" })}
@@ -118,7 +134,7 @@ export const columns: ColumnDef<JurnalRow & { authorName?: string }>[] = [
   },
 ]
 
-function JurnalGridCard({ item }: { item: JurnalRow & { authorName?: string } }) {
+function JurnalGridCard({ item, branding }: { item: JurnalRow & { authorName?: string }, branding: NotaBranding }) {
   return (
     <Card className="flex flex-col overflow-hidden h-full border-border/60 shadow-sm hover:shadow-md transition-all bg-card rounded-none p-0 gap-0">
       <div className="relative aspect-video w-full bg-card border-b flex shrink-0 items-center justify-center">
@@ -139,11 +155,11 @@ function JurnalGridCard({ item }: { item: JurnalRow & { authorName?: string } })
         <div className="absolute top-3 left-3 z-10">
           {item.url_nota ? (
             <Badge variant="default" className="font-semibold text-[10px] uppercase tracking-wider bg-sky-600 hover:bg-sky-600 text-white rounded-full px-3 py-0.5 shadow-sm border-none">
-              Ada Nota
+              Ada Foto Nota
             </Badge>
           ) : (
             <Badge variant="secondary" className="font-semibold text-[10px] uppercase tracking-wider bg-card/95 backdrop-blur-sm text-muted-foreground rounded-full px-3 py-0.5 shadow-sm">
-              Tanpa Nota
+              Tanpa Foto
             </Badge>
           )}
         </div>
@@ -185,7 +201,22 @@ function JurnalGridCard({ item }: { item: JurnalRow & { authorName?: string } })
         </div>
       </CardContent>
 
-      <div className="grid grid-cols-2 border-t bg-card shrink-0">
+      <div className="grid grid-cols-3 border-t bg-card shrink-0">
+        <DownloadNotaButton
+          data={{
+            id: item.id,
+            tanggal: item.tanggal,
+            nama_item: item.nama_item,
+            jumlah_terjual: item.jumlah_terjual,
+            total_pendapatan: item.total_pendapatan,
+            keterangan: item.keterangan || "",
+            authorName: item.authorName || "",
+          }}
+          branding={branding}
+          variant="ghost"
+          showText={true}
+          className="h-11 rounded-none text-muted-foreground hover:text-green-700 hover:bg-muted font-medium text-xs uppercase tracking-wide"
+        />
         <Link 
           href={`/admin/penjualan/edit/${item.id}`}
           className={buttonVariants({ variant: "ghost", className: "h-11 rounded-none text-muted-foreground hover:text-blue-700 hover:bg-muted font-medium text-xs uppercase tracking-wide" })}
@@ -208,11 +239,12 @@ function JurnalGridCard({ item }: { item: JurnalRow & { authorName?: string } })
 
 interface JurnalTableProps {
   data: (JurnalRow & { authorName?: string })[]
+  branding: NotaBranding
   view?: "list" | "grid"
   emptyState?: React.ReactNode
 }
 
-export function JurnalTable({ data, view = "list", emptyState }: JurnalTableProps) {
+export function JurnalTable({ data, branding, view = "list", emptyState }: JurnalTableProps) {
   if (data.length === 0 && emptyState) {
     return <>{emptyState}</>
   }
@@ -221,11 +253,11 @@ export function JurnalTable({ data, view = "list", emptyState }: JurnalTableProp
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
         {data.map((item) => (
-          <JurnalGridCard key={item.id} item={item} />
+          <JurnalGridCard key={item.id} item={item} branding={branding} />
         ))}
       </div>
     )
   }
 
-  return <DataTable columns={columns} data={data} />
+  return <DataTable columns={getColumns(branding)} data={data} />
 }
