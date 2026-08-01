@@ -97,7 +97,7 @@ export const columns: ColumnDef<BeritaRow>[] = [
             id={berita.id} 
             judul={berita.judul} 
             triggerVariant="ghost"
-            triggerClassName="h-8 px-2 text-red-600 bg-red-50 hover:bg-red-600 hover:text-white"
+            triggerClassName="h-9 px-3 text-red-600 bg-red-50 hover:bg-red-600 hover:text-white transition-colors"
           />
         </div>
       )

@@ -1,10 +1,11 @@
 "use client";
 
+import { DateRangeFilter } from "@/components/admin/penjualan/date-range-filter";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
-import { usePathname, useRouter } from "next/navigation";
 import { buildListingQueryParams, createListingSearchParams, type ListingQueryParams } from "@/lib/listing";
-import { useTransition } from "react";
 import { Loader2 } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 interface JurnalFiltersProps {
   currentQuery: ListingQueryParams;
@@ -44,6 +45,15 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
     });
   };
 
+  const handleDateRangeChange = (dateFrom?: string, dateTo?: string) => {
+    navigate({
+      dateFrom: dateFrom || undefined,
+      dateTo: dateTo || undefined,
+      month: (dateFrom && dateTo) ? undefined : currentQuery.month,
+      year: (dateFrom && dateTo) ? undefined : currentQuery.year,
+    });
+  };
+
   const monthLabel = currentQuery.month && currentQuery.month !== "all" 
     ? MONTHS.find((m) => m.value === currentQuery.month)?.label || "Bulan..."
     : "Semua Bulan";
@@ -55,17 +65,29 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
   const productLabel = currentQuery.product && currentQuery.product !== "all" 
     ? currentQuery.product 
     : "Semua Produk";
+    
+  const hasDateRange = Boolean(currentQuery.dateFrom && currentQuery.dateTo);
 
   return (
     <>
       {isPending && (
-        <div className="flex items-center justify-center h-14 w-8">
+        <div className="flex items-center justify-center h-10 w-8">
           <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
         </div>
       )}
+      
+      <div className="flex items-center w-full lg:w-auto h-14 bg-background shadow-sm border border-muted-foreground/20 rounded-md">
+        <DateRangeFilter 
+          dateFrom={currentQuery.dateFrom} 
+          dateTo={currentQuery.dateTo} 
+          onChange={handleDateRangeChange} 
+        />
+      </div>
+
       <Select
         value={currentQuery.month || "all"}
         onValueChange={(value) => navigate({ month: value === "all" || !value ? undefined : String(value) })}
+        disabled={hasDateRange}
       >
         <SelectTrigger className="h-14 w-full lg:w-[150px] bg-background shadow-sm border-muted-foreground/20 text-base">
           <span className="flex flex-1 text-left truncate">
@@ -83,6 +105,7 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
       <Select
         value={currentQuery.year || "all"}
         onValueChange={(value) => navigate({ year: value === "all" || !value ? undefined : String(value) })}
+        disabled={hasDateRange}
       >
         <SelectTrigger className="h-14 w-full lg:w-[130px] bg-background shadow-sm border-muted-foreground/20 text-base">
           <span className="flex flex-1 text-left truncate">

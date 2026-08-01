@@ -94,3 +94,14 @@ export const jurnalPenjualan = sqliteTable("jurnal_penjualan", {
   created_at: text("created_at").default(sql`(datetime('now'))`),
   updated_at: text("updated_at").default(sql`(datetime('now'))`),
 });
+
+export const notaSettings = sqliteTable("nota_settings", {
+  id: text("id").primaryKey(),
+  user_id: integer("user_id").notNull().references(() => adminAuth.id).unique(),
+  nama_usaha: text("nama_usaha").default(""),
+  alamat: text("alamat").default(""),
+  nomor_telepon: text("nomor_telepon").default(""),
+  url_logo: text("url_logo").default(""),
+  created_at: text("created_at").default(sql`(datetime('now'))`),
+  updated_at: text("updated_at").default(sql`(datetime('now'))`),
+});
