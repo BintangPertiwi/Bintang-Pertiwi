@@ -101,7 +101,7 @@ export function ListingToolbar({
             value={draftSearch}
             onChange={(e) => setDraftSearch(e.target.value)}
             placeholder={searchPlaceholder}
-            className="w-full pl-11 pr-12 h-10 bg-background shadow-sm border-muted-foreground/20 text-sm"
+            className="w-full pl-11 pr-12 h-14 bg-background shadow-sm border-muted-foreground/20 text-base"
           />
           {draftSearch && (
             <button
@@ -126,7 +126,7 @@ export function ListingToolbar({
             variant="outline" 
             size="sm" 
             onClick={resetFilters} 
-            className="h-10 px-4 shrink-0 w-full lg:w-auto order-last lg:order-0"
+            className="h-14 px-4 shrink-0 w-full lg:w-auto order-last lg:order-0"
             title="Reset semua pencarian & filter"
           >
             <span className="mr-2">Reset Filter</span>
@@ -143,7 +143,7 @@ export function ListingToolbar({
               if (value !== null) navigate({ filter: value, page: 1 });
             }}
           >
-            <SelectTrigger className="h-10 w-full lg:w-[220px] bg-background shadow-sm border-muted-foreground/20 text-sm relative overflow-visible">
+            <SelectTrigger className="h-14 w-full lg:w-[220px] bg-background shadow-sm border-muted-foreground/20 text-base relative overflow-visible">
               <div className="flex items-center gap-2">
                 <div className="relative">
                   <Filter className="h-5 w-5 text-muted-foreground shrink-0" />
@@ -176,7 +176,7 @@ export function ListingToolbar({
               if (value !== null) navigate({ status: value, page: 1 });
             }}
           >
-            <SelectTrigger className="h-10 w-full lg:w-[180px] bg-background shadow-sm border-muted-foreground/20 text-sm relative overflow-visible">
+            <SelectTrigger className="h-14 w-full lg:w-[180px] bg-background shadow-sm border-muted-foreground/20 text-base relative overflow-visible">
               <div className="flex items-center gap-2">
                 <div className="relative">
                   <Filter className="h-5 w-5 text-muted-foreground shrink-0" />
@@ -202,7 +202,7 @@ export function ListingToolbar({
           </Select>
         )}
 
-        <div className="flex w-full lg:w-auto bg-background shadow-sm border border-muted-foreground/20 rounded-md p-1 h-10 items-center justify-center shrink-0">
+        <div className="flex w-full lg:w-auto bg-background shadow-sm border border-muted-foreground/20 rounded-md p-1 h-14 items-center justify-center shrink-0">
           <Button
             type="button"
             variant={currentView === "grid" ? "secondary" : "ghost"}

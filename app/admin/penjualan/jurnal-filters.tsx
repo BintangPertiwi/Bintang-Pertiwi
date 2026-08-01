@@ -76,7 +76,7 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
         </div>
       )}
       
-      <div className="flex items-center w-full lg:w-auto h-10 bg-background shadow-sm border border-muted-foreground/20 rounded-md">
+      <div className="flex items-center w-full lg:w-auto h-14 bg-background shadow-sm border border-muted-foreground/20 rounded-md">
         <DateRangeFilter 
           dateFrom={currentQuery.dateFrom} 
           dateTo={currentQuery.dateTo} 
@@ -89,7 +89,7 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
         onValueChange={(value) => navigate({ month: value === "all" || !value ? undefined : String(value) })}
         disabled={hasDateRange}
       >
-        <SelectTrigger className="h-10 w-full lg:w-[150px] bg-background shadow-sm border-muted-foreground/20 text-sm">
+        <SelectTrigger className="h-14 w-full lg:w-[150px] bg-background shadow-sm border-muted-foreground/20 text-base">
           <span className="flex flex-1 text-left truncate">
             {monthLabel}
           </span>
@@ -107,7 +107,7 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
         onValueChange={(value) => navigate({ year: value === "all" || !value ? undefined : String(value) })}
         disabled={hasDateRange}
       >
-        <SelectTrigger className="h-10 w-full lg:w-[130px] bg-background shadow-sm border-muted-foreground/20 text-sm">
+        <SelectTrigger className="h-14 w-full lg:w-[130px] bg-background shadow-sm border-muted-foreground/20 text-base">
           <span className="flex flex-1 text-left truncate">
             {yearLabel}
           </span>
@@ -124,7 +124,7 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
         value={currentQuery.product || "all"}
         onValueChange={(value) => navigate({ product: value === "all" || !value ? undefined : String(value) })}
       >
-        <SelectTrigger className="h-10 w-full lg:w-[200px] bg-background shadow-sm border-muted-foreground/20 text-sm">
+        <SelectTrigger className="h-14 w-full lg:w-[200px] bg-background shadow-sm border-muted-foreground/20 text-base">
           <span className="flex flex-1 text-left truncate">
             {productLabel}
           </span>
