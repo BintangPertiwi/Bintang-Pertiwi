@@ -35,10 +35,10 @@ export async function generateNotaPdf(data: NotaData, branding: NotaBranding): P
 
   const logoBase64 = await imageUrlToBase64(branding.url_logo);
   try {
-    doc.addImage(logoBase64, 'PNG', 15, 10, 20, 20);
+    doc.addImage(logoBase64, 'PNG', 15, 10, 20, 20, 'LOGO', 'FAST');
   } catch {
     try {
-      doc.addImage(FALLBACK_LOGO_BASE64, 'PNG', 15, 10, 20, 20);
+      doc.addImage(FALLBACK_LOGO_BASE64, 'PNG', 15, 10, 20, 20, 'LOGO', 'FAST');
     } catch {
       // ignore
     }
@@ -111,7 +111,7 @@ export async function generateNotaPdf(data: NotaData, branding: NotaBranding): P
     styles: {
       font: 'helvetica',
       fontSize: 9,
-      cellPadding: 4,
+      cellPadding: { top: 3, right: 3, bottom: 3, left: 3 },
       lineColor: [226, 232, 240] 
     },
     margin: { left: 15, right: 15 }

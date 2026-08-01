@@ -30,11 +30,13 @@ export async function generateReportPdf(data: ReportData): Promise<Blob> {
 
   // 2. Draw Logo
   const logoBase64 = await imageUrlToBase64(data.branding.url_logo);
+  let finalLogo = logoBase64;
   try {
-    doc.addImage(logoBase64, 'PNG', 15, 5, 20, 20);
+    doc.addImage(logoBase64, 'PNG', 15, 5, 20, 20, 'LOGO', 'FAST');
   } catch {
     try {
-      doc.addImage(FALLBACK_LOGO_BASE64, 'PNG', 15, 5, 20, 20);
+      finalLogo = FALLBACK_LOGO_BASE64;
+      doc.addImage(FALLBACK_LOGO_BASE64, 'PNG', 15, 5, 20, 20, 'LOGO', 'FAST');
     } catch { /* ignore */ }
   }
 
@@ -100,7 +102,7 @@ export async function generateReportPdf(data: ReportData): Promise<Blob> {
       fontStyle: 'bold'
     },
     columnStyles: {
-      0: { halign: 'center', cellWidth: 10 },
+      0: { halign: 'center', cellWidth: 12 },
       1: { halign: 'center', cellWidth: 25 },
       2: { halign: 'left', cellWidth: 'auto' },
       3: { halign: 'center', cellWidth: 15 },
@@ -109,7 +111,7 @@ export async function generateReportPdf(data: ReportData): Promise<Blob> {
     styles: {
       font: 'helvetica',
       fontSize: 9,
-      cellPadding: 4,
+      cellPadding: { top: 3, right: 3, bottom: 3, left: 3 },
     },
     margin: { left: 15, right: 15 },
     
@@ -121,7 +123,7 @@ export async function generateReportPdf(data: ReportData): Promise<Blob> {
       
       doc.setGState(new docWithGState.GState({ opacity: 0.05 }));
       try {
-        doc.addImage(logoBase64, 'PNG', pageWidth/2 - 40, pageHeight/2 - 40, 80, 80);
+        doc.addImage(finalLogo, 'PNG', pageWidth/2 - 40, pageHeight/2 - 40, 80, 80, 'LOGO', 'FAST');
       } catch {}
       doc.setGState(new docWithGState.GState({ opacity: 1.0 }));
       
