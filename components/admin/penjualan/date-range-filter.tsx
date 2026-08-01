@@ -69,7 +69,7 @@ export function DateRangeFilter({ dateFrom, dateTo, onChange }: DateRangeFilterP
               id="date"
               variant="outline"
               className={cn(
-                "w-[240px] justify-start text-left font-normal h-10",
+                "w-full lg:w-[240px] justify-start text-left font-normal h-10",
                 !date.from && "text-muted-foreground"
               )}
             />

@@ -140,7 +140,7 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
         currentView={view || "list"}
         hasExternalFilters={hasActiveFilters}
       >
-        <div className="flex gap-2 items-center flex-wrap">
+        <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
           <JurnalFilters 
             currentQuery={{ q, filter, page, limit, sort, dir, month, year, product, dateFrom, dateTo }} 
             options={filterOptions} 

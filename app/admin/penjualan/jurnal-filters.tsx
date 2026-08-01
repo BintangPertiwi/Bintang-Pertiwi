@@ -76,7 +76,7 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
         </div>
       )}
       
-      <div className="flex items-center h-10 bg-background shadow-sm border border-muted-foreground/20 rounded-md">
+      <div className="flex items-center w-full lg:w-auto h-10 bg-background shadow-sm border border-muted-foreground/20 rounded-md">
         <DateRangeFilter 
           dateFrom={currentQuery.dateFrom} 
           dateTo={currentQuery.dateTo} 
