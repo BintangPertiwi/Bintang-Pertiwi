@@ -83,17 +83,39 @@ export async function generateReportPdf(data: ReportData): Promise<Blob> {
   drawSummaryCard(15 + (cardWidth + 5)*3, cardY, cardWidth, 18, "Total Kuantitas", data.stats.totalQty.toString());
 
   // 5. Table Data
-  const tableData = data.items.map((item, idx) => [
-    idx + 1,
-    new Date(item.tanggal).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: '2-digit' }),
-    item.nama_item,
-    item.jumlah_terjual,
-    `Rp ${item.total_pendapatan.toLocaleString('id-ID')}`
-  ]);
+  const tableData: (string | number)[][] = [];
+  let rowIndex = 1;
+  
+  data.items.forEach((jurnal) => {
+    const dateStr = new Date(jurnal.tanggal).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: '2-digit' });
+    
+    const childItems = jurnal.items;
+    if (childItems && childItems.length > 0) {
+      childItems.forEach((item) => {
+        tableData.push([
+          rowIndex++,
+          dateStr,
+          item.nama_item,
+          `Rp ${item.harga_satuan.toLocaleString('id-ID')}`,
+          item.satuan ? `${item.jumlah} ${item.satuan}` : item.jumlah.toString(),
+          `Rp ${item.subtotal.toLocaleString('id-ID')}`
+        ]);
+      });
+    } else {
+      tableData.push([
+        rowIndex++,
+        dateStr,
+        jurnal.nama_item,
+        "-",
+        jurnal.jumlah_terjual.toString(),
+        `Rp ${jurnal.total_pendapatan.toLocaleString('id-ID')}`
+      ]);
+    }
+  });
 
   autoTable(doc, {
     startY: 70,
-    head: [['No', 'Tanggal', 'Produk', 'Qty', 'Total']],
+    head: [['No', 'Tanggal', 'Produk', 'Harga', 'Qty', 'Subtotal']],
     body: tableData,
     theme: 'striped',
     headStyles: { 
@@ -102,11 +124,12 @@ export async function generateReportPdf(data: ReportData): Promise<Blob> {
       fontStyle: 'bold'
     },
     columnStyles: {
-      0: { halign: 'center', cellWidth: 12 },
-      1: { halign: 'center', cellWidth: 25 },
+      0: { halign: 'center', cellWidth: 10 },
+      1: { halign: 'center', cellWidth: 22 },
       2: { halign: 'left', cellWidth: 'auto' },
-      3: { halign: 'center', cellWidth: 15 },
-      4: { halign: 'right', cellWidth: 35 }
+      3: { halign: 'right', cellWidth: 25 },
+      4: { halign: 'center', cellWidth: 15 },
+      5: { halign: 'right', cellWidth: 30 }
     },
     styles: {
       font: 'helvetica',

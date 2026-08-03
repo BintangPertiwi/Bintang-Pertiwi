@@ -222,7 +222,7 @@ export async function getProdukListing(args: ProdukListingArgs) {
   };
 }
 
-export async function getProdukNamesByOwner(ownerId?: number): Promise<string[]> {
+export async function getProdukForJurnal(ownerId?: number): Promise<{ id: string; nama: string; harga: number; satuan: string }[]> {
   const conditions = [];
   if (ownerId !== undefined) {
     conditions.push(eq(produkUmkm.created_by, ownerId));
@@ -230,10 +230,28 @@ export async function getProdukNamesByOwner(ownerId?: number): Promise<string[]>
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
   const result = await db
-    .selectDistinct({ nama: produkUmkm.nama })
+    .select({
+      id: produkUmkm.id,
+      nama: produkUmkm.nama,
+      harga: produkUmkm.harga,
+      satuan: produkUmkm.satuan,
+    })
     .from(produkUmkm)
     .where(whereClause)
     .orderBy(asc(produkUmkm.nama));
 
-  return result.map((r) => r.nama).filter(Boolean);
+  // Remove duplicates by name, keeping the first one found
+  const uniqueProducts = new Map();
+  for (const item of result) {
+    if (item.nama && !uniqueProducts.has(item.nama)) {
+      uniqueProducts.set(item.nama, {
+        id: item.id,
+        nama: item.nama,
+        harga: item.harga || 0,
+        satuan: item.satuan || "",
+      });
+    }
+  }
+
+  return Array.from(uniqueProducts.values());
 }

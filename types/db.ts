@@ -64,16 +64,28 @@ export interface PerangkatRow {
   url_foto: string;
 }
 
+export interface JurnalItemRow {
+  id: string;
+  jurnal_id: string;
+  produk_id: string | null;
+  nama_item: string;
+  harga_satuan: number;
+  jumlah: number;
+  subtotal: number;
+  satuan: string | null;
+}
+
 export interface JurnalRow {
   id: string;
   tanggal: string;
-  nama_item: string;
-  jumlah_terjual: number;
-  total_pendapatan: number;
+  nama_item: string; // Keep as summary/fallback
+  jumlah_terjual: number; // Keep as total fallback
+  total_pendapatan: number; // Keep as grand total
   keterangan: string;
   url_nota?: string;
   created_by: number;
   created_at?: string;
+  items?: JurnalItemRow[]; // populated when multi-item is available
 }
 
 export interface NotaSettingsRow {

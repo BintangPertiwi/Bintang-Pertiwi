@@ -2,7 +2,7 @@ import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context"
 import { DashboardHeader } from "@/components/admin/layout/dashboard-header"
 import { getSession } from "@/lib/auth"
 import { getJurnalById } from "@/lib/db/queries/jurnal"
-import { getProdukNamesByOwner } from "@/lib/db/queries/produk"
+import { getProdukForJurnal } from "@/lib/db/queries/produk"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { JurnalForm } from "../../create/jurnal-form"
@@ -30,7 +30,7 @@ export default async function EditJurnalPage({
   }
 
   const ownerId = session?.role === "kontributor" ? session.id : undefined;
-  const produkNames = await getProdukNamesByOwner(ownerId);
+  const products = await getProdukForJurnal(ownerId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -41,7 +41,7 @@ export default async function EditJurnalPage({
       />
       
       <div className="max-w-3xl">
-        <JurnalForm initialData={jurnal} existingProducts={produkNames} />
+        <JurnalForm initialData={jurnal} existingProducts={products} />
       </div>
     </div>
   )

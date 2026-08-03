@@ -105,3 +105,14 @@ export const notaSettings = sqliteTable("nota_settings", {
   created_at: text("created_at").default(sql`(datetime('now'))`),
   updated_at: text("updated_at").default(sql`(datetime('now'))`),
 });
+
+export const jurnalItems = sqliteTable("jurnal_items", {
+  id: text("id").primaryKey(),
+  jurnal_id: text("jurnal_id").notNull().references(() => jurnalPenjualan.id, { onDelete: "cascade" }),
+  produk_id: text("produk_id"),
+  nama_item: text("nama_item").notNull(),
+  harga_satuan: integer("harga_satuan").notNull().default(0),
+  jumlah: integer("jumlah").notNull().default(1),
+  subtotal: integer("subtotal").notNull().default(0),
+  satuan: text("satuan").default(""),
+});

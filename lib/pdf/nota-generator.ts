@@ -10,6 +10,13 @@ export interface NotaData {
   total_pendapatan: number;
   keterangan: string;
   authorName: string;
+  items?: { 
+    nama_item: string; 
+    harga_satuan: number; 
+    jumlah: number; 
+    subtotal: number;
+    satuan?: string | null;
+  }[];
 }
 
 export interface NotaBranding {
@@ -86,16 +93,34 @@ export async function generateNotaPdf(data: NotaData, branding: NotaBranding): P
   const invWidth = doc.getTextWidth(`No: ${invoiceNo}`);
   doc.text(`No: ${invoiceNo}`, pageWidth - 15 - invWidth, lineY + 8);
 
+  const tableBody = data.items && data.items.length > 0 
+    ? data.items.map(item => [
+        item.nama_item,
+        `Rp ${item.harga_satuan.toLocaleString('id-ID')}`,
+        item.satuan ? `${item.jumlah} ${item.satuan}` : item.jumlah.toString(),
+        `Rp ${item.subtotal.toLocaleString('id-ID')}`
+      ])
+    : [
+        [
+          data.nama_item, 
+          "-",
+          data.jumlah_terjual.toString(), 
+          `Rp ${data.total_pendapatan.toLocaleString('id-ID')}`
+        ]
+      ];
+
   autoTable(doc, {
     startY: lineY + 25,
-    head: [['Produk / Item', 'Qty', 'Total']],
-    body: [
-      [
-        data.nama_item, 
-        data.jumlah_terjual.toString(), 
-        `Rp ${data.total_pendapatan.toLocaleString('id-ID')}`
-      ]
+    head: [['Produk / Item', 'Harga', 'Qty', 'Subtotal']],
+    body: tableBody,
+    foot: [
+      [{ content: 'TOTAL', colSpan: 3, styles: { halign: 'right' } }, `Rp ${data.total_pendapatan.toLocaleString('id-ID')}`]
     ],
+    footStyles: {
+      fillColor: [241, 245, 249],
+      textColor: [0, 0, 0],
+      fontStyle: 'bold'
+    },
     theme: 'grid',
     headStyles: { 
       fillColor: PDF_COLORS.primary as [number, number, number],
@@ -105,8 +130,9 @@ export async function generateNotaPdf(data: NotaData, branding: NotaBranding): P
     },
     columnStyles: {
       0: { halign: 'left', cellWidth: 'auto' },
-      1: { halign: 'center', cellWidth: 20 },
-      2: { halign: 'right', cellWidth: 35 }
+      1: { halign: 'right', cellWidth: 25 },
+      2: { halign: 'center', cellWidth: 20 },
+      3: { halign: 'right', cellWidth: 35 }
     },
     styles: {
       font: 'helvetica',

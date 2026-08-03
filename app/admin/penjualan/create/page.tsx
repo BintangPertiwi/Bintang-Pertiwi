@@ -3,7 +3,7 @@ import { JurnalForm } from "./jurnal-form"
 import { DashboardHeader } from "@/components/admin/layout/dashboard-header"
 import { SetBreadcrumb } from "@/components/admin/layout/breadcrumb-context"
 import { getSession } from "@/lib/auth"
-import { getProdukNamesByOwner } from "@/lib/db/queries/produk"
+import { getProdukForJurnal } from "@/lib/db/queries/produk"
 
 export const metadata: Metadata = {
   title: "Tambah Jurnal Penjualan — Bintang Pertiwi",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function CreateJurnalPage() {
   const session = await getSession();
   const ownerId = session?.role === "kontributor" ? session.id : undefined;
-  const produkNames = await getProdukNamesByOwner(ownerId);
+  const products = await getProdukForJurnal(ownerId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -24,7 +24,7 @@ export default async function CreateJurnalPage() {
       />
       
       <div className="max-w-3xl">
-        <JurnalForm existingProducts={produkNames} />
+        <JurnalForm existingProducts={products} />
       </div>
     </div>
   )

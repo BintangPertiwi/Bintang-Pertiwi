@@ -1,7 +1,7 @@
-import type { JurnalRow, ListingQueryParams, PaginatedResult } from "@/types";
-import { and, asc, count, desc, eq, like, sql, gte, lte } from "drizzle-orm";
+import type { JurnalItemRow, JurnalRow, ListingQueryParams, PaginatedResult } from "@/types";
+import { and, asc, count, desc, eq, exists, gte, inArray, like, lte, or, sql } from "drizzle-orm";
 import { db } from "../index";
-import { adminAuth, jurnalPenjualan } from "../schema";
+import { adminAuth, jurnalItems, jurnalPenjualan } from "../schema";
 
 export async function getJurnalListing(
   args: ListingQueryParams & { ownerId?: number },
@@ -11,7 +11,10 @@ export async function getJurnalListing(
   const conditions = [];
   
   if (q) {
-    conditions.push(like(jurnalPenjualan.nama_item, `%${q}%`));
+    conditions.push(or(
+      like(jurnalPenjualan.nama_item, `%${q}%`),
+      exists(db.select().from(jurnalItems).where(and(eq(jurnalItems.jurnal_id, jurnalPenjualan.id), like(jurnalItems.nama_item, `%${q}%`))))
+    ));
   }
   
   if (ownerId) {
@@ -34,7 +37,10 @@ export async function getJurnalListing(
   }
 
   if (product && product !== "all") {
-    conditions.push(eq(jurnalPenjualan.nama_item, product));
+    conditions.push(or(
+      eq(jurnalPenjualan.nama_item, product),
+      exists(db.select().from(jurnalItems).where(and(eq(jurnalItems.jurnal_id, jurnalPenjualan.id), eq(jurnalItems.nama_item, product))))
+    ));
   }
 
   const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
@@ -82,13 +88,19 @@ export async function getJurnalListing(
     .limit(limit)
     .offset((currentPage - 1) * limit);
 
+  const ids = data.map(r => r.id);
+  const allItems: JurnalItemRow[] = ids.length > 0
+    ? await db.select().from(jurnalItems).where(inArray(jurnalItems.jurnal_id, ids))
+    : [];
+
   return {
     items: data.map(({ authorName, authorUsername, created_at, keterangan, url_nota, ...rest }) => ({ 
       ...rest, 
       keterangan: keterangan || "",
       url_nota: url_nota || undefined,
       created_at: created_at || undefined,
-      authorName: authorName?.trim() || authorUsername || "-" 
+      authorName: authorName?.trim() || authorUsername || "-",
+      items: allItems.filter(i => i.jurnal_id === rest.id)
     })),
     totalItems,
     totalPages,
@@ -108,21 +120,38 @@ export async function getJurnalById(id: string): Promise<JurnalRow | null> {
 
   if (result.length === 0) return null;
   const { created_at, updated_at, keterangan, url_nota, ...rest } = result[0];
+  
+  const items = await db.select().from(jurnalItems).where(eq(jurnalItems.jurnal_id, id));
+  
   return {
     ...rest,
     keterangan: keterangan || "",
     url_nota: url_nota || "",
     created_at: created_at || undefined,
+    items,
   };
 }
 
 export async function appendJurnal(
   data: Omit<JurnalRow, "id" | "created_at" | "updated_at">
 ): Promise<void> {
+  const { items, ...headerData } = data;
   const id = crypto.randomUUID();
-  await db.insert(jurnalPenjualan).values({
-    ...data,
-    id,
+  
+  await db.transaction(async (tx) => {
+    await tx.insert(jurnalPenjualan).values({
+      ...headerData,
+      id,
+    });
+    
+    if (items && items.length > 0) {
+      const itemsToInsert = items.map(item => ({
+        ...item,
+        id: crypto.randomUUID(),
+        jurnal_id: id,
+      }));
+      await tx.insert(jurnalItems).values(itemsToInsert);
+    }
   });
 }
 
@@ -130,13 +159,32 @@ export async function updateJurnal(
   id: string,
   data: Partial<Omit<JurnalRow, "id" | "created_at" | "updated_at">>
 ): Promise<void> {
-  await db
-    .update(jurnalPenjualan)
-    .set({
-      ...data,
-      updated_at: sql`(datetime('now'))`,
-    })
-    .where(eq(jurnalPenjualan.id, id));
+  const { items, ...headerData } = data;
+  
+  await db.transaction(async (tx) => {
+    if (Object.keys(headerData).length > 0) {
+      await tx
+        .update(jurnalPenjualan)
+        .set({
+          ...headerData,
+          updated_at: sql`(datetime('now'))`,
+        })
+        .where(eq(jurnalPenjualan.id, id));
+    }
+      
+    if (items !== undefined) {
+      await tx.delete(jurnalItems).where(eq(jurnalItems.jurnal_id, id));
+      
+      if (items.length > 0) {
+        const itemsToInsert = items.map(item => ({
+          ...item,
+          id: crypto.randomUUID(),
+          jurnal_id: id,
+        }));
+        await tx.insert(jurnalItems).values(itemsToInsert);
+      }
+    }
+  });
 }
 
 export async function deleteJurnalById(id: string): Promise<boolean> {
@@ -150,11 +198,11 @@ export async function getJurnalFilterOptions(ownerId?: number) {
   const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
 
   const productsResult = await db
-    .select({ name: jurnalPenjualan.nama_item })
+    .selectDistinct({ name: sql<string>`COALESCE(${jurnalItems.nama_item}, ${jurnalPenjualan.nama_item})` })
     .from(jurnalPenjualan)
+    .leftJoin(jurnalItems, eq(jurnalPenjualan.id, jurnalItems.jurnal_id))
     .where(whereCondition)
-    .groupBy(jurnalPenjualan.nama_item)
-    .orderBy(jurnalPenjualan.nama_item);
+    .orderBy(sql`COALESCE(${jurnalItems.nama_item}, ${jurnalPenjualan.nama_item})`);
 
   const yearsResult = await db
     .select({ year: sql<string>`strftime('%Y', ${jurnalPenjualan.tanggal})` })
@@ -196,21 +244,26 @@ export async function getJurnalChartData(args: { ownerId?: number; month?: strin
       conditions.push(like(jurnalPenjualan.tanggal, `%-${month}-%`));
     }
   }
+  
   if (product && product !== "all") {
-    conditions.push(eq(jurnalPenjualan.nama_item, product));
+    conditions.push(or(
+      eq(jurnalPenjualan.nama_item, product),
+      exists(db.select().from(jurnalItems).where(and(eq(jurnalItems.jurnal_id, jurnalPenjualan.id), eq(jurnalItems.nama_item, product))))
+    ));
   }
 
   const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
   
   const pieResult = await db
     .select({
-      name: jurnalPenjualan.nama_item,
-      value: sql<number>`SUM(${jurnalPenjualan.total_pendapatan})`,
+      name: sql<string>`COALESCE(${jurnalItems.nama_item}, ${jurnalPenjualan.nama_item})`,
+      value: sql<number>`SUM(COALESCE(${jurnalItems.subtotal}, ${jurnalPenjualan.total_pendapatan}))`,
     })
     .from(jurnalPenjualan)
+    .leftJoin(jurnalItems, eq(jurnalPenjualan.id, jurnalItems.jurnal_id))
     .where(whereCondition)
-    .groupBy(jurnalPenjualan.nama_item)
-    .orderBy(desc(sql`SUM(${jurnalPenjualan.total_pendapatan})`))
+    .groupBy(sql`COALESCE(${jurnalItems.nama_item}, ${jurnalPenjualan.nama_item})`)
+    .orderBy(desc(sql`SUM(COALESCE(${jurnalItems.subtotal}, ${jurnalPenjualan.total_pendapatan}))`))
     .limit(10);
     
   let timeFormat = '%Y-%m';
@@ -256,7 +309,10 @@ export async function getJurnalExportData(
   }
 
   if (q) {
-    conditions.push(like(jurnalPenjualan.nama_item, `%${q}%`));
+    conditions.push(or(
+      like(jurnalPenjualan.nama_item, `%${q}%`),
+      exists(db.select().from(jurnalItems).where(and(eq(jurnalItems.jurnal_id, jurnalPenjualan.id), like(jurnalItems.nama_item, `%${q}%`))))
+    ));
   }
 
   // If dateRange is used, it overrides month/year
@@ -278,12 +334,15 @@ export async function getJurnalExportData(
   }
 
   if (product && product !== "all") {
-    conditions.push(eq(jurnalPenjualan.nama_item, product));
+    conditions.push(or(
+      eq(jurnalPenjualan.nama_item, product),
+      exists(db.select().from(jurnalItems).where(and(eq(jurnalItems.jurnal_id, jurnalPenjualan.id), eq(jurnalItems.nama_item, product))))
+    ));
   }
 
   const whereCondition = conditions.length > 0 ? and(...conditions) : undefined;
 
-  const items = await db
+  const data = await db
     .select({
       id: jurnalPenjualan.id,
       tanggal: jurnalPenjualan.tanggal,
@@ -302,21 +361,38 @@ export async function getJurnalExportData(
     .orderBy(desc(jurnalPenjualan.tanggal), desc(jurnalPenjualan.created_at))
     .limit(5000);
 
-  // Compute stats locally to avoid multiple queries for export
+  const ids = data.map(r => r.id);
+  const allItems: JurnalItemRow[] = [];
+  if (ids.length > 0) {
+    for (let i = 0; i < ids.length; i += 500) {
+      const chunk = ids.slice(i, i + 500);
+      const items = await db.select().from(jurnalItems).where(inArray(jurnalItems.jurnal_id, chunk));
+      allItems.push(...items);
+    }
+  }
+
   let totalPendapatan = 0;
   let totalQty = 0;
   const uniqueProducts = new Set<string>();
 
-  const mappedItems = items.map(item => {
+  const mappedItems = data.map(item => {
     totalPendapatan += item.total_pendapatan;
     totalQty += item.jumlah_terjual;
-    uniqueProducts.add(item.nama_item);
+    
+    const childItems = allItems.filter(i => i.jurnal_id === item.id);
+    if (childItems.length > 0) {
+      childItems.forEach(i => uniqueProducts.add(i.nama_item));
+    } else {
+      uniqueProducts.add(item.nama_item);
+    }
+
     return {
       ...item,
       keterangan: item.keterangan || "",
       url_nota: item.url_nota || "",
       authorName: item.authorName || "-",
       created_at: item.created_at || undefined,
+      items: childItems,
     };
   });
 
@@ -326,7 +402,7 @@ export async function getJurnalExportData(
       totalPendapatan,
       totalProduk: uniqueProducts.size,
       totalQty,
-      totalTransaksi: items.length,
+      totalTransaksi: data.length,
     }
   };
 }
@@ -339,15 +415,22 @@ export async function getJurnalStats(ownerId?: number): Promise<JurnalStats> {
   const [agg] = await db
     .select({
       totalPendapatan: sql<number>`COALESCE(SUM(${jurnalPenjualan.total_pendapatan}), 0)`,
-      totalProduk: sql<number>`COUNT(DISTINCT ${jurnalPenjualan.nama_item})`,
       totalQty: sql<number>`COALESCE(SUM(${jurnalPenjualan.jumlah_terjual}), 0)`,
     })
     .from(jurnalPenjualan)
     .where(whereCondition);
+    
+  const [aggProducts] = await db
+    .select({
+      totalProduk: sql<number>`COUNT(DISTINCT COALESCE(${jurnalItems.nama_item}, ${jurnalPenjualan.nama_item}))`,
+    })
+    .from(jurnalPenjualan)
+    .leftJoin(jurnalItems, eq(jurnalPenjualan.id, jurnalItems.jurnal_id))
+    .where(whereCondition);
 
   return {
     totalPendapatan: Number(agg.totalPendapatan),
-    totalProduk: Number(agg.totalProduk),
+    totalProduk: Number(aggProducts.totalProduk),
     totalQty: Number(agg.totalQty),
   };
 }
