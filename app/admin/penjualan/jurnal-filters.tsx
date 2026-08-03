@@ -76,13 +76,11 @@ export function JurnalFilters({ currentQuery, options }: JurnalFiltersProps) {
         </div>
       )}
       
-      <div className="flex items-center w-full lg:w-auto h-14 bg-background shadow-sm border border-muted-foreground/20 rounded-md">
-        <DateRangeFilter 
-          dateFrom={currentQuery.dateFrom} 
-          dateTo={currentQuery.dateTo} 
-          onChange={handleDateRangeChange} 
-        />
-      </div>
+      <DateRangeFilter 
+        dateFrom={currentQuery.dateFrom} 
+        dateTo={currentQuery.dateTo} 
+        onChange={handleDateRangeChange} 
+      />
 
       <Select
         value={currentQuery.month || "all"}

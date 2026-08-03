@@ -59,7 +59,7 @@ export default async function AdminDashboardPage() {
     new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
 
   return (
-    <div className="space-y-8 pb-10 max-w-5xl">
+    <div className="space-y-8 pb-10">
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
         <p className="text-muted-foreground mt-2">

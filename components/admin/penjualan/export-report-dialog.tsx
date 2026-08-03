@@ -100,8 +100,13 @@ export function ExportReportDialog({ currentQuery }: ExportReportDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button variant="outline" className="h-14 text-base w-full lg:w-auto" />}>
-          <Download className="mr-2 h-4 w-4" />
+      <DialogTrigger render={
+        <Button 
+          variant="outline" 
+          className="h-14 text-base w-full lg:w-auto bg-background shadow-sm border-muted-foreground/20 text-foreground hover:bg-muted hover:text-foreground hover:border-slate-400/80" 
+        />
+      }>
+          <Download className="mr-2 h-4 w-4 shrink-0 text-muted-foreground" />
           Export Laporan
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
