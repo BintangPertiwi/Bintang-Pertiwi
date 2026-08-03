@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { compressImage } from "@/lib/image-compression"
 import { cn } from "@/lib/utils"
 import type { JurnalRow } from "@/types"
-import { Check, ChevronsUpDown, ImagePlus, Loader2, Plus, Trash2, PlusCircle } from "lucide-react"
+import { Check, ChevronsUpDown, ImagePlus, Loader2, Plus, PlusCircle, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import * as React from "react"
 import { toast } from "sonner"
@@ -289,7 +289,16 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
             type="date"
             required
             defaultValue={initialData?.tanggal ? initialData.tanggal.split('T')[0] : today}
-            className="w-full"
+            className="w-full sm:cursor-pointer"
+            onClick={(e) => {
+              try {
+                if (typeof e.currentTarget.showPicker === 'function') {
+                  e.currentTarget.showPicker()
+                }
+              } catch {
+                // Ignore
+              }
+            }}
           />
         </div>
 
