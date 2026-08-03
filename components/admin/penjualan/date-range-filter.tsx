@@ -61,53 +61,53 @@ export function DateRangeFilter({ dateFrom, dateTo, onChange }: DateRangeFilterP
   }
 
   return (
-    <div className="grid gap-2">
-      <Popover>
-        <PopoverTrigger 
-          render={
-            <Button
-              id="date"
-              variant="outline"
-              className={cn(
-                "w-full lg:w-[240px] justify-start text-left font-normal h-14 text-base",
-                !date.from && "text-muted-foreground"
-              )}
-            />
-          }
-        >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date.from ? (
-              date.to ? (
-                <>
-                  {format(date.from, "dd MMM yyyy", { locale: id })} -{" "}
-                  {format(date.to, "dd MMM yyyy", { locale: id })}
-                </>
-              ) : (
-                format(date.from, "dd MMM yyyy", { locale: id })
-              )
-            ) : (
-              <span>Filter Rentang Tanggal</span>
+    <Popover>
+      <PopoverTrigger 
+        render={
+          <Button
+            id="date"
+            variant="outline"
+            className={cn(
+              "h-14 w-full lg:w-[240px] bg-background shadow-sm border-muted-foreground/20 text-base font-normal justify-start text-left hover:border-slate-400/80 hover:bg-muted hover:text-foreground",
+              !date.from && "text-muted-foreground"
             )}
-            
-            {date.from && (
-              <div 
-                className="ml-auto p-1 hover:bg-muted rounded-full"
-                onClick={handleClear}
-              >
-                <X className="h-3 w-3" />
-              </div>
-            )}
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={handleSelect}
-            numberOfMonths={2}
           />
-        </PopoverContent>
-      </Popover>
-    </div>
+        }
+      >
+        <CalendarIcon className="mr-2 h-4 w-4 shrink-0 text-muted-foreground" />
+        <span className="truncate flex-1 text-left">
+          {date.from ? (
+            date.to ? (
+              <>
+                {format(date.from, "dd MMM yyyy", { locale: id })} -{" "}
+                {format(date.to, "dd MMM yyyy", { locale: id })}
+              </>
+            ) : (
+              format(date.from, "dd MMM yyyy", { locale: id })
+            )
+          ) : (
+            "Filter Rentang Tanggal"
+          )}
+        </span>
+        
+        {date.from && (
+          <div 
+            className="ml-auto p-1 hover:bg-muted rounded-full shrink-0"
+            onClick={handleClear}
+          >
+            <X className="h-3 w-3" />
+          </div>
+        )}
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="range"
+          defaultMonth={date?.from}
+          selected={date}
+          onSelect={handleSelect}
+          numberOfMonths={2}
+        />
+      </PopoverContent>
+    </Popover>
   )
 }

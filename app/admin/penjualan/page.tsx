@@ -73,12 +73,12 @@ export default async function PenjualanPage({ searchParams }: PenjualanPageProps
         title="Jurnal Penjualan" 
         description="Catat dan pantau riwayat penjualan produk UMKM Anda."
       >
-        <div className="flex gap-2">
-          <Button variant="outline" render={<Link href="/admin/penjualan/pengaturan-nota" />} nativeButton={false} className="h-10 px-4">
+        <div className="flex mobile:flex-col tablet:flex-row desktop:flex-row gap-2 w-full tablet:w-auto desktop:w-auto">
+          <Button variant="outline" render={<Link href="/admin/penjualan/pengaturan-nota" />} nativeButton={false} className="h-10 px-4 w-full tablet:w-auto desktop:w-auto">
             <Settings className="mr-2 h-4 w-4" />
             Pengaturan Nota
           </Button>
-          <Button render={<Link href="/admin/penjualan/create" />} nativeButton={false} className="h-10 px-4">
+          <Button render={<Link href="/admin/penjualan/create" />} nativeButton={false} className="h-10 px-4 w-full tablet:w-auto desktop:w-auto">
             <PlusCircle className="mr-2 h-4 w-4" />
             Tambah Jurnal
           </Button>

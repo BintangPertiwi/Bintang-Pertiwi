@@ -15,7 +15,7 @@ export function DashboardHeader({ title, description, children }: DashboardHeade
           {description}
         </p>
       </div>
-      {children && <div className="shrink-0">{children}</div>}
+      {children && <div className="shrink-0 mobile:w-full">{children}</div>}
     </div>
   );
 }
