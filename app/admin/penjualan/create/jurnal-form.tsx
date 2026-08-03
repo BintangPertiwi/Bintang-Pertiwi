@@ -289,7 +289,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
             type="date"
             required
             defaultValue={initialData?.tanggal ? initialData.tanggal.split('T')[0] : today}
-            className="md:max-w-[200px]"
+            className="w-full sm:w-[250px]"
           />
         </div>
 
@@ -306,7 +306,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
                   <button 
                     type="button" 
                     onClick={() => handleRemoveItem(item.id)} 
-                    className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-md transition-colors"
+                    className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-md transition-colors cursor-pointer"
                     title="Hapus Item"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -391,7 +391,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
                 <button
                   type="button"
                   onClick={handleRemoveNota}
-                  className="absolute top-4 right-4 p-2 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors shadow-md z-10"
+                  className="absolute top-4 right-4 p-2 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors shadow-md z-10 cursor-pointer"
                   title="Hapus Nota"
                 >
                   <Trash2 className="h-5 w-5" />
