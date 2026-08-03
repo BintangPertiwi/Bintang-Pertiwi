@@ -289,7 +289,7 @@ export function JurnalForm({ initialData, existingProducts = [] }: { initialData
             type="date"
             required
             defaultValue={initialData?.tanggal ? initialData.tanggal.split('T')[0] : today}
-            className="w-full sm:w-[250px]"
+            className="w-full"
           />
         </div>
 
