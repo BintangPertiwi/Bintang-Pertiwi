@@ -110,6 +110,7 @@ export const getColumns = (branding: NotaBranding): ColumnDef<JurnalRow & { auth
               total_pendapatan: jurnal.total_pendapatan,
               keterangan: jurnal.keterangan || "",
               authorName: jurnal.authorName || "",
+              items: jurnal.items,
             }}
             branding={branding}
             variant="outline"
@@ -212,6 +213,7 @@ function JurnalGridCard({ item, branding }: { item: JurnalRow & { authorName?: s
             total_pendapatan: item.total_pendapatan,
             keterangan: item.keterangan || "",
             authorName: item.authorName || "",
+            items: item.items,
           }}
           branding={branding}
           variant="ghost"

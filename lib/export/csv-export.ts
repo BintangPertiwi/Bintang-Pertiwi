@@ -1,16 +1,39 @@
 import type { JurnalRow } from "@/types/db";
 
 export function generateCsv(data: (JurnalRow & { authorName?: string })[], filename: string) {
-  const headers = ["Tanggal", "Produk/Item", "Qty", "Total Pendapatan", "Keterangan", "Dicatat Oleh"];
+  const headers = ["Tanggal", "Produk/Item", "Harga Satuan", "Qty", "Subtotal", "Keterangan", "Dicatat Oleh"];
   
-  const rows = data.map(item => [
-    new Date(item.tanggal).toLocaleDateString("id-ID"),
-    `"${item.nama_item.replace(/"/g, '""')}"`, // escape quotes for CSV
-    item.jumlah_terjual,
-    item.total_pendapatan,
-    `"${(item.keterangan || "").replace(/"/g, '""')}"`,
-    `"${(item.authorName || "-").replace(/"/g, '""')}"`
-  ]);
+  const rows: (string | number)[][] = [];
+  data.forEach(jurnal => {
+    const tanggal = new Date(jurnal.tanggal).toLocaleDateString("id-ID");
+    const ket = `"${(jurnal.keterangan || "").replace(/"/g, '""')}"`;
+    const author = `"${(jurnal.authorName || "-").replace(/"/g, '""')}"`;
+    
+    const childItems = jurnal.items;
+    if (childItems && childItems.length > 0) {
+      childItems.forEach((item) => {
+        rows.push([
+          tanggal,
+          `"${item.nama_item.replace(/"/g, '""')}"`,
+          item.harga_satuan,
+          item.jumlah,
+          item.subtotal,
+          ket,
+          author
+        ]);
+      });
+    } else {
+      rows.push([
+        tanggal,
+        `"${jurnal.nama_item.replace(/"/g, '""')}"`,
+        0,
+        jurnal.jumlah_terjual,
+        jurnal.total_pendapatan,
+        ket,
+        author
+      ]);
+    }
+  });
 
   const csvContent = [
     headers.join(","),
