@@ -175,11 +175,11 @@ export async function generateNotaPdf(data: NotaData, branding: NotaBranding): P
   doc.setFont("helvetica", "italic");
   doc.setTextColor(PDF_COLORS.muted[0], PDF_COLORS.muted[1], PDF_COLORS.muted[2]);
   doc.setFontSize(8);
-  doc.text("Terima kasih atas kepercayaannya!", pageWidth / 2, finalFooterY, { align: "center" });
+  doc.text("Terima kasih atas kepercayaan Anda!", pageWidth / 2, finalFooterY, { align: "center" });
   
   doc.setFont("helvetica", "bold");
   doc.setTextColor(PDF_COLORS.primary[0], PDF_COLORS.primary[1], PDF_COLORS.primary[2]);
-  doc.text("bintangpertiwi.com", pageWidth / 2, finalFooterY + 5, { align: "center" });
+  doc.text("Kepuasan Anda adalah semangat kami untuk terus berkembang.", pageWidth / 2, finalFooterY + 5, { align: "center" });
 
   return doc.output("blob");
 }
