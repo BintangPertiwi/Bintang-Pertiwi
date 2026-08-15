@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { StorageManagement } from "./storage-management";
+import { BackupRestoreSection } from "./backup-restore-section";
 
 interface PengaturanFormProps {
   initialUsername: string;
@@ -144,7 +145,7 @@ export function PengaturanForm({ initialUsername, initialWa, role }: PengaturanF
 
   return (
     <div className="max-w-3xl pb-20">
-      <Accordion multiple defaultValue={["wa", "username", "password", "storage"]} className="w-full space-y-4">
+      <Accordion multiple defaultValue={["wa", "username", "password", "storage", "backup"]} className="w-full space-y-4">
 
         {/* SECTION 0: NOMOR WHATSAPP */}
         <AccordionItem value="wa" className="border-b pb-4">
@@ -329,6 +330,18 @@ export function PengaturanForm({ initialUsername, initialWa, role }: PengaturanF
                 </p>
                 <StorageManagement />
               </div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
+
+        {/* SECTION 4: BACKUP & RESTORE (khusus Super Admin) */}
+        {role === "super_admin" && (
+          <AccordionItem value="backup" className="border-b pb-4">
+            <AccordionTrigger className="text-xl font-bold hover:no-underline">
+              Backup & Restore
+            </AccordionTrigger>
+            <AccordionContent className="pt-4 pb-6">
+              <BackupRestoreSection />
             </AccordionContent>
           </AccordionItem>
         )}
