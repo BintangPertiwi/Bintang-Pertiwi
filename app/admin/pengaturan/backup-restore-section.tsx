@@ -185,18 +185,19 @@ export function BackupRestoreSection() {
             variant="outline" 
             onClick={handleSelectAll}
             type="button"
+            className="h-14 text-base px-8"
           >
             {selectedGroups.length === BACKUP_GROUPS.length ? "Batal Pilih Semua" : "Pilih Semua"}
           </Button>
           <Button 
             onClick={handleExport} 
             disabled={isExporting || selectedGroups.length === 0}
-            className="flex-1"
+            className="flex-1 h-14 text-base"
           >
             {isExporting ? (
-              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Mengekspor...</>
+              <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Mengekspor...</>
             ) : (
-              <><Download className="mr-2 h-4 w-4" /> Download Backup (.json)</>
+              <><Download className="mr-2 h-5 w-5" /> Download Backup (.json)</>
             )}
           </Button>
         </div>

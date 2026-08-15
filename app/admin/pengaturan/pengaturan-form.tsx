@@ -145,7 +145,7 @@ export function PengaturanForm({ initialUsername, initialWa, role }: PengaturanF
 
   return (
     <div className="max-w-3xl pb-20">
-      <Accordion multiple defaultValue={["wa", "username", "password", "storage"]} className="w-full space-y-4">
+      <Accordion multiple defaultValue={["wa", "username", "password", "storage", "backup"]} className="w-full space-y-4">
 
         {/* SECTION 0: NOMOR WHATSAPP */}
         <AccordionItem value="wa" className="border-b pb-4">
