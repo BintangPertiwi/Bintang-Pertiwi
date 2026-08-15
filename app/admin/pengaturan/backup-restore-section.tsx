@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Loader2, Download, Upload, AlertTriangle, FileJson } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { BACKUP_GROUPS } from "@/lib/db/queries/backup";
+import { BACKUP_GROUPS } from "@/lib/constants";
 
 export function BackupRestoreSection() {
   const [isExporting, setIsExporting] = useState(false);
