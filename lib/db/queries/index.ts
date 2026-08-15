@@ -6,3 +6,4 @@ export * from "./auth";
 export * from "./status";
 export * from "./media";
 export * from "./dokumen";
+export * from "./backup";
