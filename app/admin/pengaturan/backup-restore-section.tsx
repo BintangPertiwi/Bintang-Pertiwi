@@ -192,7 +192,7 @@ export function BackupRestoreSection() {
           <Button 
             onClick={handleExport} 
             disabled={isExporting || selectedGroups.length === 0}
-            className="flex-1 h-14 text-base"
+            className="w-full tablet:w-auto tablet:flex-1 h-14 text-base"
           >
             {isExporting ? (
               <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Mengekspor...</>
