@@ -7,7 +7,7 @@ export const TABLE_NAMES = {
   produk_umkm: "Produk",
   jurnal_penjualan: "Jurnal Penjualan",
   jurnal_items: "Item Penjualan",
-  perangkat_dusun: "Perangkat Dusun",
+
   global_config: "Pengaturan Web",
 };
 
@@ -18,6 +18,6 @@ export const BACKUP_GROUPS = [
   { id: "dokumen", label: "Dokumen", tables: ["dokumen"] },
   { id: "produk", label: "Produk UMKM", tables: ["produk_umkm"] },
   { id: "jurnal", label: "Jurnal Penjualan", tables: ["jurnal_penjualan", "jurnal_items"] },
-  { id: "perangkat", label: "Perangkat Dusun", tables: ["perangkat_dusun"] },
+
   { id: "config", label: "Pengaturan Web", tables: ["global_config"] },
 ];

@@ -34,9 +34,6 @@ export async function exportData(tablesToExport: string[]) {
       case "jurnal_items":
         result = await db.select().from(schema.jurnalItems);
         break;
-      case "perangkat_dusun":
-        result = await db.select().from(schema.perangkatDusun);
-        break;
       case "global_config":
         result = await db.select().from(schema.globalConfig);
         break;
@@ -79,7 +76,6 @@ export async function importData(parsedData: unknown) {
   const importOrder = [
     { name: "admin_auth", schema: schema.adminAuth, pk: schema.adminAuth.id },
     { name: "global_config", schema: schema.globalConfig, pk: schema.globalConfig.key },
-    { name: "perangkat_dusun", schema: schema.perangkatDusun, pk: schema.perangkatDusun.id },
     { name: "dokumen", schema: schema.dokumen, pk: schema.dokumen.id },
     { name: "galeri_dusun", schema: schema.galeriDusun, pk: schema.galeriDusun.id },
     { name: "produk_umkm", schema: schema.produkUmkm, pk: schema.produkUmkm.id },
